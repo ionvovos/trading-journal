@@ -172,3 +172,13 @@ test('delete all data empties the stores, the own key and the journal caches (AC
   await deleteAllData({ store, storage, caches, alsoModel: true });
   assert.deepEqual(cacheNames, ['tj-v1']);
 });
+
+import { exportDue } from '../../src/storage/actions.js';
+
+test('export reminder: due after the set number of new trades since the last export (AC-P8.5)', () => {
+  const trades = Array.from({ length: 60 }, (_, i) => ({ createdAt: `2026-03-${String(1 + (i % 28)).padStart(2, '0')}T00:00:00Z` }));
+  assert.deepEqual(exportDue({ trades, lastExportAt: null, every: 50 }), { due: true, n: 60, every: 50 });
+  assert.equal(exportDue({ trades, lastExportAt: '2026-03-20T00:00:00Z', every: 50 }).due, false);
+  assert.equal(exportDue({ trades: trades.slice(0, 49), lastExportAt: null, every: 50 }).due, false);
+  assert.equal(exportDue({ trades, lastExportAt: null, every: 0 }).due, false);
+});

@@ -210,3 +210,10 @@ export async function deleteAllData({ store, storage, caches, alsoModel = false 
 }
 
 export const digitsFor = minorDigits;
+
+// Export reminder (AC-P8.5): due once `every` trades were added since the last export.
+export function exportDue({ trades, lastExportAt, every = 50 }) {
+  if (!every || every <= 0) return { due: false, n: 0, every };
+  const n = trades.filter((t) => !lastExportAt || (t.createdAt || '') > lastExportAt).length;
+  return { due: n >= every, n, every };
+}
