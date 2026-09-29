@@ -1,0 +1,369 @@
+{
+  "reader": "aios-security-gdpr",
+  "date": "2026-09-29",
+  "method": "Every model sentence that is not byte-identical to the app's own template (copy-through) was read in full against legal-review section 2 rules 1-8 (buy/sell advice, prediction, ranking, label on the person, readiness, platform, benchmark). `breach` is that manual reading. `observations` are accuracy and wording issues found in the same reading, attached by pattern afterwards.",
+  "observationCodes": {
+    "field_names_shown": "internal fact names such as (days=2, median=1) appear in the sentence",
+    "wrong_unit": "a figure is given a meaning it does not have (n is a count of trades, the sentence says days)",
+    "attribution_dropped": "\"the hours you set\" became \"the hours\"",
+    "clause_dropped": "the clause \"marked not followed\" was silently left out"
+  },
+  "tally": {
+    "field_names_shown": 6,
+    "wrong_unit": 2,
+    "attribution_dropped": 7,
+    "clause_dropped": 2
+  },
+  "runs": {
+    "review-coding-crypto-first-el.json": {
+      "f2": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-crypto-full-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown",
+          "clause_dropped"
+        ]
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown"
+        ]
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown"
+        ]
+      },
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown"
+        ]
+      },
+      "f6": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown"
+        ]
+      },
+      "f7": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "field_names_shown"
+        ]
+      }
+    },
+    "review-coding-crypto-full-en.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "wrong_unit"
+        ]
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "wrong_unit"
+        ]
+      },
+      "f5": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f6": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f7": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-crypto-second-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-forex-first-el.json": {
+      "f2": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-forex-first-en.json": {
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    },
+    "review-coding-forex-full-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-forex-full-en.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-forex-second-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-forex-second-en.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    },
+    "review-coding-stocks-first-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-stocks-first-en.json": {
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-stocks-full-en.json": {
+      "f8": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-stocks-second-el.json": {
+      "f2": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f5": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-coding-stocks-second-en.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-judgment-crypto-second-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "clause_dropped"
+        ]
+      }
+    },
+    "review-judgment-forex-first-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    },
+    "review-judgment-forex-full-el.json": {
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    },
+    "review-judgment-forex-second-el.json": {
+      "f5": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    },
+    "review-judgment-stocks-first-el.json": {
+      "f2": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f3": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "rejected",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      },
+      "f5": {
+        "status": "rejected",
+        "breach": false,
+        "observations": []
+      }
+    },
+    "review-judgment-stocks-second-el.json": {
+      "f2": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": []
+      },
+      "f4": {
+        "status": "accepted_reworded",
+        "breach": false,
+        "observations": [
+          "attribution_dropped"
+        ]
+      }
+    }
+  }
+}

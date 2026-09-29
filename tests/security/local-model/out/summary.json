@@ -1,0 +1,4167 @@
+{
+  "summary": {
+    "review": {
+      "coding": {
+        "byLang": {
+          "en": {
+            "items": 37,
+            "copyThrough": 15,
+            "acceptedReworded": 21,
+            "rejectedByGuard": 1
+          },
+          "el": {
+            "items": 37,
+            "copyThrough": 15,
+            "acceptedReworded": 15,
+            "rejectedByGuard": 7
+          }
+        },
+        "runs": 18,
+        "unparseable": 0,
+        "itemsRequested": 74,
+        "missing": 0,
+        "copyThrough": 30,
+        "acceptedReworded": 36,
+        "rejectedByGuard": 8
+      },
+      "judgment": {
+        "byLang": {
+          "en": {
+            "items": 37,
+            "copyThrough": 37,
+            "acceptedReworded": 0,
+            "rejectedByGuard": 0
+          },
+          "el": {
+            "items": 37,
+            "copyThrough": 26,
+            "acceptedReworded": 7,
+            "rejectedByGuard": 4
+          }
+        },
+        "runs": 18,
+        "unparseable": 0,
+        "itemsRequested": 74,
+        "missing": 0,
+        "copyThrough": 63,
+        "acceptedReworded": 7,
+        "rejectedByGuard": 4
+      }
+    },
+    "sentence": {
+      "coding": {
+        "phrases": 45,
+        "ambiguousPhrases": 2,
+        "ambiguousReadingsCommittedByModel": 4,
+        "numbersReturnedByModel": 112,
+        "unparseable": 0,
+        "numberFieldsExpected": 128,
+        "misparsedNumbers": 5,
+        "phrasesWithMisparse": 5,
+        "missedNumbers": 18,
+        "misparsesShownAsConflict": 5,
+        "misparsesSilent": 0,
+        "mergedNumbersAlwaysEqualCode": true,
+        "setupSilentWrong": 0,
+        "notesReturned": 35
+      }
+    }
+  },
+  "review": [
+    {
+      "file": "review-coding-crypto-first-el.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "first",
+      "lang": "el",
+      "requested": 2,
+      "parse": "ok",
+      "returned": 2,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "rejected",
+          "reasons": [
+            "numbers"
+          ],
+          "guardHits": [],
+          "text": "Ανοίχτηκε 1 συναλλαγή σε 30 λεπτά από κλείσιμο με απώλεια, μετά από 2 απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "days_over_cap",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 ημέρα ανοίχθηκαν περισσότερες από 2 συναλλαγές, με συνολικό πλήθος 3.",
+          "ruleText": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-crypto-first-en.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "first",
+      "lang": "en",
+      "requested": 2,
+      "parse": "ok",
+      "returned": 2,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "days_over_cap",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "On 1 day you opened more trades than the cap in your plan, 2 (n=3).",
+          "ruleText": "On 1 day you opened more trades than the cap in your plan, 2 (n=3)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-crypto-full-el.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "full",
+      "lang": "el",
+      "requested": 6,
+      "parse": "ok",
+      "returned": 6,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μία συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά (a=1, window=30, b=2).",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Δύο ημέρες είχαν περισσότερες συναλλαγές από τη διάμεσο, που είναι 1 ανά ημέρα (days=2, median=1, n=5).",
+          "ruleText": "2 ημέρες είχαν περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=5)."
+        },
+        {
+          "id": "f4",
+          "pattern": "days_over_cap",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε μία ημέρα ανοίχτηκαν περισσότερες συναλλαγές από το όριο του σχεδίου, 2 (days=1, cap=2, n=3).",
+          "ruleText": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "size_rising",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Το ρίσκο ανά συναλλαγή αυξήθηκε κατά την περίοδο, από 1,0% σε 2,6% του κεφαλαίου κατά την είσοδο (from=1,0%, to=2,6%, n=8).",
+          "ruleText": "Το ρίσκο σας ανά συναλλαγή αυξήθηκε στην περίοδο, από 1,0% σε 2,6% του κεφαλαίου κατά την είσοδο (n=8)."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε μία συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (moved=1, n=1, avgMovedR=−1,0R, rKnownMoved=1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f7",
+          "pattern": "holding_and_target",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Ο μέσος χρόνος διακράτησης ήταν κερδισμένες 3ω 00λ και χαμένες 1ω 20λ (nWinners=2, nLosers=6). Ο στόχος του σχεδίου ήταν +2,0R· οι κερδισμένες έκλεισαν κατά μέσο όρο στα +1,0R (targetR=+2,0R, winnersR=+1,0R, nTarget=2).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 3ω 00λ, χαμένες 1ω 20λ (n=2 και n=6). Ο στόχος του σχεδίου σας ήταν +2,0R· οι κερδισμένες έκλεισαν κατά μέσο όρο στα +1,0R (n=2)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-crypto-full-en.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "full",
+      "lang": "en",
+      "requested": 6,
+      "parse": "ok",
+      "returned": 6,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 2 trades opened after a losing close had more risk than the median and were marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 2 trades opened after a losing close had more risk than your median and were marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 days had more trades than the median of 1 per day, across 5 days.",
+          "ruleText": "2 days had more trades than your median of 1 per day (n=5)."
+        },
+        {
+          "id": "f4",
+          "pattern": "days_over_cap",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "On 1 day more trades were opened than the cap of 2, across 3 days.",
+          "ruleText": "On 1 day you opened more trades than the cap in your plan, 2 (n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "size_rising",
+          "status": "rejected",
+          "reasons": [
+            "guard:imperative"
+          ],
+          "guardHits": [
+            "imperative"
+          ],
+          "text": "Risk per trade rose over the period, from 1.0% to 2.6% of equity at entry, across 8 trades.",
+          "ruleText": "Your risk per trade rose over the period, from 1.0% to 2.6% of equity at entry (n=8)."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R, with R known for 1 trade.",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1)."
+        },
+        {
+          "id": "f7",
+          "pattern": "holding_and_target",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time was 3h 00m for winners and 1h 20m for losers, across 2 winners and 6 losers. The plan target was +2.0R, and winners closed at +1.0R on average, across 2 trades.",
+          "ruleText": "Average holding time: winners 3h 00m, losers 1h 20m (n=2 and n=6). Your plan target was +2.0R; winners closed at +1.0R on average (n=2)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-crypto-second-el.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "second",
+      "lang": "el",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Οι 2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου.",
+          "ruleText": "2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=2).",
+          "ruleText": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=2)."
+        },
+        {
+          "id": "f4",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-crypto-second-en.json",
+      "model": "coding",
+      "week": "crypto",
+      "variant": "second",
+      "lang": "en",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 trades opened after a losing close had more risk than your median and were marked not followed.",
+          "ruleText": "2 trades opened after a losing close had more risk than your median and were marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 day had more trades than your median of 1 per day (n=2).",
+          "ruleText": "1 day had more trades than your median of 1 per day (n=2)."
+        },
+        {
+          "id": "f4",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1)."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-first-el.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "first",
+      "lang": "el",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Η μία συναλλαγή που ακολούθησε το κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και καταχωρήθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Το 100,0% των τριών συναλλαγών δεν έχει ετικέτα setup, δηλαδή 3 από 3.",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (3 από 3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Μία από τις τρεις συναλλαγές ανοίχτηκε εκτός των ωρών που ορίσατε, δηλαδή εκτός 09:00-12:00.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 1 από 3."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-first-en.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "first",
+      "lang": "en",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100.0% of 3 trades have no setup tag, out of 3 total trades.",
+          "ruleText": "100.0% of trades have no setup tag (3 of 3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 of 3 trades opened outside the hours 09:00-12:00.",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 1 of 3."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-full-el.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "full",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Το 100,0% των συναλλαγών δεν έχουν ετικέτα setup (8 από 8).",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (8 από 8)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 1ω 30λ (n=2 και n=6).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 1ω 30λ (n=2 και n=6)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 2 από 8.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 2 από 8."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-full-en.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "full",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "All 8 trades have no setup tag (100.0% of 8).",
+          "ruleText": "100.0% of trades have no setup tag (8 of 8)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. The 1 trade with a stop moved away averaged −2.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time was 35m for winners and 1h 30m for losers (2 winners and 6 losers).",
+          "ruleText": "Average holding time: winners 35m, losers 1h 30m (n=2 and n=6)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 of 8 trades opened outside the set hours (09:00-12:00).",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 2 of 8."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-second-el.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "second",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Το 100,0% των συναλλαγών δεν έχουν ετικέτα setup (5 από 5).",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (5 από 5)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 2ω 07λ (n=2 και n=3).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 2ω 07λ (n=2 και n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 1 από 5.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 1 από 5."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-forex-second-en.json",
+      "model": "coding",
+      "week": "forex",
+      "variant": "second",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100.0% of the 5 trades have no setup tag (5 of 5).",
+          "ruleText": "100.0% of trades have no setup tag (5 of 5)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry, and trades with a stop moved away averaged −2.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time was 35m for winners and 2h 07m for losers (n=2 and n=3).",
+          "ruleText": "Average holding time: winners 35m, losers 2h 07m (n=2 and n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 of 5 trades opened outside the hours 09:00-12:00.",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 1 of 5."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-first-el.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "first",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσα σε 30 λεπτά από κλείσιμο με απώλεια ανοίχτηκε 1 συναλλαγή, μετά από δύο απώλειες στη σειρά.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά."
+        },
+        {
+          "id": "f3",
+          "pattern": "added_while_losing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή προστέθηκε σε θέση ενώ η θέση έδειχνε απώλεια στην τιμή της προσθήκης.",
+          "ruleText": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Από 5 συναλλαγές, 1 ανοίχτηκε εκτός των ωρών που ορίσατε (09:30-11:30).",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 1 από 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Ανοίχτηκε 1 συναλλαγή αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-first-en.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "first",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row."
+        },
+        {
+          "id": "f3",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade you added to a position while it showed a loss at the price you added at.",
+          "ruleText": "In 1 trade you added to a position while it showed a loss at the price you added at."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:30-11:30): 1 of 5.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 1 of 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened after the day's closed loss reached the limit in your plan, 2.0%.",
+          "ruleText": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-full-el.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "full",
+      "lang": "el",
+      "requested": 7,
+      "parse": "ok",
+      "returned": 7,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 2 ανά ημέρα (n=3).",
+          "ruleText": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 2 ανά ημέρα (n=3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "20,0% των συναλλαγών δεν έχουν ετικέτα setup (2 από 10).",
+          "ruleText": "20,0% των συναλλαγών δεν έχουν ετικέτα setup (2 από 10)."
+        },
+        {
+          "id": "f5",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης.",
+          "ruleText": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ.",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ."
+        },
+        {
+          "id": "f7",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 2 από 10.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 2 από 10."
+        },
+        {
+          "id": "f8",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 συναλλαγές ανοίχτηκαν αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "2 συναλλαγές ανοίχτηκαν αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-full-en.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "full",
+      "lang": "en",
+      "requested": 7,
+      "parse": "ok",
+      "returned": 7,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 day had more trades than your median of 2 per day (n=3).",
+          "ruleText": "1 day had more trades than your median of 2 per day (n=3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "20.0% of trades have no setup tag (2 of 10).",
+          "ruleText": "20.0% of trades have no setup tag (2 of 10)."
+        },
+        {
+          "id": "f5",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade you added to a position while it showed a loss at the price you added at.",
+          "ruleText": "In 1 trade you added to a position while it showed a loss at the price you added at."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop.",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop."
+        },
+        {
+          "id": "f7",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:30-11:30): 2 of 10.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 2 of 10."
+        },
+        {
+          "id": "f8",
+          "pattern": "after_daily_loss_limit",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 trades were opened after the day's closed loss reached the limit in your plan, 2.0%.",
+          "ruleText": "2 trades were opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-second-el.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "second",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Η μία συναλλαγή που ακολούθησε το κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και καταχωρήθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Σε μία συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε μία συναλλαγή). Μία συναλλαγή δεν είχε στοπ.",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Οι συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): μία από πέντε.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 1 από 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Μία συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-coding-stocks-second-en.json",
+      "model": "coding",
+      "week": "stocks",
+      "variant": "second",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade opened after a losing close had more risk than the median and was marked not followed.",
+          "ruleText": "1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry, and trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop.",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours set (09:30-11:30): 1 of 5.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 1 of 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened after the day's closed loss reached the limit in the plan, 2.0%.",
+          "ruleText": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-first-el.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "first",
+      "lang": "el",
+      "requested": 2,
+      "parse": "ok",
+      "returned": 2,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "days_over_cap",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3).",
+          "ruleText": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-first-en.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "first",
+      "lang": "en",
+      "requested": 2,
+      "parse": "ok",
+      "returned": 2,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "days_over_cap",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "On 1 day you opened more trades than the cap in your plan, 2 (n=3).",
+          "ruleText": "On 1 day you opened more trades than the cap in your plan, 2 (n=3)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-full-el.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "full",
+      "lang": "el",
+      "requested": 6,
+      "parse": "ok",
+      "returned": 6,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 ημέρες είχαν περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=5).",
+          "ruleText": "2 ημέρες είχαν περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=5)."
+        },
+        {
+          "id": "f4",
+          "pattern": "days_over_cap",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3).",
+          "ruleText": "Σε 1 ημέρα ανοίξατε περισσότερες συναλλαγές από το όριο του σχεδίου σας, 2 (n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "size_rising",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Το ρίσκο σας ανά συναλλαγή αυξήθηκε στην περίοδο, από 1,0% σε 2,6% του κεφαλαίου κατά την είσοδο (n=8).",
+          "ruleText": "Το ρίσκο σας ανά συναλλαγή αυξήθηκε στην περίοδο, από 1,0% σε 2,6% του κεφαλαίου κατά την είσοδο (n=8)."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f7",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσος χρόνος διακράτησης: κερδισμένες 3ω 00λ, χαμένες 1ω 20λ (n=2 και n=6). Ο στόχος του σχεδίου σας ήταν +2,0R· οι κερδισμένες έκλεισαν κατά μέσο όρο στα +1,0R (n=2).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 3ω 00λ, χαμένες 1ω 20λ (n=2 και n=6). Ο στόχος του σχεδίου σας ήταν +2,0R· οι κερδισμένες έκλεισαν κατά μέσο όρο στα +1,0R (n=2)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-full-en.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "full",
+      "lang": "en",
+      "requested": 6,
+      "parse": "ok",
+      "returned": 6,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 2 trades opened after a losing close had more risk than your median and were marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 2 trades opened after a losing close had more risk than your median and were marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 days had more trades than your median of 1 per day (n=5).",
+          "ruleText": "2 days had more trades than your median of 1 per day (n=5)."
+        },
+        {
+          "id": "f4",
+          "pattern": "days_over_cap",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "On 1 day you opened more trades than the cap in your plan, 2 (n=3).",
+          "ruleText": "On 1 day you opened more trades than the cap in your plan, 2 (n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "size_rising",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Your risk per trade rose over the period, from 1.0% to 2.6% of equity at entry (n=8).",
+          "ruleText": "Your risk per trade rose over the period, from 1.0% to 2.6% of equity at entry (n=8)."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1)."
+        },
+        {
+          "id": "f7",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time: winners 3h 00m, losers 1h 20m (n=2 and n=6). Your plan target was +2.0R; winners closed at +1.0R on average (n=2).",
+          "ruleText": "Average holding time: winners 3h 00m, losers 1h 20m (n=2 and n=6). Your plan target was +2.0R; winners closed at +1.0R on average (n=2)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-second-el.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "second",
+      "lang": "el",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας.",
+          "ruleText": "2 συναλλαγές μετά από κλείσιμο με απώλεια είχαν μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκαν ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=2).",
+          "ruleText": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 1 ανά ημέρα (n=2)."
+        },
+        {
+          "id": "f4",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −1,0R (γνωστό R σε 1)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-crypto-second-en.json",
+      "model": "judgment",
+      "week": "crypto",
+      "variant": "second",
+      "lang": "en",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 trades opened after a losing close had more risk than your median and were marked not followed.",
+          "ruleText": "2 trades opened after a losing close had more risk than your median and were marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 day had more trades than your median of 1 per day (n=2).",
+          "ruleText": "1 day had more trades than your median of 1 per day (n=2)."
+        },
+        {
+          "id": "f4",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −1.0R (R known for 1)."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-first-el.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "first",
+      "lang": "el",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας.",
+          "ruleText": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (3 από 3).",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (3 από 3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών 09:00-12:00: 1 από 3.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 1 από 3."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-first-en.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "first",
+      "lang": "en",
+      "requested": 3,
+      "parse": "ok",
+      "returned": 3,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100.0% of trades have no setup tag (3 of 3).",
+          "ruleText": "100.0% of trades have no setup tag (3 of 3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:00-12:00): 1 of 3.",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 1 of 3."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-full-el.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "full",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (8 από 8).",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (8 από 8)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 1ω 30λ (n=2 και n=6).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 1ω 30λ (n=2 και n=6)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών 09:00-12:00: 2 από 8.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 2 από 8."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-full-en.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "full",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100.0% of trades have no setup tag (8 of 8).",
+          "ruleText": "100.0% of trades have no setup tag (8 of 8)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time: winners 35m, losers 1h 30m (n=2 and n=6).",
+          "ruleText": "Average holding time: winners 35m, losers 1h 30m (n=2 and n=6)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:00-12:00): 2 of 8.",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 2 of 8."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-second-el.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "second",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (5 από 5).",
+          "ruleText": "100,0% των συναλλαγών δεν έχουν ετικέτα setup (5 από 5)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1).",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 2ω 07λ (n=2 και n=3).",
+          "ruleText": "Μέσος χρόνος διακράτησης: κερδισμένες 35λ, χαμένες 2ω 07λ (n=2 και n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών 09:00-12:00: 1 από 5.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:00-12:00): 1 από 5."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-forex-second-en.json",
+      "model": "judgment",
+      "week": "forex",
+      "variant": "second",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "100.0% of trades have no setup tag (5 of 5).",
+          "ruleText": "100.0% of trades have no setup tag (5 of 5)."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1).",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1)."
+        },
+        {
+          "id": "f4",
+          "pattern": "holding_and_target",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Average holding time: winners 35m, losers 2h 07m (n=2 and n=3).",
+          "ruleText": "Average holding time: winners 35m, losers 2h 07m (n=2 and n=3)."
+        },
+        {
+          "id": "f5",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:00-12:00): 1 of 5.",
+          "ruleText": "Trades opened outside the hours you set (09:00-12:00): 1 of 5."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-first-el.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "first",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Μια συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά."
+        },
+        {
+          "id": "f3",
+          "pattern": "added_while_losing",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Σε μια συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης.",
+          "ruleText": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Μια από τις 5 συναλλαγές ανοίχτηκαν εκτός των ωρών 09:30-11:30.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 1 από 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "rejected",
+          "reasons": [
+            "numbers_dropped"
+          ],
+          "guardHits": [],
+          "text": "Μια συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-first-en.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "first",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row."
+        },
+        {
+          "id": "f3",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade you added to a position while it showed a loss at the price you added at.",
+          "ruleText": "In 1 trade you added to a position while it showed a loss at the price you added at."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:30-11:30): 1 of 5.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 1 of 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%.",
+          "ruleText": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-full-el.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "full",
+      "lang": "el",
+      "requested": 7,
+      "parse": "ok",
+      "returned": 7,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε μέσα σε 30 λεπτά από κλείσιμο με απώλεια, μετά από δύο απώλειες στη σειρά. 1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 2 ανά ημέρα (n=3).",
+          "ruleText": "1 ημέρα είχε περισσότερες συναλλαγές από τη διάμεσό σας, που είναι 2 ανά ημέρα (n=3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "20,0% των συναλλαγών δεν έχουν ετικέτα setup (2 από 10).",
+          "ruleText": "20,0% των συναλλαγών δεν έχουν ετικέτα setup (2 από 10)."
+        },
+        {
+          "id": "f5",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης.",
+          "ruleText": "Σε 1 συναλλαγή προσθέσατε σε θέση ενώ αυτή έδειχνε απώλεια στην τιμή της προσθήκης."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ.",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ."
+        },
+        {
+          "id": "f7",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 2 από 10.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 2 από 10."
+        },
+        {
+          "id": "f8",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 συναλλαγές ανοίχτηκαν αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "2 συναλλαγές ανοίχτηκαν αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-full-en.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "full",
+      "lang": "en",
+      "requested": 7,
+      "parse": "ok",
+      "returned": 7,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade was opened within 30 minutes of a losing close, after two losses in a row. 1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "busy_days",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 day had more trades than your median of 2 per day (n=3).",
+          "ruleText": "1 day had more trades than your median of 2 per day (n=3)."
+        },
+        {
+          "id": "f4",
+          "pattern": "no_setup_share",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "20.0% of trades have no setup tag (2 of 10).",
+          "ruleText": "20.0% of trades have no setup tag (2 of 10)."
+        },
+        {
+          "id": "f5",
+          "pattern": "added_while_losing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade you added to a position while it showed a loss at the price you added at.",
+          "ruleText": "In 1 trade you added to a position while it showed a loss at the price you added at."
+        },
+        {
+          "id": "f6",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop.",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop."
+        },
+        {
+          "id": "f7",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:30-11:30): 2 of 10.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 2 of 10."
+        },
+        {
+          "id": "f8",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "2 trades were opened after the day’s closed loss reached the limit in your plan, 2.0%.",
+          "ruleText": "2 trades were opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-second-el.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "second",
+      "lang": "el",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσο σας και σημειώθηκε ως εκτός σχεδίου.",
+          "ruleText": "1 συναλλαγή μετά από κλείσιμο με απώλεια είχε μεγαλύτερο ρίσκο από τη διάμεσό σας και σημειώθηκε ως εκτός σχεδίου."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ.",
+          "ruleText": "Σε 1 συναλλαγή το στοπ μετακινήθηκε μακριά από την είσοδο. Οι συναλλαγές με στοπ που μετακινήθηκε μακριά είχαν μέσο −2,0R (γνωστό R σε 1). 1 συναλλαγή δεν είχε στοπ."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "accepted_reworded",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών 09:30-11:30: 1 από 5.",
+          "ruleText": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 1 από 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%.",
+          "ruleText": "1 συναλλαγή ανοίχτηκε αφού η κλεισμένη απώλεια της ημέρας έφτασε το όριο του σχεδίου σας, 2,0%."
+        }
+      ]
+    },
+    {
+      "file": "review-judgment-stocks-second-en.json",
+      "model": "judgment",
+      "week": "stocks",
+      "variant": "second",
+      "lang": "en",
+      "requested": 4,
+      "parse": "ok",
+      "returned": 4,
+      "items": [
+        {
+          "id": "f2",
+          "pattern": "entry_after_loss",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade opened after a losing close had more risk than your median and was marked not followed.",
+          "ruleText": "1 trade opened after a losing close had more risk than your median and was marked not followed."
+        },
+        {
+          "id": "f3",
+          "pattern": "stop_moved_or_missing",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop.",
+          "ruleText": "In 1 trade the stop was moved away from the entry. Trades with a stop moved away averaged −2.0R (R known for 1). 1 trade had no stop."
+        },
+        {
+          "id": "f4",
+          "pattern": "outside_set_hours",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "Trades opened outside the hours you set (09:30-11:30): 1 of 5.",
+          "ruleText": "Trades opened outside the hours you set (09:30-11:30): 1 of 5."
+        },
+        {
+          "id": "f5",
+          "pattern": "after_daily_loss_limit",
+          "status": "copy_through",
+          "reasons": [],
+          "guardHits": [],
+          "text": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%.",
+          "ruleText": "1 trade was opened after the day’s closed loss reached the limit in your plan, 2.0%."
+        }
+      ]
+    }
+  ],
+  "sentence": [
+    {
+      "index": 1,
+      "text": "bought 0.2 ETH at 2410, stop 2350, breakout",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "2410",
+          "expected": "2410",
+          "code": "2410"
+        },
+        "stop": {
+          "model": "2350",
+          "expected": "2350",
+          "code": "2350"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "breakout",
+        "code": "breakout"
+      },
+      "notes": "bought 0.2 ETH at 2410, stop 2350",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 0.2 ETH at 2410, stop 2350",
+      "file": "sentence-coding-001.json",
+      "model": "coding"
+    },
+    {
+      "index": 2,
+      "text": "bought 0.05 BTC @ 60,000 stop 59,000 target 62,000",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.05",
+          "expected": "0.05",
+          "code": "0.05"
+        },
+        "entry": {
+          "model": "60000",
+          "expected": "60000",
+          "code": "60000"
+        },
+        "stop": {
+          "model": "59000",
+          "expected": "59000",
+          "code": "59000"
+        },
+        "target": {
+          "model": "62000",
+          "expected": "62000",
+          "code": "62000"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-002.json",
+      "model": "coding"
+    },
+    {
+      "index": 3,
+      "text": "sold 10 SOL at 100 stop 105",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "10",
+          "expected": "10",
+          "code": "10"
+        },
+        "entry": {
+          "model": "100",
+          "expected": "100",
+          "code": "100"
+        },
+        "stop": {
+          "model": "105",
+          "expected": "105",
+          "code": "105"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "sold 10 SOL at 100 stop 105",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "sold 10 SOL at 100 stop 105",
+      "file": "sentence-coding-003.json",
+      "model": "coding"
+    },
+    {
+      "index": 4,
+      "text": "long 1.5 ETH/USD at 2400.5 sl 2350 fee 2.4 pullback",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "1.5",
+          "expected": "1.5",
+          "code": "1.5"
+        },
+        "entry": {
+          "model": "2400.5",
+          "expected": "2400.5",
+          "code": "2400.5"
+        },
+        "stop": {
+          "model": "2350",
+          "expected": "2350",
+          "code": "2350"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": "2.4",
+          "expected": "2.4",
+          "code": "2.4"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "pullback",
+        "code": "pullback"
+      },
+      "notes": "long 1.5 ETH/USD at 2400.5 sl 2350 fee 2.4 pullback",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "long 1.5 ETH/USD at 2400.5 sl 2350 fee 2.4 pullback",
+      "file": "sentence-coding-004.json",
+      "model": "coding"
+    },
+    {
+      "index": 5,
+      "text": "bought 0,2 ETH at 2410",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "2410",
+          "expected": "2410",
+          "code": "2410"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-005.json",
+      "model": "coding"
+    },
+    {
+      "index": 6,
+      "text": "short 0.1 bitcoin at 61000 target 58000 range",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.1",
+          "expected": "0.1",
+          "code": "0.1"
+        },
+        "entry": {
+          "model": "61000",
+          "expected": "61000",
+          "code": "61000"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "58000",
+          "expected": "58000",
+          "code": "58000"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "range",
+        "code": "range"
+      },
+      "notes": "short 0.1 bitcoin at 61000 target 58000 range",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-006.json",
+      "model": "coding"
+    },
+    {
+      "index": 7,
+      "text": "bought 500 DOGE at 0.15 stop 0.14",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "500",
+          "expected": "500",
+          "code": "500"
+        },
+        "entry": {
+          "model": "0.15",
+          "expected": "0.15",
+          "code": "0.15"
+        },
+        "stop": {
+          "model": "0.14",
+          "expected": "0.14",
+          "code": "0.14"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "bought 500 DOGE at 0.15 stop 0.14",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 500 DOGE at 0.15 stop 0.14",
+      "file": "sentence-coding-007.json",
+      "model": "coding"
+    },
+    {
+      "index": 8,
+      "text": "bought 0,2 eth at 2410, stop 2350, breakout",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "2410",
+          "expected": "2410",
+          "code": "2410"
+        },
+        "stop": {
+          "model": "2350",
+          "expected": "2350",
+          "code": "2350"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "breakout",
+        "code": "breakout"
+      },
+      "notes": "bought 0,2 eth at 2410, stop 2350, breakout",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 0,2 eth at 2410, stop 2350, breakout",
+      "file": "sentence-coding-008.json",
+      "model": "coding"
+    },
+    {
+      "index": 9,
+      "text": "sold 0.5 btc at 61000",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.5",
+          "expected": "0.5",
+          "code": "0.5"
+        },
+        "entry": {
+          "model": "61000",
+          "expected": "61000",
+          "code": "61000"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-009.json",
+      "model": "coding"
+    },
+    {
+      "index": 10,
+      "text": "bought 0.2 lot eurusd at 1.0850 stop 1.0800",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.0850",
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": "1.0800",
+          "expected": "1.0800",
+          "code": "1.0800"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "bought 0.2 lot eurusd at 1.0850 stop 1.0800",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 0.2 lot eurusd at 1.0850 stop 1.0800",
+      "file": "sentence-coding-010.json",
+      "model": "coding"
+    },
+    {
+      "index": 11,
+      "text": "αγόρασα 0,2 ETH στα 2410, στοπ 2350, breakout",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "2410",
+          "expected": "2410",
+          "code": "2410"
+        },
+        "stop": {
+          "model": "2350",
+          "expected": "2350",
+          "code": "2350"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "breakout",
+        "code": "breakout"
+      },
+      "notes": "αγόρασα 0,2 ETH στα 2410, στοπ 2350, breakout",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,2 ETH στα 2410, στοπ 2350, breakout",
+      "file": "sentence-coding-011.json",
+      "model": "coding"
+    },
+    {
+      "index": 12,
+      "text": "αγόρασα 0,05 BTC στα 60000 στοπ 59000 στόχος 62000",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.05",
+          "code": "0.05"
+        },
+        "entry": {
+          "model": "60000",
+          "expected": "60000",
+          "code": "60000"
+        },
+        "stop": {
+          "model": "59000",
+          "expected": "59000",
+          "code": "59000"
+        },
+        "target": {
+          "model": "62000",
+          "expected": "62000",
+          "code": "62000"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 0,05 BTC στα 60000 στοπ 59000 στόχος 62000",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,05 BTC στα 60000 στοπ 59000 στόχος 62000",
+      "file": "sentence-coding-012.json",
+      "model": "coding"
+    },
+    {
+      "index": 13,
+      "text": "πούλησα 10 SOL στα 100 στοπ 105",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "10",
+          "expected": "10",
+          "code": "10"
+        },
+        "entry": {
+          "model": "100",
+          "expected": "100",
+          "code": "100"
+        },
+        "stop": {
+          "model": "105",
+          "expected": "105",
+          "code": "105"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "πούλησα 10 SOL στα 100 στοπ 105",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "πούλησα 10 SOL στα 100 στοπ 105",
+      "file": "sentence-coding-013.json",
+      "model": "coding"
+    },
+    {
+      "index": 14,
+      "text": "σορτ 0,1 BTC/USD στα 61000 στόχος 58000",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.1",
+          "expected": "0.1",
+          "code": "0.1"
+        },
+        "entry": {
+          "model": "61000",
+          "expected": "61000",
+          "code": "61000"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "58000",
+          "expected": "58000",
+          "code": "58000"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "σορτ",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "σορτ",
+      "file": "sentence-coding-014.json",
+      "model": "coding"
+    },
+    {
+      "index": 15,
+      "text": "αγόρασα 1,5 ETH στα 2400,5 στοπ 2350 προμήθεια 2,4",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "1.5",
+          "code": "1.5"
+        },
+        "entry": {
+          "model": null,
+          "expected": "2400.5",
+          "code": "2400.5"
+        },
+        "stop": {
+          "model": "2350",
+          "expected": "2350",
+          "code": "2350"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": "2.4",
+          "code": "2.4"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 1,5 ETH στα 2400,5 στοπ 2350 προμήθεια 2,4",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size",
+        "entry",
+        "fee"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 1,5 ETH στα 2400,5 στοπ 2350 προμήθεια 2,4",
+      "file": "sentence-coding-015.json",
+      "model": "coding"
+    },
+    {
+      "index": 16,
+      "text": "αγόρασα 500 DOGE στα 0,15 pullback",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "500",
+          "expected": "500",
+          "code": "500"
+        },
+        "entry": {
+          "model": "0.15",
+          "expected": "0.15",
+          "code": "0.15"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "pullback",
+        "code": "pullback"
+      },
+      "notes": "αγόρασα 500 DOGE στα 0,15 pullback",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 500 DOGE στα 0,15 pullback",
+      "file": "sentence-coding-016.json",
+      "model": "coding"
+    },
+    {
+      "index": 17,
+      "text": "αγορά 0,2 ETH στα 2.410 στοπ 2.350",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": null,
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "2.410",
+          "expected": null,
+          "code": null
+        },
+        "stop": {
+          "model": "2.350",
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγορά 0,2 ETH στα 2.410 στοπ 2.350",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": true,
+      "ambiguousReadings": {
+        "entry": "2.410",
+        "stop": "2.350"
+      },
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγορά 0,2 ETH στα 2.410 στοπ 2.350",
+      "file": "sentence-coding-017.json",
+      "model": "coding"
+    },
+    {
+      "index": 18,
+      "text": "bought 50 AAPL at 50 stop 48",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "50",
+          "expected": "50",
+          "code": "50"
+        },
+        "entry": {
+          "model": "50",
+          "expected": "50",
+          "code": "50"
+        },
+        "stop": {
+          "model": "48",
+          "expected": "48",
+          "code": "48"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-018.json",
+      "model": "coding"
+    },
+    {
+      "index": 19,
+      "text": "bought 30 MSFT at 200.5 stop 196 breakout",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "30",
+          "expected": "30",
+          "code": "30"
+        },
+        "entry": {
+          "model": "200.5",
+          "expected": "200.5",
+          "code": "200.5"
+        },
+        "stop": {
+          "model": "196",
+          "expected": "196",
+          "code": "196"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "breakout",
+        "code": "breakout"
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-019.json",
+      "model": "coding"
+    },
+    {
+      "index": 20,
+      "text": "sold 20 TSLA at 300 stop 305 fee 1",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "20",
+          "expected": "20",
+          "code": "20"
+        },
+        "entry": {
+          "model": "300",
+          "expected": "300",
+          "code": "300"
+        },
+        "stop": {
+          "model": "305",
+          "expected": "305",
+          "code": "305"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": "1",
+          "expected": "1",
+          "code": "1"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "sold 20 TSLA at 300",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "sold 20 TSLA at 300",
+      "file": "sentence-coding-020.json",
+      "model": "coding"
+    },
+    {
+      "index": 21,
+      "text": "long 100 shares NVDA at 100 target 106",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "100",
+          "expected": "100",
+          "code": "100"
+        },
+        "entry": {
+          "model": null,
+          "expected": "100",
+          "code": "100"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "106",
+          "expected": "106",
+          "code": "106"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "long 100 shares NVDA at 100 target 106",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "entry"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "long 100 shares NVDA at 100 target 106",
+      "file": "sentence-coding-021.json",
+      "model": "coding"
+    },
+    {
+      "index": 22,
+      "text": "bought 10 KO at 60, sold at 61",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "10",
+          "expected": "10",
+          "code": "10"
+        },
+        "entry": {
+          "model": "60",
+          "expected": "60",
+          "code": "60"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-022.json",
+      "model": "coding"
+    },
+    {
+      "index": 23,
+      "text": "short 25 AMD at 1,200.5",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "25",
+          "expected": "25",
+          "code": "25"
+        },
+        "entry": {
+          "model": "1200.5",
+          "expected": "1200.5",
+          "code": "1200.5"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-023.json",
+      "model": "coding"
+    },
+    {
+      "index": 24,
+      "text": "buy 5 GOOG 150.25 stop 148",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "5",
+          "expected": "5",
+          "code": "5"
+        },
+        "entry": {
+          "model": "150.25",
+          "expected": "150.25",
+          "code": "150.25"
+        },
+        "stop": {
+          "model": "148",
+          "expected": "148",
+          "code": "148"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "buy 5 GOOG 150.25 stop 148",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-024.json",
+      "model": "coding"
+    },
+    {
+      "index": 25,
+      "text": "αγόρασα 50 AAPL στα 50 στοπ 48",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "50",
+          "expected": "50",
+          "code": "50"
+        },
+        "entry": {
+          "model": "50",
+          "expected": "50",
+          "code": "50"
+        },
+        "stop": {
+          "model": "48",
+          "expected": "48",
+          "code": "48"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 50 AAPL στα 50 στοπ 48",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 50 AAPL στα 50 στοπ 48",
+      "file": "sentence-coding-025.json",
+      "model": "coding"
+    },
+    {
+      "index": 26,
+      "text": "αγόρασα 30 MSFT στα 200,5 στοπ 196 breakout",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "30",
+          "expected": "30",
+          "code": "30"
+        },
+        "entry": {
+          "model": "200.5",
+          "expected": "200.5",
+          "code": "200.5"
+        },
+        "stop": {
+          "model": "196",
+          "expected": "196",
+          "code": "196"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "breakout",
+        "code": "breakout"
+      },
+      "notes": "αγόρασα 30 MSFT στα 200,5 στοπ 196",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 30 MSFT στα 200,5 στοπ 196",
+      "file": "sentence-coding-026.json",
+      "model": "coding"
+    },
+    {
+      "index": 27,
+      "text": "πούλησα 20 TSLA στα 300 στοπ 305 προμήθεια 1",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "20",
+          "expected": "20",
+          "code": "20"
+        },
+        "entry": {
+          "model": "300",
+          "expected": "300",
+          "code": "300"
+        },
+        "stop": {
+          "model": "305",
+          "expected": "305",
+          "code": "305"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": "1",
+          "expected": "1",
+          "code": "1"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-027.json",
+      "model": "coding"
+    },
+    {
+      "index": 28,
+      "text": "αγόρασα 100 μετοχές NVDA στα 100 στόχος 106",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "100",
+          "expected": "100",
+          "code": "100"
+        },
+        "entry": {
+          "model": "100",
+          "expected": "100",
+          "code": "100"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "106",
+          "expected": "106",
+          "code": "106"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 100 μετοχές NVDA στα 100 στόχος 106",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 100 μετοχές NVDA στα 100 στόχος 106",
+      "file": "sentence-coding-028.json",
+      "model": "coding"
+    },
+    {
+      "index": 29,
+      "text": "αγόρασα 10 KO στα 60, πούλησα στα 61",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "10",
+          "expected": "10",
+          "code": "10"
+        },
+        "entry": {
+          "model": "60",
+          "expected": "60",
+          "code": "60"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "61",
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 10 KO στα 60, πούλησα στα 61",
+      "conflicts": [
+        "target"
+      ],
+      "misparse": [
+        "target"
+      ],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 10 KO στα 60, πούλησα στα 61",
+      "file": "sentence-coding-029.json",
+      "model": "coding"
+    },
+    {
+      "index": 30,
+      "text": "σορτ 25 AMD στα 1.200,5",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "25",
+          "expected": "25",
+          "code": "25"
+        },
+        "entry": {
+          "model": "1.2005",
+          "expected": "1200.5",
+          "code": "1200.5"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "σορτ 25 AMD στα 1.200,5",
+      "conflicts": [
+        "entry"
+      ],
+      "misparse": [
+        "entry"
+      ],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "σορτ 25 AMD στα 1.200,5",
+      "file": "sentence-coding-030.json",
+      "model": "coding"
+    },
+    {
+      "index": 31,
+      "text": "αγόρασα 5 GOOG στα 150,25",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "5",
+          "expected": "5",
+          "code": "5"
+        },
+        "entry": {
+          "model": "150.25",
+          "expected": "150.25",
+          "code": "150.25"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 5 GOOG στα 150,25",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 5 GOOG στα 150,25",
+      "file": "sentence-coding-031.json",
+      "model": "coding"
+    },
+    {
+      "index": 32,
+      "text": "bought 0.2 lot EURUSD at 1.0850 stop 1.0800",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.085",
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": "1.08",
+          "expected": "1.0800",
+          "code": "1.0800"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "bought 0.2 lot EURUSD at 1.0850 stop 1.0800",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 0.2 lot EURUSD at 1.0850 stop 1.0800",
+      "file": "sentence-coding-032.json",
+      "model": "coding"
+    },
+    {
+      "index": 33,
+      "text": "sold 0.1 lots GBP/USD at 1.2700 stop 1.2750 target 1.2600",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.1",
+          "expected": "0.1",
+          "code": "0.1"
+        },
+        "entry": {
+          "model": "1.27",
+          "expected": "1.2700",
+          "code": "1.2700"
+        },
+        "stop": {
+          "model": "1.275",
+          "expected": "1.2750",
+          "code": "1.2750"
+        },
+        "target": {
+          "model": "1.26",
+          "expected": "1.2600",
+          "code": "1.2600"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "sold 0.1 lots GBP/USD at 1.2700 stop 1.2750 target 1.2600",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "sold 0.1 lots GBP/USD at 1.2700 stop 1.2750 target 1.2600",
+      "file": "sentence-coding-033.json",
+      "model": "coding"
+    },
+    {
+      "index": 34,
+      "text": "long 0.5 USDJPY at 150.25 stop 149.75 fee 3.5 range",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.5",
+          "expected": "0.5",
+          "code": "0.5"
+        },
+        "entry": {
+          "model": "150.25",
+          "expected": "150.25",
+          "code": "150.25"
+        },
+        "stop": {
+          "model": "149.75",
+          "expected": "149.75",
+          "code": "149.75"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": "3.5",
+          "expected": "3.5",
+          "code": "3.5"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "range",
+        "code": "range"
+      },
+      "notes": "long 0.5 USDJPY at 150.25 stop 149.75 fee 3.5 range",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "long 0.5 USDJPY at 150.25 stop 149.75 fee 3.5 range",
+      "file": "sentence-coding-034.json",
+      "model": "coding"
+    },
+    {
+      "index": 35,
+      "text": "short 0.2 EUR/USD @ 1.0900 sl 1.0950",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.09",
+          "expected": "1.0900",
+          "code": "1.0900"
+        },
+        "stop": {
+          "model": "1.095",
+          "expected": "1.0950",
+          "code": "1.0950"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "short 0.2 EUR/USD @ 1.0900 sl 1.0950",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-035.json",
+      "model": "coding"
+    },
+    {
+      "index": 36,
+      "text": "bought 0.2 lot EURUSD at 1.0850 stop 50 pips",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.0850",
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": "50",
+          "expected": "1.08",
+          "code": "1.08"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [
+        "stop"
+      ],
+      "misparse": [
+        "stop"
+      ],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-036.json",
+      "model": "coding"
+    },
+    {
+      "index": 37,
+      "text": "bought 0.3 lots AUDUSD at 0.6600, sold at 0.6650",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.3",
+          "expected": "0.3",
+          "code": "0.3"
+        },
+        "entry": {
+          "model": "0.6600",
+          "expected": "0.6600",
+          "code": "0.6600"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "bought 0.3 lots AUDUSD at 0.6600, sold at 0.6650",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "bought 0.3 lots AUDUSD at 0.6600, sold at 0.6650",
+      "file": "sentence-coding-037.json",
+      "model": "coding"
+    },
+    {
+      "index": 38,
+      "text": "bought 0,2 lot EURUSD at 1,0850",
+      "lang": "en",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": null,
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": null,
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size",
+        "entry"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": null,
+      "file": "sentence-coding-038.json",
+      "model": "coding"
+    },
+    {
+      "index": 39,
+      "text": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 1,0800",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": null,
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": null,
+          "expected": "1.0800",
+          "code": "1.0800"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 1,0800",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size",
+        "entry",
+        "stop"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 1,0800",
+      "file": "sentence-coding-039.json",
+      "model": "coding"
+    },
+    {
+      "index": 40,
+      "text": "πούλησα 0,1 λοτ GBP/USD στα 1,2700 στοπ 1,2750 στόχος 1,2600",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.1",
+          "expected": "0.1",
+          "code": "0.1"
+        },
+        "entry": {
+          "model": "1.27",
+          "expected": "1.2700",
+          "code": "1.2700"
+        },
+        "stop": {
+          "model": "1.275",
+          "expected": "1.2750",
+          "code": "1.2750"
+        },
+        "target": {
+          "model": "1.26",
+          "expected": "1.2600",
+          "code": "1.2600"
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "πούλησα 0,1 λοτ GBP/USD",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "πούλησα 0,1 λοτ GBP/USD",
+      "file": "sentence-coding-040.json",
+      "model": "coding"
+    },
+    {
+      "index": 41,
+      "text": "λονγκ 0,5 USDJPY στα 150,25 στοπ 149,75 προμήθεια 3,5 range",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.5",
+          "code": "0.5"
+        },
+        "entry": {
+          "model": null,
+          "expected": "150.25",
+          "code": "150.25"
+        },
+        "stop": {
+          "model": null,
+          "expected": "149.75",
+          "code": "149.75"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": "3.5",
+          "code": "3.5"
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": "range",
+        "code": "range"
+      },
+      "notes": "USDJPY στα 150,25 στοπ 149,75",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [
+        "size",
+        "entry",
+        "stop",
+        "fee"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "USDJPY στα 150,25 στοπ 149,75",
+      "file": "sentence-coding-041.json",
+      "model": "coding"
+    },
+    {
+      "index": 42,
+      "text": "σορτ 0,2 EUR/USD στα 1,0900 στοπ 1,0950",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.09",
+          "expected": "1.0900",
+          "code": "1.0900"
+        },
+        "stop": {
+          "model": "1.095",
+          "expected": "1.0950",
+          "code": "1.0950"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "σορτ",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "σορτ",
+      "file": "sentence-coding-042.json",
+      "model": "coding"
+    },
+    {
+      "index": 43,
+      "text": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 50 πιπς",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": null,
+          "expected": "0.2",
+          "code": "0.2"
+        },
+        "entry": {
+          "model": null,
+          "expected": "1.0850",
+          "code": "1.0850"
+        },
+        "stop": {
+          "model": "50",
+          "expected": "1.08",
+          "code": "1.08"
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 50 πιπς",
+      "conflicts": [
+        "stop"
+      ],
+      "misparse": [
+        "stop"
+      ],
+      "missed": [
+        "size",
+        "entry"
+      ],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,2 λοτ EURUSD στα 1,0850 στοπ 50 πιπς",
+      "file": "sentence-coding-043.json",
+      "model": "coding"
+    },
+    {
+      "index": 44,
+      "text": "αγόρασα 0,3 λοτ AUDUSD στα 0,6600, πούλησα στα 0,6650",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.3",
+          "expected": "0.3",
+          "code": "0.3"
+        },
+        "entry": {
+          "model": "0.66",
+          "expected": "0.6600",
+          "code": "0.6600"
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": "0.665",
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 0,3 λοτ AUDUSD στα 0,6600, πούλησα στα 0,6650",
+      "conflicts": [
+        "target"
+      ],
+      "misparse": [
+        "target"
+      ],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": false,
+      "ambiguousReadings": {},
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,3 λοτ AUDUSD στα 0,6600, πούλησα στα 0,6650",
+      "file": "sentence-coding-044.json",
+      "model": "coding"
+    },
+    {
+      "index": 45,
+      "text": "αγόρασα 0,2 λοτ EURUSD στα 1.085",
+      "lang": "el",
+      "parse": "ok",
+      "numbers": {
+        "size": {
+          "model": "0.2",
+          "expected": null,
+          "code": "0.2"
+        },
+        "entry": {
+          "model": "1.085",
+          "expected": null,
+          "code": null
+        },
+        "stop": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "target": {
+          "model": null,
+          "expected": null,
+          "code": null
+        },
+        "fee": {
+          "model": null,
+          "expected": null,
+          "code": null
+        }
+      },
+      "setup": {
+        "model": null,
+        "expected": null,
+        "code": null
+      },
+      "notes": "αγόρασα 0,2 λοτ EURUSD στα 1.085",
+      "conflicts": [],
+      "misparse": [],
+      "missed": [],
+      "silent": [],
+      "ambiguousPhrase": true,
+      "ambiguousReadings": {
+        "size": "0.2",
+        "entry": "1.085"
+      },
+      "mergedNumbersEqualCode": true,
+      "setupSilentWrong": false,
+      "notesSaved": "αγόρασα 0,2 λοτ EURUSD στα 1.085",
+      "file": "sentence-coding-045.json",
+      "model": "coding"
+    }
+  ]
+}
