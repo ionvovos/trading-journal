@@ -19,7 +19,7 @@ Seat S2 (`aios-nextjs-developer`), phase `nexa-build-trading-journal-2026-09-29-
 
 - `tests/core` (3 files), `tests/import` (15 files), `tests/storage` (8 files), `tests/stats` (C5's 8 files plus `entryUnknown`).
 - `tests/import/integration.test.mjs`: the four real parsers, grouping, both answers for NVDA, the Kraken dust threshold and EUR rate, the MT4 ticket chain, the generic template, re-import, and all `tests/fixtures/reconcile/cases.json` cases with real parsers and the real statistics engine. Every expected value is the hand-computed one; none was changed.
-- `tests/import/timing.test.mjs`: 2,000 rows per format import in well under the 10 s bound (each under 1 s here) with progress events reaching their total; every question kind can be answered.
+- `tests/import/timing.test.mjs`: 2,000 rows per format import in well under the 10 s bound (0.13 to 0.6 s each on this machine, question answering included) with progress events reaching their total; every question kind can be answered.
 - `tests/import/noise.test.mjs`: 22 format-noise cases (see section 4).
 - `tests/storage/summary.test.mjs`: statistics as the screens read them over `stats/core.json`, drill formulas, and export then import reproducing net, R, win rate, profit factor, expectancy, drawdown, fees, streaks, holding, calendar and all buckets (AC-P3.5).
 - Headless Chrome checks by hand through `e2e/lib/cdp.mjs` (not committed, they are L4's flows): accounts, cash, data settings, trade form (saved a trade: risk 125.00 USD, result +84.00, +0.67R), journal, trade detail, bulk stops, statistics overview and buckets, calendar, drill-down, the whole IBKR import through the file input, both answers, and the broker check. No console error other than the favicon 404.
@@ -57,7 +57,7 @@ Unit or headless-by-script coverage in `npm test`, by criterion:
 - **F1** S1's `createSettings` reads only its own keys at boot, so a key added by another shard is lost on reload. S2 reads `lastExportAt` from the store directly. S1 could pass the extra keys.
 - **F2** `sw.js` precache list: S2 ran `tools/shell-list.mjs` after adding files as S1 asked; the list must be regenerated again after the last file of any shard (S1 owns it).
 - **F3** Two scratch git worktrees remain registered under `/private/tmp/claude-501/` (`wt-m1`, `wt-review`); removing a worktree with uncommitted merge state needs `--force`, which the no-touch hook blocks. They are outside the repo and harmless; `git worktree prune` after deleting the directories clears them.
-- **F4** `sw`-independent: the home dashboard reads `summary.exportDue` if S1 wants to show the export reminder there; S2 shows it in Settings > Your data only.
+- **F4** `getSummary` returns `exportDue`; the home dashboard does not show it yet. S2 shows the export reminder in Settings > Your data only.
 - **F5** MT4 hedging accounts: fills are grouped by `positionId` when set, otherwise by instrument, so two overlapping tickets on the same pair net into one trade. Real statements were not available (Q2).
 - **F6** IBKR and MT4 file time zones are still unverified on real files (R1); the question is asked once per account and can be changed.
 - **F7** Greek text in `src/i18n/el/data.js` is a first draft. The Greek delete word is «ΔΙΑΓΡΑΦΗ»; C6 should keep the `data.delete.word` key.
