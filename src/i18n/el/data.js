@@ -116,6 +116,7 @@ export default {
   'form.target': 'Στόχος',
   'form.optional': 'προαιρετικό',
   'form.price': 'Τιμή',
+  'form.time.ph': 'ΕΕΕΕ-ΜΜ-ΗΗ ΩΩ:ΛΛ',
   'form.time': 'Ώρα',
   'form.legs': 'Σκέλη',
   'form.leg.add': 'Προσθήκη σκέλους: αύξηση ή μερική έξοδος',
@@ -204,6 +205,7 @@ export default {
   'journal.hold.rate_missing': 'λείπει η ισοτιμία',
   'journal.hold.contract_size_missing': 'λείπει η αξία ανά σημείο',
   'journal.hold.broker_mismatch': 'το ποσό του broker διαφέρει',
+  'journal.hold.unknown': 'περιμένει απάντηση',
   'journal.hold.near_duplicate': 'επαναλαμβάνει προηγούμενη εισαγωγή',
 
   // λεπτομέρειες συναλλαγής

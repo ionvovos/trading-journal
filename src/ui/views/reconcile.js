@@ -125,7 +125,7 @@ export async function render(root, ctx, params) {
     const slot = el('div', { class: 'vstack' });
     const d = { ...period };
     let err;
-    const draw = () => mount(slot, el('div', { class: 'grid2' }, ctx.ui.field({ label: t('reconcile.from'), type: 'date', value: d.from, onInput: (v) => { d.from = v; } }), ctx.ui.field({ label: t('reconcile.to'), type: 'date', value: d.to, onInput: (v) => { d.to = v; } })),
+    const draw = () => mount(slot, el('div', { class: 'grid2' }, ctx.ui.field({ label: t('reconcile.from'), placeholder: 'YYYY-MM-DD', inputmode: 'numeric', value: d.from, onInput: (v) => { d.from = v; } }), ctx.ui.field({ label: t('reconcile.to'), placeholder: 'YYYY-MM-DD', inputmode: 'numeric', value: d.to, onInput: (v) => { d.to = v; } })),
       el('button', { type: 'button', class: 'set-row', onClick: async () => { const v = await pickSheet(ctx, { title: t('import.zone.title'), value: d.zone, options: [...new Set([d.zone, 'UTC', 'America/New_York', 'Europe/London', 'Europe/Athens', ctx.tz])].map((z) => ({ value: z, label: z })) }); if (v !== undefined) { d.zone = v; draw(); } } }, el('span', { class: 'lbl' }, t('reconcile.zone')), el('span', { class: 'val' }, d.zone, ctx.ui.icon('right'))),
       err ? el('div', { class: 'err-msg' }, err) : null);
     draw();

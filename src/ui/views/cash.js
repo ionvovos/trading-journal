@@ -19,7 +19,7 @@ function cashSheet(ctx, { model, account, onSaved }) {
     accounts.length > 1 ? el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('cash.account')), ctx.ui.segmented({ ariaLabel: t('cash.account'), value: draft.accountId, options: accounts.map((a) => ({ value: a.id, label: a.name })), onChange: (v) => { draft.accountId = v; } })) : null,
     el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('cash.kind')), ctx.ui.segmented({ ariaLabel: t('cash.kind'), value: draft.kind, options: [{ value: 'deposit', label: t('cash.deposit') }, { value: 'withdrawal', label: t('cash.withdrawal') }, { value: 'other', label: t('cash.other') }], onChange: (v) => { draft.kind = v; draw(); } })),
     ctx.ui.field({ label: t('cash.amount'), value: draft.amount, inputmode: 'decimal', unit: accounts.find((a) => a.id === draft.accountId)?.baseCurrency, error: errFor('amount'), help: draft.kind === 'other' ? t('cash.other.help') : undefined, onInput: (v) => { draft.amount = v; } }),
-    ctx.ui.field({ label: t('cash.date'), value: draft.time, type: 'date', error: errFor('time'), onInput: (v) => { draft.time = v; } }),
+    ctx.ui.field({ label: t('cash.date'), value: draft.time, placeholder: 'YYYY-MM-DD', inputmode: 'numeric', error: errFor('time'), onInput: (v) => { draft.time = v; } }),
     ctx.ui.field({ label: t('cash.note'), value: draft.note, onInput: (v) => { draft.note = v; } }));
   draw();
   const s = ctx.ui.sheet({

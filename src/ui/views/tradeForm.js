@@ -12,6 +12,10 @@ import { loadStats, nowIso, toastMsg, pickSheet } from '../../storage/viewkit.js
 
 const pad = (n) => String(n).padStart(2, '0');
 
+// The form shows 'YYYY-MM-DD HH:MM' in a plain text field (no native date control); the draft keeps the ISO-like 'YYYY-MM-DDTHH:MM'.
+export const timeText = (v) => String(v ?? '').replace('T', ' ');
+export const fromTimeText = (v) => String(v ?? '').trim().replace(/\s+/, 'T');
+
 // 'YYYY-MM-DDTHH:MM' wall time of an instant in a zone, for <input type="datetime-local">.
 export function localInput(iso, zone) {
   const p = localParts(iso, zone);
@@ -132,7 +136,7 @@ export async function render(root, ctx, params = {}) {
     const draw = () => mount(slot,
       el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('form.leg.kind')), ctx.ui.segmented({ ariaLabel: t('form.leg.kind'), value: l.kind, options: [{ value: 'entry', label: t('form.leg.scaleIn') }, { value: 'exit', label: t('form.leg.partialExit') }], onChange: (v) => { l.kind = v; } })),
       el('div', { class: 'grid2' }, ctx.ui.field({ label: t('form.size'), value: l.size, inputmode: 'decimal', error: legErrors.includes('size') ? t('form.error.number') : undefined, onInput: (v) => { l.size = v; } }), ctx.ui.field({ label: t('form.price'), value: l.price, inputmode: 'decimal', error: legErrors.includes('price') ? t('form.error.number') : undefined, onInput: (v) => { l.price = v; } })),
-      el('div', { class: 'grid2' }, ctx.ui.field({ label: t('form.time'), value: l.time, type: 'datetime-local', onInput: (v) => { l.time = v; } }), ctx.ui.field({ label: t('form.fees'), value: l.fee, inputmode: 'decimal', onInput: (v) => { l.fee = v; } })));
+      el('div', { class: 'grid2' }, ctx.ui.field({ label: t('form.time'), value: timeText(l.time), placeholder: t('form.time.ph'), inputmode: 'numeric', onInput: (v) => { l.time = fromTimeText(v); } }), ctx.ui.field({ label: t('form.fees'), value: l.fee, inputmode: 'decimal', onInput: (v) => { l.fee = v; } })));
     draw();
     const s = ctx.ui.sheet({ title: t('form.leg.add'), body: slot, footer: ctx.ui.button({ label: t('sheet.save'), size: 'lg', block: true, onClick: () => {
       legErrors = [];
@@ -179,13 +183,13 @@ export async function render(root, ctx, params = {}) {
           ctx.ui.field({ label: t('form.size'), value: draft.size, inputmode: 'decimal', unit, error: err('entrySize'), onInput: bind('size') }),
           ctx.ui.field({ label: t('form.entry'), value: draft.entryPrice, inputmode: 'decimal', unit: ccy, error: err('entryPrice'), onInput: bind('entryPrice') })),
         el('div', { class: 'grid2' },
-          ctx.ui.field({ label: t('form.entryTime'), value: draft.entryTime, type: 'datetime-local', error: err('entryTime'), onInput: bind('entryTime') }),
+          ctx.ui.field({ label: t('form.entryTime'), value: timeText(draft.entryTime), placeholder: t('form.time.ph'), inputmode: 'numeric', error: err('entryTime'), onInput: (v) => { draft.entryTime = fromTimeText(v); refresh(); } }),
           ctx.ui.field({ label: t('form.stop'), value: draft.stop, inputmode: 'decimal', error: err('stop'), onInput: bind('stop') })),
         needRate ? ctx.ui.field({ label: t('form.rate', { ccy: normalizeInstrument(draft.instrument, draft.market).split(/[/-]/).pop(), to: account.baseCurrency }), value: draft.quoteToAccount, inputmode: 'decimal', error: err('quoteToAccount'), help: t('form.rate.help'), onInput: bind('quoteToAccount') }) : null,
         summary,
         el('div', { class: 'grid2' },
           ctx.ui.field({ label: t('form.exit'), value: draft.exitPrice, inputmode: 'decimal', unit: ccy, error: err('exitPrice'), onInput: bind('exitPrice') }),
-          ctx.ui.field({ label: t('form.exitTime'), value: draft.exitTime, type: 'datetime-local', error: err('exitTime'), onInput: bind('exitTime') })),
+          ctx.ui.field({ label: t('form.exitTime'), value: timeText(draft.exitTime), placeholder: t('form.time.ph'), inputmode: 'numeric', error: err('exitTime'), onInput: (v) => { draft.exitTime = fromTimeText(v); refresh(); } })),
         (draft.extra || []).some((l) => l.kind === 'exit') || draft.exitSize ? ctx.ui.field({ label: t('form.exitSize'), value: draft.exitSize, inputmode: 'decimal', unit, error: err('exitSize'), help: t('form.exitSize.help'), onInput: bind('exitSize') }) : null,
         el('div', { class: 'grid2' },
           ctx.ui.field({ label: t('form.fees'), value: draft.fee, inputmode: 'decimal', unit: ccy, error: err('exitFee') || err('entryFee'), onInput: bind('fee') }),

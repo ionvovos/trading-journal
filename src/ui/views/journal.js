@@ -3,7 +3,7 @@
 import { el, mount } from '../dom.js';
 import { t } from '../../i18n/i18n.js';
 import { loadModel, statsCtxFor } from '../../storage/model.js';
-import { loadStats, sectionHead, sizeText, sideText, groupByDay, dayLabel, toDisplayMinor, pickSheet } from '../../storage/viewkit.js';
+import { holdText, loadStats, sectionHead, sizeText, sideText, groupByDay, dayLabel, toDisplayMinor, pickSheet } from '../../storage/viewkit.js';
 import { tradeStatus } from '../../core/trade.js';
 
 const RESULTS = ['win', 'loss', 'even'];
@@ -86,7 +86,7 @@ export async function render(root, ctx) {
     const linkBtn = (label, href) => el('a', { class: 'link accent-link', href }, label);
     const needRows = [];
     for (const tr of need.held) {
-      needRows.push(ui.listRow({ market: tr.market, title: tr.instrument, tags: [el('span', { class: 'tag warn' }, t('journal.heldOut'))], meta: `${sideText(tr)} ${sizeText(tr, fmt)} · ${t(`journal.hold.${tr.holds[0]}`)}`, held: true, href: tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`, trailing: linkBtn(t('journal.answer'), tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`) }));
+      needRows.push(ui.listRow({ market: tr.market, title: tr.instrument, tags: [el('span', { class: 'tag warn' }, t('journal.heldOut'))], meta: `${sideText(tr)} ${sizeText(tr, fmt)} · ${holdText(tr.holds[0])}`, held: true, href: tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`, trailing: linkBtn(t('journal.answer'), tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`) }));
     }
     for (const tr of need.open) {
       needRows.push(ui.listRow({ market: tr.market, title: tr.instrument, tags: [el('span', { class: 'tag' }, t('journal.open'))], meta: [`${sideText(tr)} ${sizeText(tr, fmt)}`, tr.setup].filter(Boolean).join(' · '), href: `#/trade/${tr.id}`, trailing: linkBtn(t('journal.addExit'), `#/trade/${tr.id}`) }));

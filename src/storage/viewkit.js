@@ -1,7 +1,7 @@
 // Shared helpers of the data views (journal, trade, stats, import ...). They build DOM through S1's `el` and `ctx.ui`,
 // so nothing here touches innerHTML: user text reaches the page as text nodes only.
 import { el, mount } from '../ui/dom.js';
-import { t } from '../i18n/i18n.js';
+import { t, has } from '../i18n/i18n.js';
 import { minorDigits, roundMinor } from '../core/money.js';
 import { localParts } from '../core/time.js';
 import * as D from '../core/decimal.js';
@@ -33,7 +33,8 @@ export function toDisplayMinor(netMinor, account, displayCcy) {
 
 // "50 shares", "0.05 BTC", "1.00 lots" from the entry size of a trade.
 export function sizeText(trade, fmt) {
-  const size = sumSize(trade.legs, 'entry');
+  const entry = sumSize(trade.legs, 'entry');
+  const size = D.isZero(entry) ? sumSize(trade.legs, 'exit') : entry; // a closing fill with no opening leg has only its exit size
   const n = D.toNumber(size);
   if (trade.market === 'forex') return t('unit.lots', { n: fmt.num(n, n % 1 ? 2 : 2) });
   if (trade.market === 'crypto') return `${fmt.num(n, Math.min(8, Math.max(0, D.decimalsOf(size))))} ${trade.instrument.split(/[/-]/)[0]}`;
@@ -122,3 +123,6 @@ export function page(root, bar, ...content) {
 export function toastMsg(ctx, text, iconName = 'check') {
   try { ctx.ui.toast({ text, iconName }); } catch { /* the toast host is missing in a test mount */ }
 }
+
+// Catalogue text for the reason a trade is held out; an unknown hold id reads as a waiting question.
+export const holdText = (hold) => (has(`journal.hold.${hold}`) ? t(`journal.hold.${hold}`) : t('journal.hold.unknown'));

@@ -117,6 +117,7 @@ export default {
   'form.target': 'Target',
   'form.optional': 'optional',
   'form.price': 'Price',
+  'form.time.ph': 'YYYY-MM-DD HH:MM',
   'form.time': 'Time',
   'form.legs': 'Legs',
   'form.leg.add': 'Add a leg: scale-in or partial exit',
@@ -205,6 +206,7 @@ export default {
   'journal.hold.rate_missing': 'rate missing',
   'journal.hold.contract_size_missing': 'value per point missing',
   'journal.hold.broker_mismatch': 'broker figure differs',
+  'journal.hold.unknown': 'waiting for an answer',
   'journal.hold.near_duplicate': 'repeats an earlier import',
 
   // trade detail

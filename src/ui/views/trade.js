@@ -7,7 +7,7 @@ import * as D from '../../core/decimal.js';
 import { loadModel, statsCtxFor } from '../../storage/model.js';
 import { patchTrade, applyStops } from '../../storage/actions.js';
 import { averagePrice, tradeStatus, positionSize } from '../../core/trade.js';
-import { loadStats, detailBar, sectionHead, sizeText, sideText, confirmSheet, toastMsg, nowIso } from '../../storage/viewkit.js';
+import { holdText, loadStats, detailBar, sectionHead, sizeText, sideText, confirmSheet, toastMsg, nowIso } from '../../storage/viewkit.js';
 
 const kv = (rows) => el('div', { class: 'kv' }, ...rows.filter(Boolean).map(([k, v]) => el('div', null, el('dt', null, k), el('dd', null, v))));
 
@@ -58,7 +58,7 @@ export async function render(root, ctx, params) {
     const numFmt = (s) => (s === null ? '–' : fmt.num(D.toNumber(s), digitsOf(s)));
 
     const banners = [];
-    if (status === 'held') banners.push(ui.stateBanner({ kind: 'attention', iconName: 'alert', title: t('trade.held.title'), body: t(`journal.hold.${trade.holds[0]}`), href: trade.importId ? `#/import/${trade.importId}` : undefined }));
+    if (status === 'held') banners.push(ui.stateBanner({ kind: 'attention', iconName: 'alert', title: t('trade.held.title'), body: holdText(trade.holds[0]), href: trade.importId ? `#/import/${trade.importId}` : undefined }));
     if (trade.excluded) banners.push(ui.stateBanner({ kind: 'neutral', iconName: 'info', title: t('trade.excluded.title'), body: t(trade.excluded.by === 'user' ? 'trade.excluded.user' : 'trade.excluded.import') }));
     if (status === 'open') banners.push(ui.stateBanner({ kind: 'neutral', iconName: 'clock', body: t('trade.open.note', { n: fmt.num(D.toNumber(positionSize(trade)), 2) }) }));
     if (trade.dustRemainder && !D.isZero(trade.dustRemainder)) banners.push(ui.stateBanner({ kind: 'neutral', iconName: 'info', body: t('trade.dust', { x: trade.dustRemainder }) }));

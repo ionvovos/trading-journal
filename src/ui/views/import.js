@@ -205,7 +205,7 @@ async function renderRecord(root, ctx, importId) {
       const drawValues = () => {
         const nodes = [];
         const set = (k) => (v) => { draft.values[k] = v; };
-        if (draft.option === 'enter_open') nodes.push(el('div', { class: 'grid2' }, ui.field({ label: t('import.value.price'), inputmode: 'decimal', value: draft.values.price ?? '', onInput: set('price') }), ui.field({ label: t('import.value.date'), type: 'date', value: draft.values.date ?? '', onInput: set('date') })));
+        if (draft.option === 'enter_open') nodes.push(el('div', { class: 'grid2' }, ui.field({ label: t('import.value.price'), inputmode: 'decimal', value: draft.values.price ?? '', onInput: set('price') }), ui.field({ label: t('import.value.date'), placeholder: 'YYYY-MM-DD', inputmode: 'numeric', value: draft.values.date ?? '', onInput: set('date') })));
         if (draft.option === 'enter_fee') for (const [tid, fills] of Object.entries(anomaly.detail?.fills ?? {})) for (const key of Object.keys(fills)) nodes.push(ui.field({ label: t('import.value.fee', { trade: byId.get(tid) ? label(byId.get(tid)) : key }), inputmode: 'decimal', value: draft.values[key] ?? '', unit: account?.baseCurrency, onInput: set(key) }));
         if (draft.option === 'rate') for (const c of anomaly.detail?.currencies ?? []) nodes.push(ui.field({ label: t('import.value.rate', { from: c, to: account?.baseCurrency ?? '' }), inputmode: 'decimal', value: draft.values[c] ?? '', onInput: set(c) }));
         if (draft.option === 'value') for (const s of anomaly.detail?.symbols ?? []) nodes.push(ui.field({ label: t('import.value.contract', { symbol: s }), inputmode: 'decimal', value: draft.values[s] ?? '', help: t('import.value.contract.help'), onInput: set(s) }));
