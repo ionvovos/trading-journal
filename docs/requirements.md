@@ -125,13 +125,14 @@ Plain-language explanations of the terms the app shows, in context, for a beginn
 ## P8. Data on the device
 
 - AC-P8.1 `[headless]` No account, no login. All data lives on the device; after the first load a scripted session with the network off can log, import, view statistics and export.
-- AC-P8.2 `[headless]` During a full scripted session the network log shows only same-origin static files, the on-device model download from its named host, and, when the user has set an own key, requests to the provider host the user chose; no request carries trade data otherwise.
+- AC-P8.2 `[headless]` During a full scripted session the network log shows only same-origin static files; after the user agrees to the on-device model download, requests to `cdn.jsdelivr.net`, `huggingface.co` and its file CDN, and `raw.githubusercontent.com`, carrying no journal data; and, when the user has set an own key, requests to the provider host the user chose. No other request exists and no request carries trade data otherwise.
 - AC-P8.3 `[headless]` Export produces one file with all trades, cash movements, plans, settings, import reports and screenshots (the own key is excluded); importing it into an empty install restores everything (AC-P3.5). A version-migrated older export also imports.
 - AC-P8.4 `[unit]` A storage schema upgrade keeps every stored trade and statistic unchanged (fixture from the previous schema).
 - AC-P8.5 `[headless]` The app asks the browser for persistent storage, tells the user when it is refused, and shows a reminder to export after a user-set number of new trades (default 50).
 - AC-P8.6 `[phone]` The app installs to the home screen with its own icon and splash on a phone and opens offline.
 - AC-P8.7 `[headless]` Sync and sharing are absent in this build; no control implies they exist.
 - AC-P8.8 `[headless]` No analytics, advertising, tracking cookies or other storage beyond what the requested features need (IndexedDB, service worker cache, the own key).
+- AC-P8.9 `[headless]` Settings offers "Delete all data on this device": the confirm step names what will be lost and offers an export first; afterwards every trade, cash movement, plan, review, import report, screenshot, setting and the own key are gone, the downloaded model is deleted when the user ticks that option, and the app shows the first run. The About page says how to do this (AC-P10.2).
 
 ## P9. AI
 
@@ -152,7 +153,7 @@ Code produces numbers and structure; AI is for understanding: sentence parsing o
 
 The app analyses the user's own past trades against the user's own rules. It gives no recommendation about any financial instrument or crypto-asset, and does not recommend a broker, exchange or platform. It predicts no price, holds or moves no money, and asks for no broker login. The same rules apply to every market, taking the stricter of MiFID II (Art. 4(1)(4)) and MiCA (Art. 3(1)(24)), because the app cannot tell which regime a token falls under (`legal-review.md` §1, §3; domain pack §6).
 
-- AC-B1.1 `[unit]` A scan of every string in both languages (interface, learn entries, About, review templates) finds no banned pattern from P5 and no forward-looking sentence about a market or instrument.
+- AC-B1.1 `[unit]` A scan of every string in both languages (interface, learn entries, About, review templates) finds no banned pattern from P5 and no forward-looking sentence about a market or instrument. Two kinds of text are handled by rule, not by the word scan: the first-run and About texts of `legal-review.md` §4, which ship verbatim and are checked by exact match against the approved text (any change needs a new lawyer-approved text); and the user's own plan rule quoted inside a review sentence, which is the user's words and is shown in quotation marks. Interface text does not use "ready" ("Your first review is here").
 - AC-B1.2 `[headless]` No screen or form asks for a broker username, password, or an exchange secret. Read-only exchange API keys exist only if `architecture.md` adopts them; then they are stored on the device, the app rejects a key with trade or withdraw rights, and the screen says read-only.
 - AC-B1.3 `[headless]` No control places, changes or cancels an order or moves funds; no price feed is required for any figure.
 - AC-B1.4 `[screenshot]` Buckets and comparisons of setups, markets, instruments or hours are ordered chronologically or alphabetically by default, no row is highlighted, none is labelled best or worst, each row shows n, and where the plan has a rule the screen quotes it.
@@ -297,3 +298,9 @@ Domain review (`reviews/review-L1.md`):
 - F34 applied: S12.
 - F35 applied: AC-P5.10, cut 6.
 - F36 applied: closed by `legal-review.md` §3; B1 intro.
+
+V1 repair (applied by aios-saas-architect under `seats/V1-repair.md`, gate `GATE-V1.md`):
+- G11 (b) applied: AC-P8.2 names the three model-download hosts (L2 report F2).
+- G11 (a) applied: AC-P8.9 delete all data; AC-P10.2 already requires the About page to say how.
+- G2 applied: AC-B1.1 exact-match rule for the legal-review §4 texts, quoted plan rule, no "ready" in interface text.
+- G11 (c), the two missing boundary clauses in the §4 About text, is routed to aios-lawyer; not changed here.

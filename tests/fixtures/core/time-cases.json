@@ -1,0 +1,68 @@
+{
+ "about": "Time conversion cases for src/core/time.js (S2 step 0), V1-F9. 2026 clock changes: US to daylight time 8 Mar, back 1 Nov; EU (Athens, London) to summer time 29 Mar, back 25 Oct. Between 8 and 29 Mar, and between 25 Oct and 1 Nov, New York and Athens differ by 6 hours instead of 7.",
+ "zonedToUtc": [
+  {
+   "local": "2026-09-28T10:41:07",
+   "zone": "America/New_York",
+   "utc": "2026-09-28T14:41:07.000Z",
+   "athens": "2026-09-28 17:41"
+  },
+  {
+   "local": "2026-03-20T10:00:00",
+   "zone": "America/New_York",
+   "utc": "2026-03-20T14:00:00.000Z",
+   "athens": "2026-03-20 16:00",
+   "note": "6-hour gap in spring"
+  },
+  {
+   "local": "2026-03-02T09:40:00",
+   "zone": "America/New_York",
+   "utc": "2026-03-02T14:40:00.000Z",
+   "athens": "2026-03-02 16:40"
+  },
+  {
+   "local": "2026-03-05T09:00:00",
+   "zone": "ny+7",
+   "utc": "2026-03-05T07:00:00.000Z"
+  },
+  {
+   "local": "2026-03-09T10:00:00",
+   "zone": "ny+7",
+   "utc": "2026-03-09T07:00:00.000Z"
+  },
+  {
+   "local": "2026-10-28T10:00:00",
+   "zone": "America/New_York",
+   "utc": "2026-10-28T14:00:00.000Z",
+   "athens": "2026-10-28 16:00",
+   "note": "6-hour gap in autumn"
+  }
+ ],
+ "localParts": [
+  {
+   "utc": "2026-03-04T22:30:00.000Z",
+   "zone": "Europe/Athens",
+   "cutoffHour": 0,
+   "date": "2026-03-05",
+   "hour": 0,
+   "weekday": 4
+  },
+  {
+   "utc": "2026-03-04T22:30:00.000Z",
+   "zone": "UTC",
+   "cutoffHour": 0,
+   "date": "2026-03-04",
+   "hour": 22,
+   "weekday": 3
+  },
+  {
+   "utc": "2026-03-04T22:30:00.000Z",
+   "zone": "Europe/Athens",
+   "cutoffHour": 2,
+   "date": "2026-03-04",
+   "hour": 0,
+   "weekday": 3,
+   "note": "a day cut-off at 02:00 keeps 00:30 on the previous day"
+  }
+ ]
+}

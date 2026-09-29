@@ -1,49 +1,336 @@
 {
- "about": "Test fixture for src/review/guard.js (architecture.md 5.2), from projects/trading-journal/docs/legal-review.md section 2 (banned versus safe table, rules 1-10) and W2-W8, requirements c1510c2d P5 and AC-P4.7. Every banned sentence must fail guard.check with the named class; every safe sentence must pass. English rows written at L2 from legal-review; S3 adds Greek rows (lang el) with the lawyer pass at L4.",
+ "about": "Test fixture for src/review/guard.js (architecture.md 5.2). Sources: legal-review.md section 2 (banned versus safe, rules 1-10), W2-W8, section 4 (mandated texts, scope legal, exact match), requirements P5 and AC-P4.7, and the V1 gate G2 conflict strings. Every banned row must fail with its class; every safe row must pass. English rows written by L2; S3 adds Greek rows (lang el) with the lawyer pass at L4.",
  "banned": [
-  { "lang": "en", "scope": "review", "text": "Buy AAPL now.", "class": "instruction" },
-  { "lang": "en", "scope": "review", "text": "Sell your ETH.", "class": "instruction" },
-  { "lang": "en", "scope": "review", "text": "Move your stop to 48.", "class": "instruction" },
-  { "lang": "en", "scope": "review", "text": "Close this position.", "class": "instruction" },
-  { "lang": "en", "scope": "review", "text": "This setup looks like a good entry.", "class": "ranking" },
-  { "lang": "en", "scope": "review", "text": "Crypto is not for you; do more forex.", "class": "ranking" },
-  { "lang": "en", "scope": "review", "text": "Your best time to trade is 10:00.", "class": "ranking" },
-  { "lang": "en", "scope": "review", "text": "You are overtrading.", "class": "label" },
-  { "lang": "en", "scope": "review", "text": "This looks like revenge trading.", "class": "label" },
-  { "lang": "en", "scope": "review", "text": "You are ready for real money.", "class": "readiness" },
-  { "lang": "en", "scope": "review", "text": "Not financial advice, so consider sizing up.", "class": "modal" },
-  { "lang": "en", "scope": "review", "text": "You should stick with your plan.", "class": "modal" },
-  { "lang": "en", "scope": "review", "text": "Try to wait 30 minutes after a loss.", "class": "imperative" },
-  { "lang": "en", "scope": "review", "text": "Focus on forex.", "class": "imperative" },
-  { "lang": "en", "scope": "review", "text": "Your next trades will recover the drawdown.", "class": "future" },
-  { "lang": "en", "scope": "review", "text": "You'll do better in the London session.", "class": "future" },
-  { "lang": "en", "scope": "review", "text": "Your edge is proven.", "class": "promise" },
-  { "lang": "en", "scope": "review", "text": "This method is risk-free.", "class": "promise" },
-  { "lang": "en", "scope": "review", "text": "Kraken is a better exchange for you.", "class": "platform" },
-  { "lang": "en", "scope": "review", "text": "Active traders earn 11.4% a year against 17.9% for the market (Barber and Odean).", "class": "benchmark" },
-  { "lang": "en", "scope": "review", "text": "Why did you ignore your stop?", "class": "leading_question" },
-  { "lang": "en", "scope": "comparison", "text": "Your paper figures say you can go live.", "class": "readiness" },
-  { "lang": "en", "scope": "comparison", "text": "Stop paper trading.", "class": "readiness" },
-  { "lang": "en", "scope": "ui", "text": "Market outlook", "class": "screen_word" },
-  { "lang": "en", "scope": "ui", "text": "Your trading coach", "class": "screen_word" }
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Buy AAPL now.",
+   "class": "instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Sell your ETH.",
+   "class": "instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Move your stop to 48.",
+   "class": "instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Close this position.",
+   "class": "instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "This setup looks like a good entry.",
+   "class": "ranking"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Crypto is not for you; do more forex.",
+   "class": "ranking"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your best time to trade is 10:00.",
+   "class": "ranking"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "You are overtrading.",
+   "class": "label"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "This looks like revenge trading.",
+   "class": "label"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "You are ready for real money.",
+   "class": "readiness"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Not financial advice, so consider sizing up.",
+   "class": "modal"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "You should stick with your plan.",
+   "class": "modal"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Try to wait 30 minutes after a loss.",
+   "class": "imperative"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Focus on forex.",
+   "class": "imperative"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your next trades will recover the drawdown.",
+   "class": "future"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "You'll do better in the London session.",
+   "class": "future"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your edge is proven.",
+   "class": "promise"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "This method is risk-free.",
+   "class": "promise"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Kraken is a better exchange for you.",
+   "class": "platform"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Active traders earn 11.4% a year against 17.9% for the market (Barber and Odean).",
+   "class": "benchmark"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Why did you ignore your stop?",
+   "class": "leading_question"
+  },
+  {
+   "lang": "en",
+   "scope": "comparison",
+   "text": "Your paper figures say you can go live.",
+   "class": "readiness"
+  },
+  {
+   "lang": "en",
+   "scope": "comparison",
+   "text": "Stop paper trading.",
+   "class": "readiness"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Market outlook",
+   "class": "screen_word"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Your trading coach",
+   "class": "screen_word"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Your first review is ready",
+   "class": "readiness",
+   "source": "V1-F22"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "The model stays off until it is ready.",
+   "class": "readiness",
+   "source": "V1-F22"
+  },
+  {
+   "lang": "en",
+   "scope": "legal",
+   "text": "This app keeps your trade record and reviews your own past trades against your own rules. It never tells you to buy, sell or hold anything.",
+   "class": "legal_mismatch",
+   "source": "altered first-run text: any change to a mandated text fails"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your plan says the stop only moves toward profit, so move your stop.",
+   "class": "instruction",
+   "source": "unquoted plan words plus an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "We suggest a different broker for these trades.",
+   "class": "platform",
+   "source": "MiCA use of services, W1"
+  }
  ],
  "safe": [
-  { "lang": "en", "scope": "review", "text": "This trade met 3 of your 4 checklist items." },
-  { "lang": "en", "scope": "review", "text": "Closed crypto trades averaged -0.4R (n=30); forex +0.2R (n=41)." },
-  { "lang": "en", "scope": "review", "text": "Trades opened 10:00-11:00 averaged +0.3R (n=22)." },
-  { "lang": "en", "scope": "review", "text": "Trades per day: median 3; on 6 days you took 7 or more." },
-  { "lang": "en", "scope": "review", "text": "Days with more trades than your median: 6 (n=6)." },
-  { "lang": "en", "scope": "review", "text": "Position size rose over the period, from 1.0% to 1.7% of equity at entry (n=15)." },
-  { "lang": "en", "scope": "review", "text": "Average holding time: winners 2 h 10 min, losers 4 h 20 min (n=12 and n=9)." },
-  { "lang": "en", "scope": "review", "text": "Your plan target was 2R; winners closed at 0.9R on average (n=12)." },
-  { "lang": "en", "scope": "review", "text": "Trades opened outside the hours you set (09:30-11:30): 11 (n=11)." },
-  { "lang": "en", "scope": "review", "text": "Your plan says: no entries after a daily loss of 3%. 2 trades were opened after it was reached." },
-  { "lang": "en", "scope": "review", "text": "Followed plan: 14 trades, average -0.1R. Off plan: 6 trades, average -0.6R." },
-  { "lang": "en", "scope": "review", "text": "What was going on before this trade?" },
-  { "lang": "en", "scope": "comparison", "text": "Your paper and real figures" },
-  { "lang": "en", "scope": "ui", "text": "Buy", "key": "label.side.buy" },
-  { "lang": "en", "scope": "ui", "text": "Sell", "key": "label.side.sell" },
-  { "lang": "en", "scope": "ui", "text": "Stop", "key": "label.stop.initial" },
-  { "lang": "en", "scope": "learn", "text": "Overtrading means taking more trades than good setups justify. Example numbers only." }
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "This trade met 3 of your 4 checklist items."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Closed crypto trades averaged -0.4R (n=30); forex +0.2R (n=41)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Trades opened 10:00-11:00 averaged +0.3R (n=22)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Trades per day: median 3; on 6 days you took 7 or more."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Days with more trades than your median: 6 (n=6)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Position size rose over the period, from 1.0% to 1.7% of equity at entry (n=15)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Average holding time: winners 2 h 10 min, losers 4 h 20 min (n=12 and n=9)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your plan target was 2R; winners closed at 0.9R on average (n=12)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Trades opened outside the hours you set (09:30-11:30): 11 (n=11)."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Your plan says: no entries after a daily loss of 3%. 2 trades were opened after it was reached."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Followed plan: 14 trades, average -0.1R. Off plan: 6 trades, average -0.6R."
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "What was going on before this trade?"
+  },
+  {
+   "lang": "en",
+   "scope": "comparison",
+   "text": "Your paper and real figures"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Buy",
+   "key": "label.side.buy"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Sell",
+   "key": "label.side.sell"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Stop",
+   "key": "label.stop.initial"
+  },
+  {
+   "lang": "en",
+   "scope": "learn",
+   "text": "Overtrading means taking more trades than good setups justify. Example numbers only."
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Your first review is here",
+   "source": "V1-F22"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "The model stays off until the download finishes.",
+   "source": "V1-F22"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Export",
+   "key": "settings.data.export"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Delete all data on this device",
+   "key": "settings.data.deleteAll"
+  },
+  {
+   "lang": "en",
+   "scope": "legal",
+   "key": "legal.firstRun",
+   "text": "This app keeps your trade record and reviews your own past trades against your own rules. It never tells you to buy, sell or hold anything, never predicts prices, never holds or moves money and never asks for your broker login.",
+   "source": "legal-review §4 verbatim"
+  },
+  {
+   "lang": "en",
+   "scope": "legal",
+   "key": "legal.about",
+   "text": "What this app is: a journal and review tool. It analyses the trades you enter or import against the rules you set. What it is not: it gives no investment advice and no recommendation about any financial instrument or crypto-asset, does not recommend brokers, exchanges or platforms, and does not predict prices. It is not tax or legal advice. Figures describe your past trades and say nothing certain about future ones. Trading can lose money, including more than you put in when leverage is used. Every decision is yours. Its numbers are only as good as the data you enter; check them against your broker's statements. The software is provided free, as is, under the licence in the repository.",
+   "source": "legal-review §4 verbatim; replaced when aios-lawyer answers G11 (c)"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "segments": [
+    {
+     "text": "Your plan says: "
+    },
+    {
+     "text": "The stop only moves toward profit.",
+     "quoted": true
+    },
+    {
+     "text": " 5 of 6 trades followed it."
+    }
+   ],
+   "text": "Your plan says: “The stop only moves toward profit.” 5 of 6 trades followed it.",
+   "source": "quoted plan rule, P5"
+  }
  ]
 }
