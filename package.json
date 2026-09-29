@@ -1,0 +1,21 @@
+{
+  "name": "trading-journal",
+  "version": "0.1.0",
+  "description": "Installable trading journal whose numbers you can check against your broker. Stocks, crypto and forex. Data stays on the device. English and Greek.",
+  "author": "Ion Vovos (Nexa Systems)",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ionvovos/trading-journal.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test 'tests/**/*.test.mjs'",
+    "smoke": "node e2e/smoke.mjs",
+    "visual": "node e2e/visual.mjs"
+  }
+}
