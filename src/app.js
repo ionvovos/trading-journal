@@ -34,9 +34,39 @@ export async function openStore(win = globalThis) {
   return { store: createFallbackStore(), storage: { kind: 'fallback', refused } };
 }
 
+// Everything the shell hangs on ctx.data (architecture section 10). Each module is optional, so the shell also runs while a shard is
+// missing; a module that fails to load is skipped and logged, never silent.
+const DATA_SOURCES = [
+  ['./review/index.js', null], // S3: runChecklist, afterSave, latestReview, evaluatePlan, positionSize, parseSentence, runReview, renderAiSettings, learn, guard
+  ['./import/run.js', ['runImport', 'answerAnomaly', 'commitImport']], // S2
+  ['./import/reconcile.js', ['reconcile', 'realisedTotal', 'reconcileQuantity']],
+  ['./ui/views/tradeForm.js', ['openTradeForm']],
+  ['./ui/views/dataSettings.js', ['renderDataSettings']],
+];
+
 export async function loadData() {
+  const data = {};
   const getSummary = await firstExport(SUMMARY_MODULES);
-  return getSummary ? { getSummary } : {};
+  if (getSummary) data.getSummary = getSummary;
+  for (const [path, names] of DATA_SOURCES) {
+    try {
+      const mod = await import(path);
+      if (names) for (const n of names) data[n] = mod[n]; else Object.assign(data, mod);
+    } catch (e) { console.warn(`data layer module ${path} did not load`, e); }
+  }
+  try { data.stats = await import('./stats/index.js'); } catch { /* the statistics engine (C5) has not merged yet */ }
+  data.deleteAll = deleteAll;
+  return data;
+}
+
+// Delete all data on this device (AC-P8.9): the stores, the own key, the settings mirror and, when chosen, the downloaded model.
+export async function deleteAll({ store, alsoModel = false, storage = globalThis.localStorage, caches = globalThis.caches } = {}) {
+  const actions = await import('./storage/actions.js');
+  const removed = await actions.deleteAllData({ store, storage, caches, alsoModel });
+  const ai = await import('./ai/keystore.js');
+  ai.browserKeyStore().clearAll();
+  if (alsoModel) await (await import('./ai/device.js')).deleteModelCaches(caches);
+  return removed;
 }
 
 const applyTheme = (theme) => {
@@ -112,7 +142,7 @@ export async function boot() {
   return app;
 }
 
-if (!globalThis.__TJ_NO_BOOT__) {
+if (!globalThis.__TJ_NO_BOOT__ && typeof location !== 'undefined') {
   const scene = new URLSearchParams(location.search).get('scene');
   if (scene && ['127.0.0.1', 'localhost'].includes(location.hostname)) {
     // Test scenes (architecture section 9): e2e/lib/scene.js fills the memory store from e2e/scenes/<name>.json with a fixed clock.

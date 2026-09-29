@@ -36,11 +36,11 @@ test('no eval, no dialogs, no cookies, no analytics', () => {
   }
 });
 
-test('the shell touches localStorage only to read whether the own key is set (AC-P8.8); it never writes it', () => {
+test('the shell touches localStorage only to read whether the own key is set and to pass it to delete-all (AC-P8.8); it never writes it', () => {
   for (const f of S1_JS) {
     const c = code(f);
     if (!/localStorage/.test(c)) continue;
-    assert.equal(f, 'src/ui/views/settings.js');
+    assert.ok(['src/ui/views/settings.js', 'src/app.js'].includes(f), f);
     assert.ok(!/localStorage[^;]*\.(setItem|removeItem|clear)/.test(c));
   }
 });

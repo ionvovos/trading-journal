@@ -10,7 +10,8 @@ export function topbar({ mode, left, title, back, right, paper = false }) {
   if (left) bar.append(left);
   if (title) bar.append(el('h1', { class: back ? 'title-sm' : null }, title));
   else bar.append(el('span', { class: 'spacer' }));
-  bar.append(right ?? (back ? el('span', { class: 'back-slot' }) : null));
+  const end = right ?? (back ? el('span', { class: 'back-slot' }) : null);
+  if (end) bar.append(end); // Node.append(null) would print the text "null"
   bar.dataset.mode = mode ?? '';
   return bar;
 }

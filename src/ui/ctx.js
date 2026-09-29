@@ -24,7 +24,13 @@ export const SETTING_DEFAULTS = {
 export const deviceZone = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } };
 
 // Settings live in the store (getSetting/setSetting) and are mirrored in a cache so views read them synchronously.
-export async function createSettings(store, keys = Object.keys(SETTING_DEFAULTS)) {
+// The AI keys (S3, src/ai/settings.js AI_KEYS) are preloaded too, so ctx.settings.get('ai.engine') survives a reload.
+async function aiKeys() {
+  try { return [...(await import('../ai/settings.js')).AI_KEYS]; } catch { return []; }
+}
+
+export async function createSettings(store, extraKeys) {
+  const keys = [...Object.keys(SETTING_DEFAULTS), ...(extraKeys ?? await aiKeys()), 'lossWindowMin'];
   const cache = { ...SETTING_DEFAULTS };
   await Promise.all(keys.map(async (k) => {
     try { const v = await store.getSetting(k); if (v !== undefined && v !== null) cache[k] = v; } catch { /* keep the default */ }

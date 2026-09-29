@@ -96,3 +96,18 @@ V1 findings on S1 paths: G12 (focus ring) is `:focus-visible { outline: 2px soli
 - **F10.** Stats mockups: the hours list of `barList` uses two-line rows (name and amount, then n) where the mockup shows one compact line; S2 can pass `compact: true` and adjust `.hours .bk` in `css/views/data.css`.
 - **F11.** The settings "Review thresholds" row of the mockup has no store keys yet beyond `lossWindowMin`; S3's `thresholds.*` keys need a form. Not built here (S3 owns the review).
 - **F12.** `e2e/out/S1/` holds 194 PNGs (about 27 MB). If repo size matters, L6 can keep only page 1 of each screen.
+
+## Integration round (L3-integration.md, S1 items)
+
+| Item | Result |
+|---|---|
+| I1 | `src/app.js` `loadData()` fills `ctx.data` at boot: everything `src/review/index.js` exports (`runChecklist`, `afterSave`, `latestReview`, `evaluatePlan`, `positionSize`, `parseSentence`, `runReview`, `renderAiSettings`, `learn`, `guard`), and from S2 `getSummary`, `runImport`, `answerAnomaly`, `commitImport`, `reconcile`, `realisedTotal`, `reconcileQuantity`, `openTradeForm`, `renderDataSettings`, plus `stats` (`src/stats/index.js`) when it exists. `store` is `ctx.store`. A module that fails to load is logged with `console.warn`, not skipped silently. `tests/shell/data.test.mjs` asserts every name. |
+| I2 | `node tools/shell-list.mjs` run: 131 entries, `sw.js` current, `tests/shell/pwa.test.mjs` green. It must be re-run whenever a shard adds a file (F1 above still stands). |
+| I3 | `topbar` no longer appends `null` (it printed the text "null"). |
+| I4 | `createSettings` preloads `AI_KEYS` from `src/ai/settings.js` and `lossWindowMin`; `tests/shell/data.test.mjs` covers `ai.engine` after a reload. |
+| I5 | `ctx.data.deleteAll({ store, alsoModel })` calls S2's `deleteAllData` (`store.clearAll`, every `trading-journal.*` localStorage key, model caches when chosen), then `browserKeyStore().clearAll()` and, when chosen, `deleteModelCaches()`. S2's Settings sheet already calls `deleteAllData` directly and its effect is the same, which `e2e/delete-all.mjs` proves on the real app: 15 of 15 checks (all stores empty, settings gone, key and binding gone, model caches kept unless ticked and gone when ticked, shell cache kept, first run afterwards). S2 can switch the sheet to `ctx.data.deleteAll` so the S3 helpers are the ones used; the outcome does not change. |
+| I6 | Not ready: S3's learn tests (T26+, I10) are still failing while it writes them, so the English catalogues are not final. `docs/cloud/C6-greek.md` is written and lists all four English sources; reply "C6 ready" once S3 closes. |
+
+`npm test`: 576 tests, 567 pass, 2 fail, 7 skipped. The 2 failures are S3's `tests/learn` (T1-T25 order and `explain` formula, in progress with I10). All 59 shell tests pass. `node e2e/lib/shoot-s1.mjs` 0 findings; `node e2e/delete-all.mjs` 15 of 15; `node e2e/lib/s1-flows.mjs` 27 of 28: the failing check is "no console error", because S2's `getSummary` imports `src/stats/index.js`, which has not merged (C5), so Home shows its "figures could not load" banner. It goes green when C5 lands.
+
+Findings: F13 `dataSettings.js` uses a native `<input type="checkbox">` for the model option, against AC-D4.1 (S2). F14 S2's `getSummary` throws while `src/stats/index.js` is absent; it could return the counts without stats so Home degrades to figures-only.
