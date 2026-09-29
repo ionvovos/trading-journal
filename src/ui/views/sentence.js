@@ -82,7 +82,7 @@ export async function render(root, ctx, params = {}) {
     const isSide = q.field === 'side';
     return el('section', { class: 'q accent-ring' },
       el('span', { class: 'qn' }, t('sentence.q.h')),
-      el('p', { class: 'qt' }, t('sentence.q.missing', { field: fieldLabel(q.field) })),
+      el('p', { class: 'qt' }, t('sentence.q.missing', { field: fieldLabel(q.field).toLocaleLowerCase(ctx.lang) })),
       isSide
         ? ctx.ui.segmented({ ariaLabel: fieldLabel('side'), value: null, options: ['long', 'short'].map((v) => ({ value: v, label: t(`label.side.${v}`) })), onChange: (v) => { fields.side = v; paint(); } })
         : ctx.ui.field({ label: t('sentence.q.answer'), value: asked, inputmode: q.field === 'instrument' ? 'text' : 'decimal', onInput: (v) => { asked = v; } }),

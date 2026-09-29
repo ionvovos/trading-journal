@@ -99,7 +99,7 @@ export async function render(root, ctx, params = {}) {
       el('div', { class: 'card-h' }, el('h3', null, t('review.ui.process.h')), el('span', { class: 'caption' }, t('review.ui.closed', { n: review.counted }))),
       el('div', { class: 'pv-grid' }, side(t('review.ui.process.followed'), p.followed), side(t('review.ui.process.off'), p.offPlan)),
       p.unmarked.n ? el('p', { class: 'caption top-gap' }, renderKey('process.unmarked', { n: p.unmarked.n }, review.lang).text) : null,
-      el('p', { class: 'caption top-gap' }, review.lines.left),
+      review.lines.left ? el('p', { class: 'caption top-gap' }, review.lines.left) : null,
       review.small.isSmall ? el('p', { class: 'caption' }, renderKey('small', { n: review.small.n }, review.lang).text) : null);
   };
 
@@ -162,7 +162,7 @@ export async function render(root, ctx, params = {}) {
     const body = [chips, ...(review ? banners() : [])];
     if (running) body.push(el('section', { class: 'card' }, ctx.ui.progress({ done: 1, total: 3, label: t('review.ui.running') })));
     else if (!review) {
-      body.push(ctx.ui.emptyState({ iconName: 'review', paper: ctx.mode === 'paper', title: t('review.ui.title'), body: t('review.ui.empty.body'), children: [ctx.ui.button({ label: t('review.ui.run'), size: 'lg', block: true, onClick: run })] }));
+      body.push(ctx.ui.emptyState({ iconName: 'review', paper: ctx.mode === 'paper', title: t('review.ui.new.title'), body: t('review.ui.new.body'), children: [ctx.ui.button({ label: t('review.ui.run'), size: 'lg', block: true, onClick: run })] }));
     } else if (!review.counted) {
       body.push(ctx.ui.emptyState({ iconName: 'review', paper: ctx.mode === 'paper', title: t('review.ui.empty.title'), body: t('review.ui.empty.body'), children: [ctx.ui.button({ label: t('review.ui.rerun'), size: 'lg', block: true, onClick: run })] }));
     } else {
@@ -170,9 +170,10 @@ export async function render(root, ctx, params = {}) {
         ctx.ui.button({ label: t('review.ui.rerun'), kind: 'secondary', block: true, onClick: run }));
     }
     body.push(el('a', { class: 'btn plain block', href: '#/settings/ai' }, t('review.ui.settings')), el('a', { class: 'btn plain block', href: '#/plan' }, t('review.ui.plan')));
+    queueMicrotask(() => root.querySelector('.chips [aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' }));
     mount(root, el('div', { class: 'app-s3' },
-      ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', title: t('review.ui.title'), right: ctx.ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }) }),
-      el('main', { class: 'content' }, ...body.filter(Boolean).flat())));
+      ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', left: ctx.ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }) }),
+      el('main', { class: 'content' }, el('h1', { class: 'page-h' }, t('review.ui.title')), ...body.filter(Boolean).flat())));
   }
   paint();
   return () => { disposed = true; off?.(); mount(root); };

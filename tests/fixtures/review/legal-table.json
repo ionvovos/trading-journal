@@ -1,5 +1,5 @@
 {
- "about": "Test fixture for src/review/guard.js (architecture.md 5.2). Sources: legal-review.md section 2 (banned versus safe, rules 1-10), W2-W8, section 4 (mandated texts, scope legal, exact match), requirements P5 and AC-P4.7, and the V1 gate G2 conflict strings. Every banned row must fail with its class; every safe row must pass. English rows written by L2; S3 adds Greek rows (lang el) with the lawyer pass at L4.",
+ "about": "Test fixture for src/review/guard.js (architecture.md 5.2). Sources: legal-review.md section 2 (banned versus safe, rules 1-10), W2-W8, section 4 (mandated texts, scope legal, exact match), requirements P5 and AC-P4.7, and the V1 gate G2 conflict strings. Every banned row must fail with its class; every safe row must pass. English rows written by L2; S3 added the Greek rows (lang el), drafts written by S3 without the local model, lawyer pass at L4.",
  "banned": [
   {
    "lang": "en",
@@ -185,6 +185,174 @@
    "text": "We suggest a different broker for these trades.",
    "class": "platform",
    "source": "MiCA use of services, W1"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Αγοράστε AAPL τώρα.",
+   "class": "instruction",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Πουλήστε το ETH σας.",
+   "class": "instruction",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Μετακινήστε το στοπ στο 48.",
+   "class": "instruction",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Κλείστε αυτή τη θέση.",
+   "class": "instruction",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Αυτό το σετ-απ μοιάζει με καλύτερη είσοδο.",
+   "class": "ranking",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Το forex είναι καλύτερο για εσάς.",
+   "class": "ranking",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Η καλύτερη ώρα για συναλλαγές είναι στις 10:00.",
+   "class": "ranking",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Κάνεις υπερσυναλλαγές.",
+   "class": "label",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Είσαι εκδικητικός έμπορος.",
+   "class": "label",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Είστε έτοιμοι για πραγματικά χρήματα.",
+   "class": "readiness",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Πρέπει να κρατήσετε το σχέδιό σας.",
+   "class": "modal",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Σκεφτείτε να μειώσετε το μέγεθος.",
+   "class": "modal",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Οι επόμενες συναλλαγές θα καλύψουν την πτώση.",
+   "class": "future",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Η μέθοδος είναι χωρίς ρίσκο.",
+   "class": "promise",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Εγγυημένο κέρδος.",
+   "class": "promise",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Προτείνουμε τον broker Χ γι αυτές τις συναλλαγές.",
+   "class": "platform",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Οι ενεργοί έμποροι κερδίζουν λιγότερα (Barber και Odean).",
+   "class": "benchmark",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Γιατί αγνοήσατε το στοπ;",
+   "class": "leading_question",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Δοκιμάστε να περιμένετε 30 λεπτά μετά από απώλεια.",
+   "class": "imperative",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "comparison",
+   "text": "Μπορείτε να ξεκινήσετε πραγματικές συναλλαγές.",
+   "class": "readiness",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Ανάλυση αγοράς",
+   "class": "screen_word",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Ο προπονητής σας",
+   "class": "screen_word",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Η πρώτη σας ανασκόπηση είναι έτοιμη",
+   "class": "readiness",
+   "source": "V1-F22; S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "legal",
+   "text": "Το πρώτο κείμενο έχει αλλαχτεί και δεν είναι το εγκεκριμένο.",
+   "class": "legal_mismatch",
+   "source": "altered legal text"
   }
  ],
  "safe": [
@@ -331,6 +499,156 @@
    ],
    "text": "Your plan says: “The stop only moves toward profit.” 5 of 6 trades followed it.",
    "source": "quoted plan rule, P5"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Αυτή η συναλλαγή πληρούσε 3 από τα 4 στοιχεία της λίστας σας.",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Οι κλειστές συναλλαγές crypto είχαν μέσο −0,4R (n=30)· του forex +0,2R (n=41).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Συναλλαγές που ανοίχτηκαν 10:00-11:00 είχαν μέσο +0,3R (n=22).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Συναλλαγές ανά ημέρα: διάμεσος 3· σε 6 ημέρες κάνατε 7 ή περισσότερες.",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Ημέρες με περισσότερες συναλλαγές από τη διάμεσο: 6 (n=6).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Το μέγεθος θέσης αυξήθηκε στην περίοδο, από 1,0% σε 1,7% του κεφαλαίου κατά την είσοδο (n=15).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Μέσος χρόνος διακράτησης: κερδισμένες 2ω 10λ, χαμένες 4ω 20λ (n=12 και n=9).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Ο στόχος του σχεδίου σας ήταν 2R· οι κερδισμένες έκλεισαν κατά μέσο όρο στα 0,9R (n=12).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Συναλλαγές που ανοίχτηκαν εκτός των ωρών που ορίσατε (09:30-11:30): 11 (n=11).",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Ακολούθησαν το σχέδιο: 14 συναλλαγές, μέσο −0,1R. Εκτός σχεδίου: 6 συναλλαγές, μέσο −0,6R.",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "text": "Τι συνέβαινε πριν από αυτή τη συναλλαγή;",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "comparison",
+   "text": "Τα στοιχεία σας σε χαρτί και σε πραγματικές συναλλαγές",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Αγορά",
+   "key": "label.side.buy",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Πώληση",
+   "key": "label.side.sell",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Εξαγωγή",
+   "key": "settings.data.export",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Διαγραφή όλων των δεδομένων σε αυτή τη συσκευή",
+   "key": "settings.data.deleteAll",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Η πρώτη σας ανασκόπηση είναι εδώ",
+   "source": "V1-F22; S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Το μοντέλο μένει ανενεργό μέχρι να τελειώσει η λήψη.",
+   "source": "V1-F22; S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "learn",
+   "text": "Η υπερσυναλλαγή σημαίνει περισσότερες συναλλαγές από όσες δικαιολογούν οι καλές ευκαιρίες. Μόνο παραδείγματα αριθμών.",
+   "source": "S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "review",
+   "segments": [
+    {
+     "text": "Ο κανόνας σας: "
+    },
+    {
+     "text": "Το στοπ μετακινείται μόνο προς το κέρδος.",
+     "quoted": true
+    },
+    {
+     "text": " 5 από 6 συναλλαγές τον ακολούθησαν."
+    }
+   ],
+   "text": "Ο κανόνας σας: «Το στοπ μετακινείται μόνο προς το κέρδος.» 5 από 6 συναλλαγές τον ακολούθησαν.",
+   "source": "quoted plan rule, P5; S3 Greek draft, lawyer pass at L4"
+  },
+  {
+   "lang": "el",
+   "scope": "legal",
+   "key": "legal.firstRun",
+   "text": "Η εφαρμογή κρατά το αρχείο των συναλλαγών σας και ελέγχει τις δικές σας παλιότερες συναλλαγές με βάση τους δικούς σας κανόνες. Δεν σας λέει ποτέ να αγοράσετε, να πουλήσετε ή να κρατήσετε κάτι, δεν προβλέπει τιμές, δεν κρατά ούτε μετακινεί χρήματα και δεν ζητά ποτέ τα στοιχεία σύνδεσής σας στον broker.",
+   "source": "legal-review §4 verbatim"
+  },
+  {
+   "lang": "el",
+   "scope": "legal",
+   "key": "legal.about",
+   "text": "Τι είναι η εφαρμογή: ένα ημερολόγιο και εργαλείο ανασκόπησης. Αναλύει τις συναλλαγές που καταχωρίζετε ή εισάγετε με βάση τους κανόνες που θέτετε εσείς. Τι δεν είναι: δεν παρέχει επενδυτικές συμβουλές ούτε συστάσεις για κανένα χρηματοπιστωτικό μέσο ή κρυπτο-περιουσιακό στοιχείο, δεν προτείνει brokers, χρηματιστήρια ή πλατφόρμες και δεν προβλέπει τιμές. Δεν αποτελεί φορολογική ή νομική συμβουλή. Τα στοιχεία περιγράφουν τις παλιότερες συναλλαγές σας και δεν λένε τίποτα βέβαιο για το μέλλον. Οι συναλλαγές μπορεί να σας κοστίσουν χρήματα, και με μόχλευση περισσότερα από όσα καταθέσατε. Κάθε απόφαση είναι δική σας. Οι αριθμοί είναι τόσο σωστοί όσο τα δεδομένα που δίνετε: ελέγχετέ τους με τις καταστάσεις του broker σας. Το λογισμικό διατίθεται δωρεάν, ως έχει, με την άδεια που αναφέρεται στο αποθετήριο.",
+   "source": "legal-review §4 verbatim; replaced when aios-lawyer answers G11 (c)"
   }
  ]
 }

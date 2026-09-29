@@ -9,7 +9,7 @@ export async function render(root, ctx, params = {}) {
   const entry = params.term && params.term !== 'all' ? entryFor(params.term, lang) : null;
   const state = params.state ?? {};
   const back = () => (state.from ? ctx.navigate(state.from) : globalThis.history?.length > 1 ? globalThis.history.back() : ctx.navigate('#/home'));
-  const bar = ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', title: entry?.title ?? t('learnview.all'), back: { label: t('learnview.back'), onClick: back } });
+  const bar = ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', title: t('learnview.tag'), back: { label: t('learnview.back'), onClick: back } });
 
   if (!entry) {
     const all = entries(lang).filter((e) => e.id !== 'CFD');

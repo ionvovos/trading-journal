@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- S3 harness: mounts the real shell on fixture data (the seeded stocks week) and opens one S3 route. Not shipped. Used by tests/review/shoot.mjs. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>S3 harness</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../css/app.css">
+<link rel="stylesheet" href="../../../css/components.css">
+<link rel="stylesheet" href="../../../css/charts.css">
+<link rel="stylesheet" href="../../../css/screens.css">
+<link rel="stylesheet" href="../../../css/views/data.css">
+<link rel="stylesheet" href="../../../css/views/review.css">
+<link rel="stylesheet" href="../../../e2e/lib/harness.css">
+<script type="module" src="./harness.js"></script>
+</head>
+<body>
+<svg class="defs" width="0" height="0" aria-hidden="true"><defs><pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" class="hatch-fill"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern></defs></svg>
+<div class="statusbar" aria-hidden="true"><span>9:41</span></div>
+<div id="app" class="app"></div>
+<div id="overlay" class="overlay-host"></div>
+<div id="live" class="sr-live" role="status"></div>
+<div class="homebar" aria-hidden="true"></div>
+</body>
+</html>
