@@ -39,3 +39,11 @@
 .choice-list .choice[aria-pressed="true"] { background: var(--accent-soft); }
 .kv .link-val { text-decoration: none; }
 .app-form .content { padding-bottom: calc(var(--s6, 32px) + var(--safe-bottom)); }
+
+/* option rows are buttons: no browser button look */
+button.opt { appearance: none; -webkit-appearance: none; border: 0; background: transparent; width: 100%; text-align: left; color: var(--text); font-family: inherit; box-shadow: inset 0 0 0 1px var(--line-strong); cursor: pointer; }
+button.opt.on { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-soft); }
+button.opt small { text-align: left; }
+button.opt:disabled { cursor: default; }
+.link, button.link { appearance: none; background: none; border: 0; padding: 0; color: var(--accent); font: inherit; font-weight: var(--fw-semibold); cursor: pointer; min-height: 44px; }
+.set-row { width: 100%; text-align: left; }
