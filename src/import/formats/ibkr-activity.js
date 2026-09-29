@@ -12,7 +12,7 @@ import { zonedToUtc } from '../../core/time.js';
 const TRADES = 'Trades';
 const CASH = 'Deposits & Withdrawals';
 const ACCOUNT = 'Account Information';
-const DETECT = /^﻿?Trades,Header,DataDiscriminator/m;
+const DETECT = /^\uFEFF?"?Trades"?,"?Header"?,"?DataDiscriminator/m; // also when every field is quoted
 const DATE_TIME = /^(\d{4}-\d{2}-\d{2}),?\s+(\d{2}:\d{2}(?::\d{2})?)$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
