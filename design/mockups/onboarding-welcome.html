@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" class="mock">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Welcome</title>
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--loss-soft)"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern>
+</defs></svg>
+<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons">
+<svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+<svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.4 10.4 0 0 0 8 .2 10.4 10.4 0 0 0 .7 3.2L2 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4L13 5.6A7 7 0 0 0 8 3.6a7 7 0 0 0-5 2l1.4 1.4c1-.9 2.2-1.4 3.6-1.4zm0 3.3c.5 0 1 .2 1.3.5L8 10.8 6.7 9.4c.3-.3.8-.5 1.3-.5z"/></svg>
+<svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="17" height="8" rx="1.6"/><rect x="24.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg>
+</span></div>
+<div class="ob">
+
+<div class="steps" aria-label="Step 1 of 2"><i class="done"></i><i></i></div>
+<div style="width:64px;height:64px;border-radius:16px;overflow:hidden;box-shadow:var(--e2)"><svg width="64" height="64" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="ig64" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b62e0"/><stop offset="1" stop-color="#2140a8"/></linearGradient></defs><rect width="512" height="512" fill="url(#ig64)"/><path d="M96 352h320M96 272h320M96 192h320" stroke="#fff" stroke-opacity=".14" stroke-width="10"/><path d="M128 290l80 70 176-196" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/><circle cx="384" cy="164" r="30" fill="#fff"/></svg></div>
+<div class="vstack" style="gap:10px"><h1>Numbers you can check against your broker</h1>
+<p class="lead">Log trades or import your broker’s file. Every figure opens to the trades and the arithmetic behind it.</p></div>
+<section class="card" style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start">
+  <span class="mk" style="background:var(--accent-soft);color:var(--accent)"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.3-7.5 9.5-4.3-1.2-7.5-5-7.5-9.5V6L12 3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+  <p style="font-size:15px;line-height:21px">This app keeps your trade record and reviews your own past trades against your own rules. It never tells you to buy, sell or hold anything, never predicts prices, never holds or moves money and never asks for your broker login.</p>
+</section>
+<section class="card" style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start">
+  <span class="mk" style="background:var(--surface-2);color:var(--text-2)"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span>
+  <p style="font-size:15px;line-height:21px">No account. Your trades stay on this phone until you export them.</p>
+</section>
+<div class="spacer"></div>
+<div class="field"><span class="lbl">Language</span><div class="seg" role="group"><button aria-pressed="true">English</button><button aria-pressed="false">Ελληνικά</button></div></div>
+<button class="btn primary lg block">Continue</button>
+</div>
+<div class="homebar" aria-hidden="true"></div>
+</body>
+</html>

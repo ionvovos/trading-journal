@@ -1,0 +1,287 @@
+// Shared helpers for the L2d mockups: icons, number formatting, page shell, charts, and the sample dataset.
+// Every figure a mockup shows is computed here from the sample trades, so totals on different screens agree.
+
+// ---------- icons (24px grid, stroke) ----------
+export const P = {
+  home: '<path d="M4 10.5L12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-6h-6v6H5.5A1.5 1.5 0 0 1 4 19v-8.5z"/>',
+  journal: '<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+  stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  review: '<path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M16 5h1.5A1.5 1.5 0 0 1 19 6.5v13a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-13A1.5 1.5 0 0 1 6.5 5H8"/><path d="M9 13l2 2 4-4.5"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  right: '<path d="M9 5l7 7-7 7"/>',
+  left: '<path d="M15 5l-7 7 7 7"/>',
+  down: '<path d="M6 9.5l6 6 6-6"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
+  import: '<path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/>',
+  export: '<path d="M12 16V4M7 8.5l5-5 5 5M5 20h14"/>',
+  wifioff: '<path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 7 0M5 12.9a10 10 0 0 1 4.2-2.4M12 20h.01M14.8 10.6A10 10 0 0 1 19 12.9M2 9.3a15 15 0 0 1 4.3-2.7M10.7 5.1A15 15 0 0 1 22 9.3"/>',
+  chip: '<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>',
+  key: '<circle cx="8" cy="15" r="4"/><path d="M11 12l8.5-8.5M16 7l2.5 2.5M14 9l2 2"/>',
+  shield: '<path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.3-7.5 9.5-4.3-1.2-7.5-5-7.5-9.5V6L12 3z"/><path d="M9 12l2 2 4-4"/>',
+  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+  question: '<circle cx="12" cy="12" r="8.5"/><path d="M9.8 9.5a2.3 2.3 0 0 1 4.4.9c0 1.6-2.2 2-2.2 3.3M12 16.8h.01"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  filter: '<path d="M4 6h16M7 12h10M10 18h4"/>',
+  more: '<circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/>',
+  alert: '<path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4.5M12 17.5h.01"/>',
+  checkc: '<circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.3l2.4 2.4 5-5.2"/>',
+  skip: '<path d="M5 6l8 6-8 6V6zM17 6v12"/>',
+  neq: '<path d="M5 9.5h14M5 14.5h14M15 5L9 19"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  image: '<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M20.5 16l-5-5-8.5 8.5"/>',
+  pencil: '<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5 4 20zM13.5 7l3 3"/>',
+  globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.4 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.4-3.5-8.5s1-5.9 3.5-8.5z"/>',
+  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+  refresh: '<path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5"/>',
+  book: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15z"/><path d="M4 20.5A1.5 1.5 0 0 0 5.5 22H20M8 7.5h8"/>',
+  scale: '<path d="M12 4v16M7 20h10M5 7h14M5 7l-3 6a3 3 0 0 0 6 0L5 7zM19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/>',
+  target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+  file: '<path d="M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8L14 3.5z"/><path d="M14 3.5V8h4.5M9 13h6M9 16.5h4"/>',
+  database: '<ellipse cx="12" cy="6" rx="7.5" ry="2.8"/><path d="M4.5 6v12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V6M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/>',
+  sliders: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>',
+  code: '<path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5"/>',
+  sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/>',
+  stock: '<path d="M6 20V9M6 9h0M10 20V5M14 20v-8M18 20v-5"/><path d="M4.5 20h15"/>',
+  crypto: '<path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9L12 3z"/><path d="M9.5 8.5h3.8a1.7 1.7 0 0 1 0 3.5H9.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5v-7zM11 7v1.5M11 15.5V17"/>',
+  fx: '<path d="M4 8.5h13l-3.5-3.5M20 15.5H7l3.5 3.5"/>',
+  hand: '<path d="M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10.5V5a1.5 1.5 0 0 1 3 0v6M14 10.5V6.5a1.5 1.5 0 0 1 3 0V14c0 3.6-2.4 6.5-6 6.5-2.4 0-3.6-1-5-3l-2.3-3.6a1.4 1.4 0 0 1 2.2-1.7L8 14"/>',
+  paper: '<path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14.5h6M9 18h3"/>',
+  arrowr: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+  send: '<path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/>',
+  share: '<path d="M12 15V3M7 8l5-5 5 5M5 13v6.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V13"/>',
+};
+export const ic = (n, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const TRI_UP = '<svg class="tri" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.2L9.3 8.6H.7z" fill="currentColor"/></svg>';
+const TRI_DN = '<svg class="tri" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 8.8L.7 1.4h8.6z" fill="currentColor"/></svg>';
+const FLAT = '<svg class="tri" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 5h8" stroke="currentColor" stroke-width="2"/></svg>';
+
+// ---------- numbers ----------
+export const MINUS = '−';
+export function fmt(v, lang = 'en', dp = 2) {
+  return new Intl.NumberFormat(lang === 'el' ? 'el-GR' : 'en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp, useGrouping: 'always' }).format(Math.abs(v));
+}
+export const signed = (v, lang, dp = 2) => (v > 0 ? '+' : v < 0 ? MINUS : '') + fmt(v, lang, dp);
+// Money with sign, arrow and colour: colour is never the only signal.
+export function money(v, { lang = 'en', dp = 2, arrow = true, cls = '' } = {}) {
+  const tone = v > 0 ? 'gain' : v < 0 ? 'loss' : 'flat';
+  const a = arrow ? (v > 0 ? TRI_UP : v < 0 ? TRI_DN : FLAT) : '';
+  const word = v > 0 ? 'gain' : v < 0 ? 'loss' : 'no change';
+  return `<span class="delta ${tone} ${cls}"><span class="sr">${word} </span>${a}${signed(v, lang, dp)}</span>`;
+}
+export const R = (v, lang = 'en') => (v == null ? '<span class="muted">R unknown</span>' : `${signed(v, lang)}R`);
+export const rCls = (v) => (v == null ? 'muted' : v > 0 ? 'gain' : v < 0 ? 'loss' : 'flat');
+
+// ---------- shell ----------
+const STATUS = `<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons">
+<svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+<svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.4 10.4 0 0 0 8 .2 10.4 10.4 0 0 0 .7 3.2L2 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4L13 5.6A7 7 0 0 0 8 3.6a7 7 0 0 0-5 2l1.4 1.4c1-.9 2.2-1.4 3.6-1.4zm0 3.3c.5 0 1 .2 1.3.5L8 10.8 6.7 9.4c.3-.3.8-.5 1.3-.5z"/></svg>
+<svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="17" height="8" rx="1.6"/><rect x="24.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg>
+</span></div>`;
+const DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--loss-soft)"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern>
+</defs></svg>`;
+
+export function page({ title, lang = 'en', body, cls = 'app' }) {
+  return `<!doctype html>
+<html lang="${lang}" class="mock">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>${title}</title>
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+</head>
+<body>
+${DEFS}
+${STATUS}
+<div class="${cls}">
+${body}
+</div>
+<div class="homebar" aria-hidden="true"></div>
+</body>
+</html>
+`;
+}
+
+const T = {
+  en: { home: 'Home', journal: 'Journal', log: 'Log trade', stats: 'Stats', review: 'Review', real: 'Real', paper: 'Paper', mode: 'Mode' },
+  el: { home: 'Αρχική', journal: 'Συναλλαγές', log: 'Νέα συναλλαγή', stats: 'Στατιστικά', review: 'Ανασκόπηση', real: 'Πραγματικό', paper: 'Εικονικό', mode: 'Λειτουργία' },
+};
+export const t = (lang, k) => T[lang][k];
+
+export function tabbar(current, lang = 'en') {
+  const tab = (id, icon) => `<a class="tab" href="#" ${current === id ? 'aria-current="page"' : ''}>${ic(icon)}<span>${t(lang, id)}</span></a>`;
+  return `<nav class="tabbar" aria-label="Main">${tab('home', 'home')}${tab('journal', 'journal')}<a class="tab tab-log" href="#" aria-label="${t(lang, 'log')}"><span>${ic('plus')}</span></a>${tab('stats', 'stats')}${tab('review', 'review')}</nav>`;
+}
+export function modeSwitch(mode = 'real', lang = 'en') {
+  return `<div class="mode-switch" role="group" aria-label="${t(lang, 'mode')}">
+<button class="real" aria-pressed="${mode === 'real'}"><span class="dot"></span>${t(lang, 'real')}</button>
+<button class="paper" aria-pressed="${mode === 'paper'}"><span class="dot ring"></span>${t(lang, 'paper')}</button></div>`;
+}
+export const badge = (mode, lang = 'en') => `<span class="badge ${mode}">${mode === 'real' ? '<span class="dot"></span>' : '<span class="dot ring"></span>'}${t(lang, mode)}</span>`;
+
+export const MK = { stock: ['stock', 'Stock'], crypto: ['crypto', 'Crypto'], fx: ['fx', 'Forex'] };
+export const mk = (m) => `<span class="mk ${m}" aria-label="${MK[m][1]}">${ic(m === 'stock' ? 'stock' : m === 'crypto' ? 'crypto' : 'fx')}</span>`;
+
+// ---------- sample data (real mode, September 2026, USD, declared zone Europe/Athens) ----------
+export const START = 12500;
+// day, net P&L of trades closed that day, closed trades that day
+export const DAYS = [
+  [1, 212.40, 2], [2, 96.10, 1], [3, -84.30, 1], [4, 148.80, 2], [7, 61.20, 1], [8, 95.60, 2], [9, -40.20, 1], [10, 77.90, 1],
+  [11, -12.30, 1], [12, 72.20, 1], [14, -214.60, 2], [15, -188.30, 2], [16, 42.10, 1], [17, -236.90, 3], [18, -121.40, 2],
+  [19, -123.20, 1], [21, 188.40, 2], [22, 142.70, 2], [23, 96.30, 1], [24, 210.50, 2], [25, 264.80, 2], [26, 98.20, 1],
+  [28, 616.10, 3], [29, -117.50, 1],
+];
+const cents = (v) => Math.round(v * 100);
+export const MONTH_TOTAL = DAYS.reduce((s, d) => s + cents(d[1]), 0) / 100;
+export const N_CLOSED = DAYS.reduce((s, d) => s + d[2], 0);
+// One equity point per closed trade. A day's total is split across its trades with fixed weights, same sign.
+export function equityPoints() {
+  const pts = [{ v: START, day: 1 }];
+  let eq = cents(START);
+  for (const [day, total, n] of DAYS) {
+    const w = Array.from({ length: n }, (_, i) => [0.62, 0.38, 0.5][i] ?? 1).slice(0, n);
+    const sw = w.reduce((a, b) => a + b, 0);
+    let left = cents(total);
+    w.forEach((x, i) => {
+      const part = i === n - 1 ? left : Math.round((cents(total) * x) / sw);
+      left -= part; eq += part;
+      pts.push({ v: eq / 100, day });
+    });
+  }
+  return pts;
+}
+export function ddStats(pts) {
+  let peak = pts[0], best = { dd: 0 };
+  for (const p of pts) {
+    if (p.v > peak.v) peak = p;
+    const dd = p.v - peak.v;
+    if (dd < best.dd) best = { dd, peak, trough: p };
+  }
+  const last = pts[pts.length - 1];
+  const maxPeak = pts.reduce((a, b) => (b.v > a.v ? b : a));
+  const rec = pts.find((p) => p.day > best.trough.day && p.v >= best.peak.v);
+  return { dd: best.dd, pct: (best.dd / best.peak.v) * 100, peak: best.peak, trough: best.trough, recovery: rec, recoveryGain: (best.peak.v / best.trough.v - 1) * 100, current: last.v - maxPeak.v, last };
+}
+// R distribution, 0.5R bins, R known on 35 trades (19 losing, 16 winning)
+export const RBINS = [['≤−1.5', 1, -1.75], ['', 4, -1.25], ['', 9, -0.75], ['', 5, -0.25], ['', 3, 0.25], ['', 4, 0.75], ['', 3, 1.25], ['', 3, 1.75], ['', 1, 2.25], ['', 1, 2.75], ['≥3', 1, 3.25]];
+export const SETUPS = [['Breakout', 14, 1012.40, 0.48, 13], ['No setup', 5, 104.70, 0.05, 4], ['Pullback', 11, 486.20, 0.22, 11], ['Range fade', 8, -318.70, -0.31, 7]]; // alphabetical, no row highlighted (AC-B1.4)
+export const MARKETS = [['Stocks', 16, 702.30], ['Crypto', 12, 391.10], ['Forex', 10, 191.20]];
+
+// ---------- charts (viewBox width 296 = content width at 360 px, so text never renders below 11 px) ----------
+const W = 296;
+const kfmt = (v) => (Math.abs(v) >= 1000 ? `${(v / 1000).toFixed(1)}k` : `${Math.round(v)}`);
+
+const niceStep = (range) => [10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000].find((st) => range / st <= 3) ?? 10000;
+export function equityChart(pts, { h = 120, marks = false, lang = 'en', noX = false, xl = [[1, '1 Sep'], [8, '8'], [15, '15'], [22, '22'], [29, '29']] } = {}) {
+  const pw = W - 42, top = 14, ph = h - top - (noX ? 4 : 18);
+  const vs = pts.map((p) => p.v);
+  const step = niceStep(Math.max(...vs) - Math.min(...vs));
+  const lo = Math.floor(Math.min(...vs) / step) * step, hi = Math.ceil(Math.max(...vs) / step) * step;
+  const x = (i) => (i / (pts.length - 1)) * pw;
+  const y = (v) => top + ph - ((v - lo) / (hi - lo)) * ph;
+  const lbl = (v) => (step >= 100 ? kfmt(v) : fmt(v, lang, 0)).replace('.', lang === 'el' ? ',' : '.');
+  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join('');
+  let g = '';
+  for (let v = lo; v <= hi + 1e-9; v += step) g += `<line class="grid" x1="0" x2="${W}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text x="${W}" y="${(y(v) - 4).toFixed(1)}" text-anchor="end">${lbl(v)}</text>`;
+  let xs = '';
+  if (!noX) for (const [d, l] of xl) {
+    const i = Math.max(0, pts.findIndex((p) => p.day >= d));
+    xs += `<text x="${x(i).toFixed(1)}" y="${h - 2}" text-anchor="${i === 0 ? 'start' : 'middle'}">${l}</text>`;
+  }
+  let m = '';
+  if (marks) {
+    const s = ddStats(pts);
+    const pi = pts.indexOf(s.peak), ti = pts.indexOf(s.trough);
+    m = `<rect class="band" x="${x(pi).toFixed(1)}" y="${top}" width="${(x(ti) - x(pi)).toFixed(1)}" height="${ph}"/>
+<line class="ddmark" x1="${x(ti).toFixed(1)}" x2="${x(ti).toFixed(1)}" y1="${y(s.peak.v).toFixed(1)}" y2="${y(s.trough.v).toFixed(1)}"/>
+<circle class="peak" cx="${x(pi).toFixed(1)}" cy="${y(s.peak.v).toFixed(1)}" r="3.5"/><circle class="peak" style="stroke:var(--chart-dd)" cx="${x(ti).toFixed(1)}" cy="${y(s.trough.v).toFixed(1)}" r="3.5"/>
+<text class="lbl-loss" x="${((x(pi) + x(ti)) / 2).toFixed(1)}" y="${top + 12}" text-anchor="middle">${MINUS}${fmt(-s.pct, lang, 1)}%</text>`;
+  }
+  const last = pts.length - 1;
+  return `<svg class="chart" viewBox="0 0 ${W} ${h}" role="img" aria-label="Equity curve, one point per closed trade">
+${g}<path class="eq-fill" d="${line}L${x(last).toFixed(1)},${top + ph}L0,${top + ph}Z"/>${m}<path class="eq" d="${line}"/>
+<circle cx="${x(last).toFixed(1)}" cy="${y(pts[last].v).toFixed(1)}" r="4" style="fill:var(--chart-equity);stroke:var(--surface);stroke-width:2"/>${xs}</svg>`;
+}
+
+export function drawdownChart(pts, { h = 78, lang = 'en' } = {}) {
+  const pw = W - 42, ph = h - 18;
+  let peak = -Infinity;
+  const dd = pts.map((p) => { peak = Math.max(peak, p.v); return p.v - peak; });
+  const lo = Math.floor(Math.min(...dd) / 500) * 500;
+  const x = (i) => (i / (pts.length - 1)) * pw;
+  const y = (v) => (v / lo) * ph;
+  const area = `M0,0${dd.map((v, i) => `L${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('')}L${pw},0Z`;
+  let g = '';
+  for (let v = 0; v >= lo; v -= 500) g += `<line class="${v ? 'grid' : 'zero'}" x1="0" x2="${pw}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text x="${W}" y="${(y(v) + (v ? -4 : 12)).toFixed(1)}" text-anchor="end">${v ? MINUS + fmt(v, lang, 0) : '0'}</text>`;
+  const ti = dd.indexOf(Math.min(...dd));
+  return `<svg class="chart" viewBox="0 0 ${W} ${h}" role="img" aria-label="Drawdown from the running peak">
+${g}<path class="dd" d="${area}"/><text class="lbl-loss" x="${(x(ti) + 8).toFixed(1)}" y="${(y(dd[ti]) + 2).toFixed(1)}">${MINUS}${fmt(dd[ti], lang)}</text>
+<text x="0" y="${h - 2}">1 Sep</text><text x="${pw}" y="${h - 2}" text-anchor="end">29</text></svg>`;
+}
+
+export function rHistogram({ h = 132, mean = 0.21, lang = 'en' } = {}) {
+  const pw = W, top = 16, ph = h - top - 18;
+  const max = Math.max(...RBINS.map((b) => b[1]));
+  const bw = pw / RBINS.length;
+  const xr = (r) => ((r + 2) / 5.5) * pw; // -2 .. 3.5
+  let bars = '';
+  RBINS.forEach(([, n, mid], i) => {
+    const bh = (n / max) * ph;
+    const cls = mid < 0 ? 'lossbar' : 'gainbar';
+    bars += `<rect class="${cls}" x="${(i * bw + 2).toFixed(1)}" y="${(top + ph - bh).toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${bh.toFixed(1)}" rx="2"/><text x="${(i * bw + bw / 2).toFixed(1)}" y="${(top + ph - bh - 4).toFixed(1)}" text-anchor="middle">${n}</text>`;
+  });
+  let xs = '';
+  for (const r of [-1, 0, 1, 2, 3]) xs += `<text x="${xr(r).toFixed(1)}" y="${h - 2}" text-anchor="middle">${r > 0 ? '+' : r < 0 ? MINUS : ''}${Math.abs(r)}R</text>`;
+  xs += `<text x="0" y="${h - 2}">${MINUS}2</text>`;
+  const mx = xr(mean);
+  return `<svg class="chart" viewBox="0 0 ${W} ${h}" role="img" aria-label="Distribution of R-multiples">
+<line class="zero" x1="${xr(0)}" x2="${xr(0)}" y1="${top - 4}" y2="${top + ph}"/>${bars}
+<line x1="0" x2="${pw}" y1="${top + ph}" y2="${top + ph}" class="zero"/>
+<line x1="${mx.toFixed(1)}" x2="${mx.toFixed(1)}" y1="2" y2="${top + ph}" style="stroke:var(--chart-equity);stroke-width:1.6;stroke-dasharray:4 3"/>
+<text class="hl" x="${(mx + 5).toFixed(1)}" y="10" style="fill:var(--chart-equity)">avg ${signed(mean, lang)}R</text>${xs}</svg>`;
+}
+
+export function calendar({ lang = 'en', sel = 28 } = {}) {
+  const map = Object.fromEntries(DAYS.map((d) => [d[0], d[1]]));
+  const head = (lang === 'el' ? ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ', 'Εβδ.'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Week']).map((h) => `<div class="h">${h}</div>`).join('');
+  const lvl = (v) => { const a = Math.abs(v); const k = a < 90 ? 1 : a < 200 ? 2 : 3; return (v > 0 ? 'g' : 'l') + k; };
+  const short = (v) => (Math.abs(v) >= 1000 ? `${v > 0 ? '+' : MINUS}${(Math.abs(v) / 1000).toFixed(1)}k` : `${v > 0 ? '+' : MINUS}${Math.round(Math.abs(v))}`);
+  let cells = '';
+  let day = 1 - 1; // Mon 31 Aug is the first cell
+  for (let w = 0; w < 5; w += 1) {
+    let wk = 0;
+    for (let c = 0; c < 7; c += 1) {
+      const d = day + w * 7 + c;
+      if (d < 1 || d > 30) { cells += `<div class="c out"><span class="dn">${d < 1 ? 31 : d - 30}</span></div>`; continue; }
+      const v = map[d];
+      if (v == null) { cells += `<div class="c none${d === 29 ? ' today' : ''}"><span class="dn">${d}</span></div>`; continue; }
+      wk += cents(v);
+      cells += `<div class="c ${lvl(v)}${d === sel ? ' sel' : ''}${d === 29 ? ' today' : ''}"><span class="dn">${d}</span><span class="pv">${short(v)}</span></div>`;
+    }
+    const wv = wk / 100;
+    cells += `<div class="wk ${wv > 0 ? 'gain' : 'loss'}">${short(wv)}</div>`;
+  }
+  return `<div class="cal" role="grid" aria-label="September 2026 by day">${head}${cells}</div>`;
+}
+
+export function candleShot() {
+  // A user's own chart screenshot, drawn as an SVG placeholder.
+  const c = [[40, 44, 36, 42], [42, 47, 41, 46], [46, 48, 40, 41], [41, 43, 34, 35], [35, 38, 30, 31], [31, 36, 29, 34], [34, 35, 26, 27], [27, 30, 24, 29], [29, 33, 28, 32], [32, 33, 22, 23], [23, 26, 20, 21], [21, 25, 19, 24]];
+  let s = '';
+  c.forEach(([o, hi, lo, cl], i) => {
+    const x = 18 + i * 22, up = cl < o;
+    s += `<line x1="${x}" x2="${x}" y1="${hi * 2}" y2="${lo * 2}" stroke="${up ? '#13a06d' : '#d9434f'}" stroke-width="1.2"/><rect x="${x - 6}" y="${Math.min(o, cl) * 2}" width="12" height="${Math.max(2, Math.abs(o - cl) * 2)}" fill="${up ? '#13a06d' : '#d9434f'}" rx="1"/>`;
+  });
+  return `<svg viewBox="0 0 296 120" style="display:block;width:100%;height:auto;background:#101418" role="img" aria-label="Screenshot of the trade chart">
+<g transform="translate(0,-30) scale(1,1)">${s}</g>
+<line x1="0" x2="296" y1="28" y2="28" stroke="#d9434f" stroke-dasharray="4 3" stroke-width="1"/><text x="292" y="24" text-anchor="end" fill="#e8a2a8" font-size="11" font-family="-apple-system,sans-serif">stop 121.20</text>
+<line x1="0" x2="296" y1="46" y2="46" stroke="#7d9bff" stroke-dasharray="4 3" stroke-width="1"/><text x="292" y="58" text-anchor="end" fill="#a9bcff" font-size="11" font-family="-apple-system,sans-serif">entry 118.20</text></svg>`;
+}

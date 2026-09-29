@@ -1,0 +1,172 @@
+[
+  {
+    "name": "dashboard",
+    "group": "Home",
+    "title": "Home, real mode, difference open"
+  },
+  {
+    "name": "dashboard-el",
+    "group": "Home",
+    "title": "Home in Greek"
+  },
+  {
+    "name": "offline",
+    "group": "States",
+    "title": "Offline"
+  },
+  {
+    "name": "dashboard-paper",
+    "group": "Home",
+    "title": "Home, paper mode, beginner, small sample"
+  },
+  {
+    "name": "empty",
+    "group": "States",
+    "title": "Empty journal after first run"
+  },
+  {
+    "name": "loading",
+    "group": "States",
+    "title": "Loading the journal"
+  },
+  {
+    "name": "onboarding-welcome",
+    "group": "Onboarding",
+    "title": "First run: welcome and boundary"
+  },
+  {
+    "name": "onboarding-path",
+    "group": "Onboarding",
+    "title": "First run: beginner or trader path"
+  },
+  {
+    "name": "log-trade",
+    "group": "Log",
+    "title": "Log a trade: sheet"
+  },
+  {
+    "name": "log-sentence",
+    "group": "Log",
+    "title": "One-sentence entry: confirm and one question (paper)"
+  },
+  {
+    "name": "log-error",
+    "group": "Log",
+    "title": "Log a trade: entry with errors"
+  },
+  {
+    "name": "checklist",
+    "group": "Log",
+    "title": "Pre-trade checklist"
+  },
+  {
+    "name": "trade-detail",
+    "group": "Journal",
+    "title": "Trade detail"
+  },
+  {
+    "name": "journal",
+    "group": "Journal",
+    "title": "Journal list with filters, held out, open, R unknown"
+  },
+  {
+    "name": "import-mapping",
+    "group": "Import",
+    "title": "Import: columns and skipped rows"
+  },
+  {
+    "name": "import-running",
+    "group": "Import",
+    "title": "Import running with checks"
+  },
+  {
+    "name": "import-questions",
+    "group": "Import",
+    "title": "Import: anomaly questions, trades held out"
+  },
+  {
+    "name": "import-error",
+    "group": "States",
+    "title": "Error: file cannot be read"
+  },
+  {
+    "name": "reconcile-total",
+    "group": "Broker check",
+    "title": "Broker check: enter the broker figure"
+  },
+  {
+    "name": "reconcile-difference",
+    "group": "Broker check",
+    "title": "Broker check: difference open, possible causes named"
+  },
+  {
+    "name": "reconcile-match",
+    "group": "Broker check",
+    "title": "Broker check: reconciled, with the import report"
+  },
+  {
+    "name": "periods",
+    "group": "Broker check",
+    "title": "Broker check: every account and month with its state"
+  },
+  {
+    "name": "stats",
+    "group": "Statistics",
+    "title": "Statistics overview"
+  },
+  {
+    "name": "calendar",
+    "group": "Statistics",
+    "title": "Calendar heat map"
+  },
+  {
+    "name": "stats-drilldown",
+    "group": "Statistics",
+    "title": "A figure opened: formula, included and excluded trades"
+  },
+  {
+    "name": "learn",
+    "group": "Statistics",
+    "title": "Learn popover on a figure"
+  },
+  {
+    "name": "compare",
+    "group": "Review",
+    "title": "Your paper and real figures"
+  },
+  {
+    "name": "review",
+    "group": "Review",
+    "title": "Weekly review with linked trades (on-device model)"
+  },
+  {
+    "name": "review-fallback",
+    "group": "Review",
+    "title": "Fallback: model unavailable, review by rules, no pattern found"
+  },
+  {
+    "name": "settings",
+    "group": "Settings",
+    "title": "Settings"
+  },
+  {
+    "name": "settings-ai",
+    "group": "Settings",
+    "title": "AI engine: model downloading"
+  },
+  {
+    "name": "data",
+    "group": "Settings",
+    "title": "Data: storage refused, export done"
+  },
+  {
+    "name": "about",
+    "group": "Settings",
+    "title": "About: the one-page explanation (approved wording)"
+  },
+  {
+    "name": "plan",
+    "group": "Log",
+    "title": "Plan editor: example plan, your numbers"
+  }
+]

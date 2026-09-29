@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="mock">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>My plan</title>
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--loss-soft)"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern>
+</defs></svg>
+<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons">
+<svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+<svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.4 10.4 0 0 0 8 .2 10.4 10.4 0 0 0 .7 3.2L2 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4L13 5.6A7 7 0 0 0 8 3.6a7 7 0 0 0-5 2l1.4 1.4c1-.9 2.2-1.4 3.6-1.4zm0 3.3c.5 0 1 .2 1.3.5L8 10.8 6.7 9.4c.3-.3.8-.5 1.3-.5z"/></svg>
+<svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="17" height="8" rx="1.6"/><rect x="24.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg>
+</span></div>
+<div class="app has-actions">
+<header class="topbar paper-mode"><button class="back"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Home</button><h1 class="title-sm">My plan</h1><span class="badge paper"><span class="dot ring"></span>Paper</span></header>
+<main class="content">
+<div class="banner neutral" style="grid-template-columns:auto 1fr"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></svg><div class="body"><b style="color:var(--text)">An example, yours to change</b>Nothing here is recommended. Rules you leave empty are not checked.</div></div>
+<div class="group-h">Checklist before a trade</div>
+<div class="list">
+  <div class="set-row"><span class="check on"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">The setup is on my list</span><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></div>
+  <div class="set-row"><span class="check on"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">Stop decided before I enter</span><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></div>
+  <div class="set-row"><span class="check on"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="lbl">I am calm, not chasing a loss</span><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg></div>
+  <a class="set-row link" href="#"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="lbl" style="color:var(--accent)">Add an item</span></a>
+</div>
+<div class="group-h">Rules the app checks</div>
+<section class="card" style="display:grid;gap:14px">
+  <div class="field"><label>My setups</label><div class="chips" style="margin:0;padding:2px 0"><button class="chip" aria-pressed="true">Breakout</button><button class="chip" aria-pressed="true">Pullback</button><button class="chip"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add</button></div></div>
+  <div class="grid2"><div class="field"><label>Hours from</label><div class="input select">15:30<svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></div></div><div class="field"><label>to</label><div class="input select">22:00<svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></div></div></div>
+  <div class="grid2"><div class="field"><label>Risk per trade</label><div class="input"><span class="ph">your number</span><span class="unit">%</span></div></div><div class="field"><label>Daily loss limit</label><div class="input"><span class="ph">your number</span><span class="unit">%</span></div></div></div>
+  <div class="field"><label>Most trades a day</label><div class="input"><span class="ph">your number</span></div></div>
+  <p class="caption">Percent of the account’s equity at entry. Paper uses your pretend starting balance, 10,000.00 EUR.</p>
+</section>
+</main>
+<div class="actions"><button class="btn primary lg block">Save plan</button></div>
+</div>
+<div class="homebar" aria-hidden="true"></div>
+</body>
+</html>

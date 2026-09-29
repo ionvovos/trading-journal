@@ -1,0 +1,224 @@
+/* Trading journal design tokens (L2d). Production file: S1 copies it unchanged into the app.
+   Theme: light by default, dark from the OS, or forced with <html data-theme="light|dark">.
+   Every colour pair used for text is listed with its contrast ratio in docs/design.md §2. */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg: #f4f5f7;              /* app background, grouped lists sit on it */
+  --surface: #ffffff;         /* cards, sheets, rows */
+  --surface-2: #eceef2;       /* inputs, segmented track, skeleton */
+  --surface-raised: #ffffff;  /* popovers, toasts (shadow gives the lift) */
+  --scrim: rgb(15 20 30 / 0.38);
+  --line: #e2e5ea;
+  --line-strong: #c9ced6;
+  --control-line: #858d99;    /* input and toggle outlines: 3:1 against the surface (WCAG 1.4.11) */
+
+  /* Text */
+  --text: #11151b;
+  --text-2: #464f5c;          /* secondary */
+  --text-3: #5c6572;          /* tertiary, captions, axis labels */
+  --text-inverse: #ffffff;
+
+  /* The one accent: interactive controls, selection, focus, equity line */
+  --accent: #2f55d4;
+  --accent-strong: #2446b8;   /* pressed */
+  --accent-soft: #e8edfd;
+  --on-accent: #ffffff;
+  --focus-ring: 0 0 0 3px rgb(47 85 212 / 0.35);
+
+  /* Money semantics. Colour is never the only signal: sign (+ / U+2212) and an arrow ride along. */
+  --gain: #0b7650;
+  --gain-soft: #e1f3ea;
+  --gain-chart: #139a69;
+  --loss: #c02c3a;
+  --loss-soft: #fbe6e8;
+  --loss-chart: #d9434f;
+  --flat: #5c6572;
+
+  /* Mode markers. Paper = violet + diagonal hatch + the word; real = ink + solid dot + the word. */
+  --paper: #6d3fc0;
+  --paper-soft: #f1ebfc;
+  --paper-line: #c9b3f0;
+  --real: #1f2733;
+  --real-soft: #e8ebf0;
+
+  /* Status (reconcile, anomalies, system) */
+  --attention: #8a4b00;       /* difference open, questions waiting */
+  --attention-soft: #fdf0dc;
+  --attention-line: #eec68a;
+  --ok: #2f55d4;              /* reconciled = accent + check icon, so it never reads as profit */
+  --ok-soft: #e8edfd;
+  --muted-soft: #eceef2;      /* skipped, not asked */
+  --danger: #c02c3a;
+
+  /* Chart */
+  --chart-grid: #e6e8ec;
+  --chart-axis: #5c6572;
+  --chart-equity: #2f55d4;
+  --chart-equity-fill: rgb(47 85 212 / 0.10);
+  --chart-dd: #d9434f;
+  --chart-dd-fill: rgb(217 67 79 / 0.16);
+
+  /* Type: system fonts only, tabular figures for every number */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Roboto Mono", monospace;
+  --num: tabular-nums lining-nums;
+
+  --fs-display: 34px;  --lh-display: 40px;   /* hero figure */
+  --fs-title1: 28px;   --lh-title1: 34px;
+  --fs-title2: 22px;   --lh-title2: 28px;
+  --fs-title3: 17px;   --lh-title3: 22px;    /* section and card titles */
+  --fs-body: 16px;     --lh-body: 22px;      /* inputs stay 16px so iOS never zooms */
+  --fs-callout: 15px;  --lh-callout: 20px;
+  --fs-sub: 13px;      --lh-sub: 18px;
+  --fs-caption: 12px;  --lh-caption: 16px;
+  --fs-micro: 11px;    --lh-micro: 14px;     /* floor: chart axes and tags never go below 11px */
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
+  --tracking-caps: 0.06em;
+
+  /* Space (4 px grid) */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s7: 32px; --s8: 40px;
+  --gutter: 16px;
+  --tap: 44px;                /* minimum touch target */
+
+  /* Radius */
+  --r-xs: 6px; --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 22px; --r-pill: 999px;
+
+  /* Elevation */
+  --e1: 0 1px 2px rgb(16 24 40 / 0.06), 0 0 0 1px rgb(16 24 40 / 0.04);
+  --e2: 0 6px 20px rgb(16 24 40 / 0.10), 0 1px 3px rgb(16 24 40 / 0.08);
+  --e3: 0 18px 48px rgb(16 24 40 / 0.18), 0 2px 6px rgb(16 24 40 / 0.08);
+
+  /* Motion */
+  --dur-1: 120ms;             /* press, toggle */
+  --dur-2: 220ms;             /* fade, chip, row insert */
+  --dur-3: 360ms;             /* sheet, screen push */
+  --dur-chart: 600ms;         /* line draw, bar grow */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Safe areas */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --tabbar-h: 56px;
+
+  /* Patterns */
+  --hatch-paper: repeating-linear-gradient(135deg, rgb(109 63 192 / 0.13) 0 5px, transparent 5px 10px);
+  --hatch-loss: repeating-linear-gradient(135deg, rgb(192 44 58 / 0.12) 0 4px, transparent 4px 8px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0c0e12;
+    --surface: #16191f;
+    --surface-2: #20242c;
+    --surface-raised: #1d2128;
+    --scrim: rgb(0 0 0 / 0.56);
+    --line: #262a33;
+    --line-strong: #363b46;
+    --control-line: #6b7380;
+    --text: #eceef2;
+    --text-2: #b3bac5;
+    --text-3: #9099a6;
+    --text-inverse: #0c0e12;
+    --accent: #7d9bff;
+    --accent-strong: #9ab2ff;
+    --accent-soft: #1d2640;
+    --on-accent: #0b1330;
+    --focus-ring: 0 0 0 3px rgb(125 155 255 / 0.45);
+    --gain: #3fcf91;
+    --gain-soft: #10291f;
+    --gain-chart: #33c285;
+    --loss: #ff7a84;
+    --loss-soft: #33161a;
+    --loss-chart: #f0626d;
+    --flat: #9099a6;
+    --paper: #c3a4ff;
+    --paper-soft: #231a36;
+    --paper-line: #4f3c7a;
+    --real: #e3e7ee;
+    --real-soft: #262b35;
+    --attention: #f2b35c;
+    --attention-soft: #2e2210;
+    --attention-line: #6a4a17;
+    --ok: #7d9bff;
+    --ok-soft: #1d2640;
+    --muted-soft: #20242c;
+    --danger: #ff7a84;
+    --chart-grid: #242831;
+    --chart-axis: #9099a6;
+    --chart-equity: #7d9bff;
+    --chart-equity-fill: rgb(125 155 255 / 0.14);
+    --chart-dd: #f0626d;
+    --chart-dd-fill: rgb(240 98 109 / 0.20);
+    --e1: 0 0 0 1px rgb(255 255 255 / 0.06);
+    --e2: 0 8px 24px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.07);
+    --e3: 0 20px 56px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.08);
+    --hatch-paper: repeating-linear-gradient(135deg, rgb(195 164 255 / 0.14) 0 5px, transparent 5px 10px);
+    --hatch-loss: repeating-linear-gradient(135deg, rgb(255 122 132 / 0.10) 0 4px, transparent 4px 8px);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c0e12;
+  --surface: #16191f;
+  --surface-2: #20242c;
+  --surface-raised: #1d2128;
+  --scrim: rgb(0 0 0 / 0.56);
+  --line: #262a33;
+  --line-strong: #363b46;
+  --control-line: #6b7380;
+  --text: #eceef2;
+  --text-2: #b3bac5;
+  --text-3: #9099a6;
+  --text-inverse: #0c0e12;
+  --accent: #7d9bff;
+  --accent-strong: #9ab2ff;
+  --accent-soft: #1d2640;
+  --on-accent: #0b1330;
+  --focus-ring: 0 0 0 3px rgb(125 155 255 / 0.45);
+  --gain: #3fcf91;
+  --gain-soft: #10291f;
+  --gain-chart: #33c285;
+  --loss: #ff7a84;
+  --loss-soft: #33161a;
+  --loss-chart: #f0626d;
+  --flat: #9099a6;
+  --paper: #c3a4ff;
+  --paper-soft: #231a36;
+  --paper-line: #4f3c7a;
+  --real: #e3e7ee;
+  --real-soft: #262b35;
+  --attention: #f2b35c;
+  --attention-soft: #2e2210;
+  --attention-line: #6a4a17;
+  --ok: #7d9bff;
+  --ok-soft: #1d2640;
+  --muted-soft: #20242c;
+  --danger: #ff7a84;
+  --chart-grid: #242831;
+  --chart-axis: #9099a6;
+  --chart-equity: #7d9bff;
+  --chart-equity-fill: rgb(125 155 255 / 0.14);
+  --chart-dd: #f0626d;
+  --chart-dd-fill: rgb(240 98 109 / 0.20);
+  --e1: 0 0 0 1px rgb(255 255 255 / 0.06);
+  --e2: 0 8px 24px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.07);
+  --e3: 0 20px 56px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.08);
+  --hatch-paper: repeating-linear-gradient(135deg, rgb(195 164 255 / 0.14) 0 5px, transparent 5px 10px);
+  --hatch-loss: repeating-linear-gradient(135deg, rgb(255 122 132 / 0.10) 0 4px, transparent 4px 8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 0.01ms; --dur-2: 0.01ms; --dur-3: 0.01ms; --dur-chart: 0.01ms;
+  }
+}

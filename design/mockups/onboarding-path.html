@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" class="mock">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>How to start</title>
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" style="fill:var(--loss-soft)"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern>
+</defs></svg>
+<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons">
+<svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+<svg viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.4 10.4 0 0 0 8 .2 10.4 10.4 0 0 0 .7 3.2L2 4.6a8.4 8.4 0 0 1 6-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4L13 5.6A7 7 0 0 0 8 3.6a7 7 0 0 0-5 2l1.4 1.4c1-.9 2.2-1.4 3.6-1.4zm0 3.3c.5 0 1 .2 1.3.5L8 10.8 6.7 9.4c.3-.3.8-.5 1.3-.5z"/></svg>
+<svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="17" height="8" rx="1.6"/><rect x="24.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg>
+</span></div>
+<div class="ob">
+
+<div class="steps" aria-label="Step 2 of 2"><i class="done"></i><i class="done"></i></div>
+<div class="vstack" style="gap:10px"><h1>How do you want to start?</h1><p class="lead">You can switch between paper and real at any time. They never mix.</p></div>
+<div class="vstack" style="gap:12px">
+<button class="choice sel"><span class="ic paper"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14.5h6M9 18h3"/></svg></span><span><h3>I’m new: practise on paper</h3><span class="sub">Log made-up trades with the same steps as real ones. Good for learning the terms from your own numbers.</span></span><span class="radio on"></span></button>
+<button class="choice"><span class="ic real"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg></span><span><h3>I trade already: import my history</h3><span class="sub">Bring in a file from your broker or exchange, then check the totals against your broker’s.</span></span><span class="radio"></span></button>
+<button class="choice"><span class="ic real"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5 4 20zM13.5 7l3 3"/></svg></span><span><h3>Log a real trade by hand</h3><span class="sub">Start from today with no file.</span></span><span class="radio"></span></button>
+</div>
+<div class="spacer"></div>
+<p class="caption" style="text-align:center">Paper results leave out real fills, emotions and often costs.</p>
+<button class="btn primary lg block">Start on paper</button>
+</div>
+<div class="homebar" aria-hidden="true"></div>
+</body>
+</html>
