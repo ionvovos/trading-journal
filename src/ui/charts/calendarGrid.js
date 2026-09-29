@@ -8,6 +8,20 @@ import { t } from '../../i18n/i18n.js';
 
 const HEAD = { en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], el: ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ'] };
 
+const ymd = (ms) => new Date(ms).toISOString().slice(0, 10);
+
+// The week total for each grid row, found by the Monday the row starts on (the list `weeks` holds only weeks that have trades, so a
+// position in it says nothing about a row; V2 G2). Returns [{ start, netMinor|null }] for the rows of the month.
+export function weekRows(year, month, weeks = []) {
+  const lead = (new Date(Date.UTC(year, month - 1, 1)).getUTCDay() + 6) % 7;
+  const dim = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const byStart = new Map(weeks.map((w) => [w.start, w.netMinor]));
+  return Array.from({ length: Math.ceil((lead + dim) / 7) }, (_, w) => {
+    const start = ymd(Date.UTC(year, month - 1, 1 - lead + w * 7));
+    return { start, netMinor: byStart.has(start) ? byStart.get(start) : null };
+  });
+}
+
 export function calendarGrid({ year, month, days, weeks = [], fmt = defaultFmt(), ccy = 'USD', selected, today, onSelect, ariaLabel }) {
   const digits = 10 ** (fmt.minorDigits?.(ccy) ?? 2);
   const byDate = new Map(days.map((d) => [d.date, d]));
@@ -25,6 +39,7 @@ export function calendarGrid({ year, month, days, weeks = [], fmt = defaultFmt()
   const dim = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const rowsCount = Math.ceil((lead + dim) / 7);
   const iso = (d) => `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  const rows = weekRows(year, month, weeks);
   for (let w = 0; w < rowsCount; w += 1) {
     let sum = 0; let any = false;
     for (let c = 0; c < 7; c += 1) {
@@ -41,8 +56,9 @@ export function calendarGrid({ year, month, days, weeks = [], fmt = defaultFmt()
       if (rec) { sum += rec.netMinor; any = true; }
       cells.push(cell);
     }
-    const wk = weeks[w]?.netMinor ?? sum;
-    cells.push(el('div', { class: ['wk', any || weeks[w] ? (wk > 0 ? 'gain' : wk < 0 ? 'loss' : 'flat') : 'flat'] }, any || weeks[w] ? short(wk) : ''));
+    const wk = rows[w].netMinor ?? sum;
+    const has = any || rows[w].netMinor !== null;
+    cells.push(el('div', { class: ['wk', has ? (wk > 0 ? 'gain' : wk < 0 ? 'loss' : 'flat') : 'flat'] }, has ? short(wk) : ''));
   }
   return el('div', { class: 'cal', role: 'grid', 'aria-label': ariaLabel }, ...cells);
 }

@@ -15,7 +15,7 @@ export const ROUTES = [
   { path: '/stats/:tab', view: 'stats', tab: 'stats' },
   { path: '/calendar', view: 'calendar', tab: 'stats' },
   { path: '/drill/:figure', view: 'drill', tab: 'stats' },
-  { path: '/plan', view: 'plan', tab: 'review' },
+  { path: '/plan', view: 'plan', tab: 'review', chrome: 'none' }, // its Save bar is fixed at the bottom: the tab bar would cover it (V2 G1)
   { path: '/sizing', view: 'sizing', tab: 'review' },
   { path: '/review', view: 'review', tab: 'review' },
   { path: '/review/:id', view: 'review', tab: 'review' },
