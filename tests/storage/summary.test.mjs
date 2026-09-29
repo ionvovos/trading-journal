@@ -90,3 +90,32 @@ test('export then import into an empty install reproduces every figure (AC-P3.5)
   const pick = (s) => ({ net: s.netMinor, per: s.included.map((t) => [t.id, s.money.get(t.id).netMinor, s.stats.rMultiple(t, s.sctx)]), win: s.winRate, pf: s.profitFactor, exp: s.expectancy, dd: s.drawdown, fees: s.feeTotals, streaks: s.streaks, hold: s.holding, cal: s.stats.calendar(s.included, { year: 2026, month: 3 }, s.sctx), buckets: ['setup', 'market', 'weekday', 'hour', 'session'].map((k) => s.stats.buckets(s.included, k, s.sctx)) });
   assert.deepEqual(pick(sb), pick(sa));
 });
+
+import { formulaLines, headline, FIGURES } from '../../src/ui/views/drill.js';
+import { registerCatalogue, setLang } from '../../src/i18n/i18n.js';
+import dataEn from '../../src/i18n/en/data.js';
+import shellEn from '../../src/i18n/en/shell.js';
+
+test('drill-down: every figure has a formula with this journal\'s numbers, and the listed trades sum to the headline (AC-A5.1, AC-A5.2)', async () => {
+  registerCatalogue('en', { ...shellEn, ...dataEn });
+  setLang('en');
+  const store = await seeded();
+  const ctx = viewCtx(store);
+  const s = await computeStats(ctx, await loadModel(store), { period: null });
+  const fmt = ctx.fmt;
+  for (const [slug, id] of Object.entries(FIGURES)) {
+    if (slug === 'r') continue;
+    const ex = s.stats.explain(id, s.set, s.sctx);
+    assert.ok(Array.isArray(ex.includedIds), slug);
+    const lines = formulaLines(slug, ex, s, fmt, 'USD');
+    if (['pips', 'streaks', 'fees', 'holding-time', 'win-rate', 'expectancy', 'profit-factor', 'avg-win', 'avg-loss', 'rule-following', 'drawdown'].includes(slug)) assert.ok(lines.length > 0, `${slug} has a formula line`);
+    for (const l of lines) assert.ok(!/\{|\}/.test(l), `${slug}: no unfilled placeholder in "${l}"`);
+    for (const m of ex.params.money || []) assert.equal(m.totalMinor, m.items.reduce((a, i) => a + i.valueMinor, 0), `${slug} money list ${m.name} sums to its total`);
+  }
+  const s9 = s.stats.explain('S9', s.set, s.sctx);
+  assert.equal(formulaLines('expectancy', s9, s, fmt, 'USD')[0], 'Sum of R ÷ trades with R: +1.44R ÷ 6 = +0.24R');
+  assert.deepEqual(s9.excluded.map((e) => e.reason).sort(), ['held_out', 'open', 'other_mode', 'r_missing'], 'every trade left out has its reason');
+  const s2 = s.stats.explain('S2', s.set, s.sctx);
+  assert.equal(s2.params.money[0].totalMinor, s.netMinor);
+  assert.equal(headline('win-rate', s, fmt, 'USD').text, '57.1%');
+});

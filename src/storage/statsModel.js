@@ -46,7 +46,7 @@ export async function computeStats(ctx, model, { period = null, sctxOverrides = 
   const cashInView = model.cash.filter((c) => sctx.accountIds === 'all' ? accounts.get(c.accountId)?.mode === ctx.mode : sctx.accountIds.includes(c.accountId));
   const drawdown = stats.drawdown(curve, { cash: cashInView, ctx: sctx });
   return {
-    stats, sctx, period, included, excluded, wanted, money, displayNet, netMinor, currency: displayCcy, accounts, cash: cashInView,
+    stats, sctx, period, set: { included, excluded }, included, excluded, wanted, money, displayNet, netMinor, currency: displayCcy, accounts, cash: cashInView,
     winRate: stats.winRate(included), avgWinLoss: stats.avgWinLoss(included), profitFactor: stats.profitFactor(included),
     expectancy: stats.expectancy(included, sctx), curve, drawdown,
     feeTotals: stats.feeTotals(included), streaks: stats.streaks(included), ruleFollowing: stats.ruleFollowing(included), holding: stats.holdingTime(included),

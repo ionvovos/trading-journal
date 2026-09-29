@@ -36,7 +36,7 @@ export async function getSummary(ctx) {
     curve: { points }, smallSampleMin: ctx.settings.get('smallSampleMin') ?? 30,
     expectancy: exp ? { r: exp.r ? { value: exp.r.value, n: exp.r.n, rMissing: exp.r.rMissing } : undefined, smallSample: exp.smallSample } : undefined,
     winRate: s.winRate ? { value: s.winRate.value, wins: s.winRate.wins, n: s.winRate.n } : undefined,
-    drawdown: dd ? { maxMinor: dd.maxMinor, maxPct: dd.maxPct, peakIndex: pointIndex(s.curve, dd.peak), troughIndex: pointIndex(s.curve, dd.trough), note: dd.note } : undefined,
+    drawdown: dd ? { maxMinor: dd.maxMinor, maxPct: dd.maxPct, peakIndex: dd.peak?.index ?? pointIndex(s.curve, dd.peak), troughIndex: dd.trough?.index ?? pointIndex(s.curve, dd.trough), note: dd.note } : undefined,
     followed: s.ruleFollowing && s.ruleFollowing.marked ? { followed: s.ruleFollowing.followed, marked: s.ruleFollowing.marked } : undefined,
     counts: s.counts, reconcileStates: states, recent,
     exportDue: exportDue({ trades: model.trades, lastExportAt: last || null, every: Number(ctx.settings.get('exportReminderEvery') ?? 50) }),

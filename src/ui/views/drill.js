@@ -31,6 +31,36 @@ export function headline(slug, s, fmt, ccy) {
   }
 }
 
+// Pure: the formula of a figure in words with this person's numbers, one line each (AC-A5.1).
+export function formulaLines(slug, ex, s, fmt, ccy) {
+  const p = ex.params || {};
+  const m = (minor) => fmt.money(minor, ccy);
+  const mp = (minor) => fmt.moneyPlain(Math.abs(minor), ccy);
+  const digits = fmt.minorDigits(ccy);
+  const moneyOf = (name) => (p.money || []).find((x) => x.name === name)?.totalMinor ?? 0;
+  switch (slug) {
+    case 'win-rate': return [t('drill.f.S4', { wins: p.wins, n: p.n, pct: fmt.pct((p.value ?? 0) * 100) })];
+    case 'avg-win': return [t('drill.f.S5win', { sum: m(moneyOf('wins')), n: p.nWin, avg: m(Math.round((p.avgWin ?? 0) * 10 ** digits)) })];
+    case 'avg-loss': return [t('drill.f.S5loss', { sum: mp(moneyOf('losses')), n: p.nLoss, avg: mp(Math.round((p.avgLoss ?? 0) * 10 ** digits)) })];
+    case 'profit-factor': return p.value == null ? [t('drill.f.S6none')] : [t('drill.f.S6', { wins: m(moneyOf('wins')), losses: mp(moneyOf('losses')), pf: fmt.num(p.value, 2) })];
+    case 'expectancy': {
+      const r = p.r || {};
+      const sum = (p.rValues || []).reduce((a, x) => a + x.r, 0);
+      const a = s.avgWinLoss;
+      const lines = [t('drill.f.S9a', { sum: fmt.r(sum), n: r.n, value: r.value == null ? '–' : fmt.r(r.value) })];
+      if (r.n && a) lines.push(t('drill.f.S9b', { win: fmt.pct((a.nWinR / r.n) * 100), avgWin: fmt.r(a.avgWinR ?? 0), loss: fmt.pct((a.nLossR / r.n) * 100), avgLoss: fmt.num(a.avgLossR ?? 0, 2) + 'R', value: r.value == null ? '–' : fmt.r(r.value) }));
+      return lines;
+    }
+    case 'drawdown': return p.maxMinor ? [t('drill.f.S11', { peak: fmt.moneyPlain(p.peak.equityMinor, ccy), peakDate: fmt.date(p.peak.t), trough: fmt.moneyPlain(p.trough.equityMinor, ccy), troughDate: fmt.date(p.trough.t), amount: mp(p.maxMinor) }), p.note === 'includes_cash' ? t('drill.f.S11cash') : null].filter(Boolean) : [];
+    case 'fees': return [t('drill.f.S14', { fees: mp(p.feesMinor ?? 0), funding: mp(p.fundingMinor ?? 0) })];
+    case 'streaks': return [t('drill.f.S15', { w: p.longestWin, l: p.longestLoss })];
+    case 'rule-following': return [t('drill.f.S16', { followed: p.followed, marked: p.marked, pct: fmt.pct((p.value ?? 0) * 100) })];
+    case 'pips': return (p.byPair || []).map((x) => t('drill.f.S17', { pair: x.instrument, pips: fmt.pips(x.pips), n: x.n }));
+    case 'holding-time': return [t('drill.f.S18', { w: p.winners?.n ? fmt.duration(p.winners.avgSeconds) : '–', nw: p.winners?.n ?? 0, l: p.losers?.n ? fmt.duration(p.losers.avgSeconds) : '–', nl: p.losers?.n ?? 0 })];
+    default: return [];
+  }
+}
+
 export async function render(root, ctx, params) {
   const slug = params.figure;
   let disposed = false;
@@ -48,7 +78,7 @@ export async function render(root, ctx, params) {
     let s = null; let ex = null;
     try {
       s = await computeStats(ctx, model, { period });
-      ex = s.stats.explain(figureId, s.included, s.sctx);
+      ex = s.stats.explain(figureId, s.set, s.sctx);
     } catch (e) { console.error('drill failed', e); }
     if (disposed) return;
     if (!s || !ex) { mount(root, bar, el('main', { class: 'content' }, ui.stateBanner({ kind: 'danger', iconName: 'alert', title: t('home.error.title'), body: t('home.error.body') }))); return; }
@@ -66,12 +96,13 @@ export async function render(root, ctx, params) {
       if (!leftOut.has(e.reason)) leftOut.set(e.reason, []);
       leftOut.get(e.reason).push(byId.get(e.id));
     }
-    const formulaText = has(`drill.formula.${ex.formulaKey}`) ? t(`drill.formula.${ex.formulaKey}`, ex.params || {}) : t('drill.formula.generic', { name: has(`figure.${slug}`) ? t(`figure.${slug}`) : slug });
+    const lines = formulaLines(slug, ex, s, fmt, ccy);
+    const formulaNode = lines.length ? lines.map((l) => el('div', null, l)) : [t('drill.formula.generic', { name: has(`figure.${slug}`) ? t(`figure.${slug}`) : slug })];
     mount(root, bar, el('main', { class: 'content' },
       el('section', { class: 'card' }, el('div', { class: 'hero-label' }, `${period ? fmt.date(`${month}-15T12:00:00Z`, { style: 'monthLong', zone: 'UTC' }) : t('stats.period.all')} · ${t('drill.trades', { n: includedTrades.length })}`, ui.modeBadge(ctx.mode)),
         head ? [el('div', { class: ['hero', head.tone] }, head.text), el('p', { class: 'sub' }, head.sub)] : el('p', { class: 'sub' }, t('drill.noValue'))),
       el('section', { class: 'card' }, el('div', { class: 'card-h' }, el('h3', null, t('drill.calc')), ui.iconButton({ iconName: 'info', label: t('figure.explain', { name: slug }), onClick: () => ctx.navigate(`#/learn/${slug}`) })),
-        el('div', { class: 'formula' }, formulaText)),
+        el('div', { class: 'formula' }, ...formulaNode)),
       sectionHead(t('drill.included', { n: includedTrades.length })),
       el('div', { class: 'list' }, ...shown.map(rowFor), includedTrades.length > 4 && !showAll ? ui.button({ label: t('drill.showAll', { n: includedTrades.length }), kind: 'ghost', block: true, onClick: () => { showAll = true; paint(); } }) : null),
       leftOut.size ? [sectionHead(t('drill.leftOut', { n: [...leftOut.values()].reduce((a, l) => a + l.length, 0) })), el('div', { class: 'list' }, ...[...leftOut.entries()].map(([reason, list]) => el('div', { class: 'set-row' }, el('span', { class: 'lbl' }, has(`drill.reason.${reason}`) ? t(`drill.reason.${reason}`) : reason, el('small', null, list.filter(Boolean).slice(0, 4).map((x) => x.instrument).join(', '))), el('span', { class: 'val' }, String(list.length)))))] : null));
