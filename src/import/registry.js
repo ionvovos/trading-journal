@@ -1,38 +1,18 @@
-// Format registry. One id per named format (architecture section 2.1); adding a format is one
-// module in src/import/formats/, one id here, one fixture pair, one test file (section 2.4).
-//
-// The modules load through dynamic import so the registry works while a format module is not on
-// disk yet (cloud sessions C1-C4 deliver them one by one). Once all four are merged the ids become
-// static imports (L3 S2 step 4) and `loadFormats` resolves at once.
+// Format registry. One id per named format (architecture section 2.1); adding a format is one module in
+// src/import/formats/, one line here, one fixture pair, one test file (section 2.4).
+import { format as ibkr } from './formats/ibkr-activity.js';
+import { format as kraken } from './formats/kraken-trades.js';
+import { format as mt4 } from './formats/mt4-statement.js';
+import { format as generic } from './formats/generic-csv.js';
 
 export const FORMAT_IDS = ['ibkr-activity', 'kraken-trades', 'mt4-statement', 'generic-csv'];
 export const MIN_CONFIDENCE = 0.6;
 
-// Live list of loaded format objects in FORMAT_IDS order. Filled by loadFormats().
-export const formats = [];
+// Live list of the format objects in FORMAT_IDS order (tests may swap its content).
+export const formats = [ibkr, kraken, mt4, generic];
 
-let loading = null;
-
-export function loadFormats() {
-  if (!loading) {
-    loading = (async () => {
-      const found = [];
-      for (const id of FORMAT_IDS) {
-        try {
-          const mod = await import(`./formats/${id}.js`);
-          if (mod.format && mod.format.id === id) found.push(mod.format);
-        } catch (err) {
-          const missing = err && (err.code === 'ERR_MODULE_NOT_FOUND' || /Failed to fetch|Cannot find module|Failed to load/.test(String(err.message)));
-          if (!missing) throw err;
-        }
-      }
-      formats.length = 0;
-      formats.push(...found);
-      return formats;
-    })();
-  }
-  return loading;
-}
+// Kept from the dynamic-import days so callers need not change: resolves at once with the list.
+export const loadFormats = async () => formats;
 
 export function getFormat(id) {
   return formats.find((f) => f.id === id) || null;

@@ -31,7 +31,8 @@ export function optionsFor(anomaly, trades) {
 
 function errorCard(ctx, error, retry) {
   const { ui } = ctx;
-  const code = error?.code && has(error.code) ? error.code : 'import.error.generic';
+  const raw = error?.code ?? error?.message;
+  const code = raw && has(raw) ? raw : 'import.error.generic';
   return el('div', { class: 'vstack' },
     ui.emptyState({ iconName: 'alert', title: t('import.error.title'), body: t(code, { formatId: error?.formatId ?? '' }) }),
     el('section', { class: 'card' }, el('div', { class: 'card-h' }, el('h3', null, t('import.error.found'))), el('div', { class: 'kv' }, el('div', null, el('dt', null, t('import.error.rows')), el('dd', null, '0')), el('div', null, el('dt', null, t('import.error.journal')), el('dd', null, t('import.error.unchanged'))))),
@@ -125,7 +126,7 @@ async function renderPicker(root, ctx) {
     else if (st.file) {
       body = [steps(2),
         el('section', { class: 'card file-card' }, el('span', { class: 'mk neutral' }, ui.icon('file')), el('div', { class: 'main' }, el('div', { class: 'file-name' }, st.file.name), el('div', { class: 'caption num' }, fmtObj ? t('import.detected', { format: t(fmtObj.labelKey), account: st.account?.name ?? '' }) : t('import.notDetected')))),
-        st.error ? ui.stateBanner({ kind: 'danger', iconName: 'alert', title: t('import.error.title'), body: t(st.error.code && has(st.error.code) ? st.error.code : 'import.error.generic', { formatId: st.error.formatId ?? '' }) }) : null,
+        st.error ? ui.stateBanner({ kind: 'danger', iconName: 'alert', title: t('import.error.title'), body: t(has(st.error.code ?? st.error.message) ? (st.error.code ?? st.error.message) : 'import.error.generic', { formatId: st.error.formatId ?? '' }) }) : null,
         el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('import.format')), ui.segmented({ ariaLabel: t('import.format'), value: st.formatId, options: formats.map((f) => ({ value: f.id, label: t(f.labelKey) })), onChange: (v) => { st.formatId = v; st.error = null; paint(); } })),
         accounts.length > 1 ? el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('import.account')), ui.segmented({ ariaLabel: t('import.account'), value: st.account?.id, options: accounts.map((a) => ({ value: a.id, label: a.name })), onChange: (v) => { st.account = accounts.find((a) => a.id === v); paint(); } })) : null,
         zone ? el('button', { type: 'button', class: 'set-row', onClick: pickZone }, el('span', { class: 'lbl' }, t('import.zone.label'), el('small', null, t('import.zone.help'))), el('span', { class: 'val attn' }, zoneLabel(zone), ui.icon('right'))) : null,
@@ -137,7 +138,7 @@ async function renderPicker(root, ctx) {
         accounts.length ? null : ui.stateBanner({ kind: 'attention', iconName: 'alert', title: t('import.noAccount.title'), body: t('import.noAccount.body'), href: '#/accounts' }),
         accounts.length > 1 ? el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('import.account')), ui.segmented({ ariaLabel: t('import.account'), value: st.account?.id, options: accounts.map((a) => ({ value: a.id, label: a.name })), onChange: (v) => { st.account = accounts.find((a) => a.id === v); paint(); } })) : null,
         ui.button({ label: t('import.choose'), size: 'lg', block: true, disabled: !accounts.length, onClick: () => input.click() }),
-        el('section', { class: 'card' }, el('div', { class: 'card-h' }, el('h3', null, t('import.formats.title'))), el('div', { class: 'kv' }, ...formats.map((f) => el('div', null, el('dt', null, t(f.labelKey)), el('dd', null, t(`market.${f.market === 'any' ? 'stock' : f.market}`))))),
+        el('section', { class: 'card' }, el('div', { class: 'card-h' }, el('h3', null, t('import.formats.title'))), el('div', { class: 'kv' }, ...formats.map((f) => el('div', null, el('dt', null, t(f.labelKey)), el('dd', null, t(f.market === 'any' ? 'import.market.any' : `market.${f.market}`))))),
           el('a', { class: 'link', href: './docs/generic-template.csv', download: 'trading-journal-template.csv' }, t('import.template')))];
     }
     mount(root, detailBar(ctx, { title: t('import.title'), backHash: '#/journal', backLabel: t('nav.journal') }), el('main', { class: 'content' }, ...body, input, bar));

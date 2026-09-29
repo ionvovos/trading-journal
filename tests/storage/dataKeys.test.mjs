@@ -46,7 +46,8 @@ test('form, stop and reconcile families are complete', () => {
     ...['missing_fee', 'rate_missing'].map((c) => `reconcile.needs.${c}`),
     ...['ibkr-activity', 'mt4-statement', 'kraken-trades', 'generic-csv'].map((c) => `reconcile.hint.${c}`),
     ...['win', 'loss', 'even'].map((c) => `journal.result.${c}`), ...['followed', 'off', 'unmarked'].map((c) => `journal.plan.${c}`),
-    ...['number', 'date', 'assetClass', 'cancelled', 'timeOffset', 'pair'].map((c) => `import.skip.${c}`),
+    ...['number', 'date', 'assetClass', 'cancelled', 'timeOffset', 'pair', 'side', 'type', 'market', 'missing'].map((c) => `import.skip.${c}`),
+    ...['ibkr', 'kraken', 'mt4', 'generic'].map((c) => `import.format.${c}`), 'import.error.columns', 'import.market.any',
     ...['notJson', 'wrongFormat', 'newerVersion', 'badRow'].map((c) => `export.error.${c}`),
     ...['unknownFormat', 'formatNotDetected', 'needZone', 'unknownAnomaly', 'unknownOption', 'generic'].map((c) => `import.error.${c}`),
     'reconcile.balance.confirmNoOpenPositions', 'reconcile.paper',
@@ -55,7 +56,7 @@ test('form, stop and reconcile families are complete', () => {
 });
 
 test('the Greek data catalogue is Greek, except stated Latin-term strings', () => {
-  const latinOk = new Set(['accounts.name.ph', 'journal.pips', 'form.stop', 'form.setup', 'journal.f.setup', 'trade.setup', 'trade.stop', 'stops.ph', 'trade.pips', 'unit.lots', 'form.unit.lots', 'stops.in', 'stops.out', 'accounts.kind.real', 'accounts.kind.paper', 'import.report.rKnownOf', 'trade.stopPips', 'stats.pips', 'drill.name.pips', 'drill.name.r']);
+  const latinOk = new Set(['accounts.name.ph', 'journal.pips', 'form.stop', 'form.setup', 'journal.f.setup', 'trade.setup', 'trade.stop', 'stops.ph', 'trade.pips', 'unit.lots', 'form.unit.lots', 'stops.in', 'stops.out', 'accounts.kind.real', 'accounts.kind.paper', 'import.report.rKnownOf', 'trade.stopPips', 'import.format.ibkr', 'stats.pips', 'drill.name.pips', 'drill.name.r']);
   const bad = Object.entries(dataEl).filter(([k, v]) => !/[Ͱ-Ͽ]/.test(v) && !latinOk.has(k));
   assert.deepEqual(bad.map(([k]) => k), []);
 });
