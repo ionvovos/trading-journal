@@ -78,9 +78,12 @@ export async function runChecklist(ctx, draft) {
   return new Promise((resolve) => {
     const screen = el('div', { class: 'screen-overlay' });
     let done = false;
+    // System Back (or any route change) leaves the trade: the overlay must not stay on the next screen (V2 G8)
+    const onRoute = () => finish(null);
     const finish = (mark, leave = false) => {
       if (done) return;
       done = true;
+      window.removeEventListener('hashchange', onRoute);
       screen.remove();
       resolve(mark);
       if (leave) ctx.navigate('#/home');
@@ -108,6 +111,7 @@ export async function runChecklist(ctx, draft) {
     // the back button leaves the trade: nothing is saved and the person returns home
     screen.querySelector('.topbar .back')?.addEventListener('click', (e) => { e.stopImmediatePropagation(); finish(null, true); }, true);
     host.append(screen);
+    window.addEventListener('hashchange', onRoute);
     screen.querySelector('button.btn.primary')?.focus();
   });
 }
@@ -141,8 +145,13 @@ export async function afterSave(ctx, trade) {
     const fresh = await ctx.store.trades.get(trade.id);
     await ctx.store.trades.put({ ...(fresh ?? trade), plan: { ...base, followed, confirmedByUser: true } });
     ctx.bus.emit('trades-changed');
+    window.removeEventListener('hashchange', onRoute);
     s.close();
   };
+  // The sheet follows the person to the journal after a save (that navigation happens at once), but it does not outlive a later route
+  // change such as system Back: it closes without a mark (V2 G8, L4a F9). Armed after the save's own navigation has passed.
+  const onRoute = () => { window.removeEventListener('hashchange', onRoute); s.close(); };
+  setTimeout(() => window.addEventListener('hashchange', onRoute), 400);
   const suggestion = suggested === true ? t('plan.mark.followed') : suggested === false ? t('plan.mark.off') : null;
   const s = ctx.ui.sheet({
     title: t('plan.check.title'), mode: trade.mode, cancelLabel: t('plan.mark.none'),
