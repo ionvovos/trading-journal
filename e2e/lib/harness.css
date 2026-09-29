@@ -1,0 +1,6 @@
+/* Simulated safe areas and status bar, as in design/components.css (the app reads env(safe-area-inset-*) instead). */
+:root { --safe-top: 47px; --safe-bottom: 34px; }
+@media (max-width: 370px) { :root { --safe-top: 32px; --safe-bottom: 20px; } }
+.statusbar { position: fixed; inset: 0 0 auto 0; height: var(--safe-top); z-index: 150; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 26px 10px 32px; font: 600 15px/1 var(--font-display); color: var(--text); pointer-events: none; }
+.homebar { position: fixed; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: var(--text); opacity: .85; z-index: 160; }
+@media (max-width: 370px) { .statusbar { padding: 0 18px 8px 22px; font-size: 13px; } .homebar { width: 108px; margin-left: -54px; height: 4px; bottom: 6px; } }

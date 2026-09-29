@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob: https://cdn.jsdelivr.net; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; img-src 'self' data: blob:; style-src 'self'; font-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f5f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0e12">
+  <meta name="description" content="A trading journal whose numbers you can check against your broker. Stocks, crypto and forex. Your data stays on your device.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Journal">
+  <title>Trading Journal</title>
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/charts.css">
+  <link rel="stylesheet" href="./css/screens.css">
+  <link rel="stylesheet" href="./css/views/data.css">
+  <link rel="stylesheet" href="./css/views/review.css">
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+    <pattern id="hatch-loss" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" class="hatch-fill"/><line x1="0" y1="0" x2="0" y2="5" class="hatch-loss-line"/></pattern>
+  </defs></svg>
+  <div id="app" class="app"></div>
+  <div id="overlay" class="overlay-host"></div>
+  <div id="live" class="sr-live" role="status" aria-live="polite"></div>
+  <noscript><p class="not-built">Trading Journal needs JavaScript to run.</p></noscript>
+</body>
+</html>
