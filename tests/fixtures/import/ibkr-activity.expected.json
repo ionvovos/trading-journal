@@ -1,19 +1,154 @@
 {
- "about": "Hand-computed. Import with fileZone America/New_York (EST until 8 Mar 2026, EDT after), accountCurrency USD, mode real, declared zone Europe/Athens, no earlier imports. SubTotal, Total and the Deposits & Withdrawals Total row are not counted.",
+ "about": "Hand-computed against requirements c1510c2d. Broker account acc-ibkr (base USD); the format does not state its zone, so the import asks once per account (answer America/New_York; EST until 8 Mar 2026, EDT after); declared zone Europe/Athens; no earlier imports. Prices and sizes are decimal strings in fills; numbers here compare numerically. SubTotal, Total and the Deposits & Withdrawals Total row are not counted.",
  "format": "ibkr-activity",
  "accountCurrency": "USD",
  "rowsInFile": 11,
  "fills": 8,
- "nonTrade": [{ "kind": "deposit", "amount": 1000, "currency": "USD" }],
- "skipped": [{ "symbol": "AMD", "reasonKey": "import.skip.number" }, { "symbol": "EUR.USD", "reasonKey": "import.skip.assetClass" }],
- "fillTimesUtc": { "AAPL": ["2026-03-02T14:40:00Z", "2026-03-02T15:10:00Z", "2026-03-02T20:30:00Z"], "MSFT": ["2026-03-03T14:30:00Z", "2026-03-03T15:10:00Z"], "NVDA": ["2026-03-06T15:00:00Z"], "TSLA": ["2026-03-09T13:00:00Z", "2026-03-09T17:00:00Z"] },
- "trades": [
-  { "instrument": "AAPL", "side": "long", "status": "closed", "avgEntry": 50.8, "avgExit": 55, "size": 50, "grossMinor": 21000, "feesMinor": 300, "netMinor": 20700, "brokerRealizedPnl": 207, "holds": [] },
-  { "instrument": "MSFT", "side": "long", "status": "closed", "avgEntry": 50, "avgExit": 47.6, "size": 50, "grossMinor": -12000, "feesMinor": 0, "netMinor": -12000, "brokerRealizedPnl": -120, "holds": [] },
-  { "instrument": "TSLA", "side": "short", "status": "closed", "avgEntry": 200, "avgExit": 190, "size": 10, "grossMinor": 10000, "feesMinor": 200, "netMinor": 9800, "brokerRealizedPnl": 98, "holds": [] },
-  { "instrument": "NVDA", "side": "long", "status": "held", "holds": ["opened_before_file"], "afterAnswer": { "optionId": "use_basis", "avgEntry": 110, "avgExit": 120, "size": 5, "grossMinor": 5000, "feesMinor": 100, "netMinor": 4900 } }
+ "skipped": [
+  {
+   "symbol": "AMD",
+   "reasonKey": "import.skip.number"
+  },
+  {
+   "symbol": "EUR.USD",
+   "reasonKey": "import.skip.assetClass"
+  }
  ],
- "anomalies": [{ "kind": "opened_before_file", "instruments": ["NVDA"] }, { "kind": "unreadable_rows", "rows": 2 }],
- "period": { "from": "2026-03-02", "to": "2026-03-09" },
- "closedIncludedNetMinor": 18500
+ "fillTimesUtc": {
+  "AAPL": [
+   "2026-03-02T14:40:00Z",
+   "2026-03-02T15:10:00Z",
+   "2026-03-02T20:30:00Z"
+  ],
+  "MSFT": [
+   "2026-03-03T14:30:00Z",
+   "2026-03-03T15:10:00Z"
+  ],
+  "NVDA": [
+   "2026-03-06T15:00:00Z"
+  ],
+  "TSLA": [
+   "2026-03-09T13:00:00Z",
+   "2026-03-09T17:00:00Z"
+  ]
+ },
+ "trades": [
+  {
+   "instrument": "AAPL",
+   "side": "long",
+   "status": "closed",
+   "avgEntry": 50.8,
+   "avgExit": 55,
+   "size": "50",
+   "grossMinor": 21000,
+   "feesMinor": 300,
+   "recomputedNetMinor": 20700,
+   "broker": {
+    "netMinor": 20700,
+    "source": "ibkr"
+   },
+   "netMinor": 20700,
+   "source": "broker",
+   "holds": []
+  },
+  {
+   "instrument": "MSFT",
+   "side": "long",
+   "status": "closed",
+   "avgEntry": 50,
+   "avgExit": 47.6,
+   "size": "50",
+   "grossMinor": -12000,
+   "feesMinor": 0,
+   "recomputedNetMinor": -12000,
+   "broker": {
+    "netMinor": -12000,
+    "source": "ibkr"
+   },
+   "netMinor": -12000,
+   "source": "broker",
+   "holds": []
+  },
+  {
+   "instrument": "TSLA",
+   "side": "short",
+   "status": "closed",
+   "avgEntry": 200,
+   "avgExit": 190,
+   "size": "10",
+   "grossMinor": 10000,
+   "feesMinor": 200,
+   "recomputedNetMinor": 9800,
+   "broker": {
+    "netMinor": 9800,
+    "source": "ibkr"
+   },
+   "netMinor": 9800,
+   "source": "broker",
+   "holds": []
+  },
+  {
+   "instrument": "NVDA",
+   "side": "long",
+   "status": "held",
+   "holds": [
+    "opened_before_file"
+   ],
+   "options": [
+    "enter_open",
+    "keep_broker_pnl",
+    "exclude"
+   ],
+   "afterAnswer": {
+    "keep_broker_pnl": {
+     "netMinor": 4900,
+     "r": null,
+     "source": "broker",
+     "note": "Realized P/L 49 on the closing row"
+    },
+    "enter_open": {
+     "value": {
+      "price": "110",
+      "date": "2026-02-20"
+     },
+     "avgEntry": 110,
+     "grossMinor": 5000,
+     "feesMinor": 100,
+     "recomputedNetMinor": 4900,
+     "netMinor": 4900,
+     "note": "broker realised 49 is also stored; no mismatch"
+    }
+   }
+  }
+ ],
+ "anomalies": [
+  {
+   "kind": "opened_before_file",
+   "instruments": [
+    "NVDA"
+   ]
+  },
+  {
+   "kind": "unreadable_rows",
+   "rows": 2
+  }
+ ],
+ "period": {
+  "from": "2026-03-02",
+  "to": "2026-03-09"
+ },
+ "closedIncludedNetMinor": 18500,
+ "statesZone": false,
+ "cash": [
+  {
+   "kind": "deposit",
+   "amount": "1000",
+   "currency": "USD",
+   "time": "2026-03-02"
+  }
+ ],
+ "rKnownShare": {
+  "known": 0,
+  "of": 3
+ }
 }

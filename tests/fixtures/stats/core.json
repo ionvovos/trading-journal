@@ -1,13 +1,40 @@
 {
- "about": "Hand-computed statistics fixture (architecture.md section 3.3). Money in minor units (cents). R and ratios compare with tolerance 1e-9. T1-T7 are closed real trades; T8 open, T9 held out (holds non-empty, incomplete legs: must be excluded before any arithmetic), T10 paper. T1/T2/T6 match tests/fixtures/import/ibkr-activity.csv, T3 kraken-trades.csv, T4/T5 mt4-statement.htm, T7 generic.csv.",
+ "about": "Hand-computed statistics fixture (architecture.md section 3.3). Prices, sizes and stops are decimal strings; money in minor units (cents). Real accounts start at 4,000 + 3,000 + 2,000 + 1,000 = 10,000.00 in view \"all\". Broker figures (trade.broker.netMinor) equal the recomputed net here, so netMinor is the same either way. R and ratios compare with tolerance 1e-9. T1-T7 are closed real trades; T8 open, T9 held out (holds non-empty, incomplete legs: must be excluded before any arithmetic), T10 paper. T1/T2/T6 match tests/fixtures/import/ibkr-activity.csv, T3 kraken-trades.csv, T4/T5 mt4-statement.htm, T7 generic.csv.",
  "ctx": {
-  "accountCurrency": "USD",
-  "minorDigits": 2,
+  "mode": "real",
+  "accountIds": "all",
+  "displayCurrency": "USD",
   "tz": "Europe/Athens",
   "dayCutoffHour": 0,
   "smallSampleMin": 30,
-  "startBalanceMinor": 1000000,
-  "mode": "real"
+  "accounts": {
+   "acc-ibkr": {
+    "baseCurrency": "USD",
+    "startBalance": "4000",
+    "toDisplayRate": 1
+   },
+   "acc-kraken": {
+    "baseCurrency": "USD",
+    "startBalance": "3000",
+    "toDisplayRate": 1
+   },
+   "acc-mt4": {
+    "baseCurrency": "USD",
+    "startBalance": "2000",
+    "toDisplayRate": 1
+   },
+   "acc-manual": {
+    "baseCurrency": "USD",
+    "startBalance": "1000",
+    "toDisplayRate": 1
+   },
+   "acc-paper": {
+    "baseCurrency": "USD",
+    "startBalance": "10000",
+    "toDisplayRate": 1
+   }
+  },
+  "cash": []
  },
  "handChecks": [
   "T1 average entry (30x50 + 20x52)/50 = 50.80; gross (55-50.80)x50 = 210.00; fees 3.00; net 207.00; risk 30x2 + 20x4 = 140; R 207/140 = 1.478571",
@@ -20,11 +47,15 @@
   "Total 207.00 - 120.00 + 189.72 + 98.60 - 34.42 + 98.00 + 0 = 438.90",
   "Profit factor 593.32 / 154.42 = 3.842248; expectancy R mean of 6 known = 0.239277; by parts 3/6 x 1.454177 - 2/6 x 1.463436 = same",
   "Max drawdown from 10,207.00 (after T1) to 10,087.00 (after T2) = 120.00, 1.1757%, recovery gain 10207/10087 - 1 = 1.1897%, recovered at T3",
-  "Calendar in Athens: T3 closes 22:30Z on 4 Mar = 00:30 on 5 Mar, so 5 Mar = 189.72 + 98.60 = 288.32; in UTC it would fall on 4 Mar"
+  "Calendar in Athens: T3 closes 22:30Z on 4 Mar = 00:30 on 5 Mar, so 5 Mar = 189.72 + 98.60 = 288.32; in UTC it would fall on 4 Mar",
+  "S8 breakdown T2: slippage (47.60 - 48) x 50 / 100 = -0.20R, costs 0, so -1.2 = -1 - 0.20; T5 short: slippage (150.5 - 150.3) x 0.1 x 100000 x 0.006644 x -1 / 19.932 = -0.666667R, costs (-34.42 + 33.22) / 19.932 = -0.060205R",
+  "S12 session: T1 09:40 and T2 09:30 New York = us_regular; T6 09:00 and T7 05:00 New York (EDT from 8 Mar) = us_extended; T4 07:00 UTC is before London 08:00 and inside Tokyo 00-09 UTC = tokyo; T5 01:00 UTC = tokyo (Tokyo precedes Sydney); T3 crypto = none",
+  "S17: T4 +50 pips, stop 50 pips; T5 short -50 pips (0.01 per pip, JPY quote), stop 30 pips",
+  "S18: winners T1 21,000 s, T3 3,599.9 s, T4 18,000 s, T6 14,400 s, average 14,249.975 s; losers T2 2,400 s, T5 7,200 s, average 4,800 s"
  ],
  "trades": [
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -37,16 +68,16 @@
    "market": "stock",
    "instrument": "AAPL",
    "side": "long",
-   "initialStop": 48,
+   "initialStop": "48",
    "setup": "breakout",
    "legs": [
     {
      "id": "T1-L1",
      "kind": "entry",
      "time": "2026-03-02T14:40:00Z",
-     "price": 50,
-     "size": 30,
-     "fee": 1,
+     "price": "50",
+     "size": "30",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -55,15 +86,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T1-L2",
      "kind": "entry",
      "time": "2026-03-02T15:10:00Z",
-     "price": 52,
-     "size": 20,
-     "fee": 1,
+     "price": "52",
+     "size": "20",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -72,15 +104,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T1-L3",
      "kind": "exit",
      "time": "2026-03-02T20:30:00Z",
-     "price": 55,
-     "size": 50,
-     "fee": 1,
+     "price": "55",
+     "size": "50",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -89,7 +122,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -106,13 +140,20 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-ibkr",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": {
+    "netMinor": 20700,
+    "source": "ibkr"
+   }
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -125,16 +166,16 @@
    "market": "stock",
    "instrument": "MSFT",
    "side": "long",
-   "initialStop": 48,
+   "initialStop": "48",
    "setup": "breakout",
    "legs": [
     {
      "id": "T2-L1",
      "kind": "entry",
      "time": "2026-03-03T14:30:00Z",
-     "price": 50,
-     "size": 50,
-     "fee": 0,
+     "price": "50",
+     "size": "50",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -143,15 +184,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T2-L2",
      "kind": "exit",
      "time": "2026-03-03T15:10:00Z",
-     "price": 47.6,
-     "size": 50,
-     "fee": 0,
+     "price": "47.6",
+     "size": "50",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -160,7 +202,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -177,13 +220,20 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-ibkr",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": {
+    "netMinor": -12000,
+    "source": "ibkr"
+   }
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -196,16 +246,16 @@
    "market": "crypto",
    "instrument": "BTC/USD",
    "side": "long",
-   "initialStop": 58800,
+   "initialStop": "58800",
    "setup": "pullback",
    "legs": [
     {
      "id": "T3-L1",
      "kind": "entry",
      "time": "2026-03-04T21:30:00.100Z",
-     "price": 60000,
-     "size": 0.05,
-     "fee": 3,
+     "price": "60000",
+     "size": "0.05",
+     "fee": "3",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -214,15 +264,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T3-L2",
      "kind": "entry",
      "time": "2026-03-04T21:30:01.200Z",
-     "price": 60000,
-     "size": 0.0333,
-     "fee": 1.998,
+     "price": "60000",
+     "size": "0.0333",
+     "fee": "1.998",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -231,15 +282,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T3-L3",
      "kind": "exit",
      "time": "2026-03-04T22:30:00.000Z",
-     "price": 62400,
-     "size": 0.0833,
-     "fee": 5.19792,
+     "price": "62400",
+     "size": "0.0833",
+     "fee": "5.19792",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -248,7 +300,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -265,13 +318,17 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-kraken",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": null
   },
   {
-   "contractSize": 100000,
+   "contractSize": "100000",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -284,16 +341,16 @@
    "market": "forex",
    "instrument": "EUR/USD",
    "side": "long",
-   "initialStop": 1.08,
+   "initialStop": "1.08",
    "setup": "breakout",
    "legs": [
     {
      "id": "T4-L1",
      "kind": "entry",
      "time": "2026-03-05T07:00:00Z",
-     "price": 1.085,
-     "size": 0.2,
-     "fee": 0,
+     "price": "1.085",
+     "size": "0.2",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -302,15 +359,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T4-L2",
      "kind": "exit",
      "time": "2026-03-05T12:00:00Z",
-     "price": 1.09,
-     "size": 0.2,
-     "fee": 1.4,
+     "price": "1.09",
+     "size": "0.2",
+     "fee": "1.4",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -319,7 +377,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -336,13 +395,20 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-mt4",
+   "contractValue": null,
+   "stopSource": "file_at_close",
+   "dustRemainder": "0",
+   "broker": {
+    "netMinor": 9860,
+    "source": "mt4"
+   }
   },
   {
-   "contractSize": 100000,
+   "contractSize": "100000",
    "quoteCurrency": "JPY",
    "stopMoves": [],
    "target": null,
@@ -355,16 +421,16 @@
    "market": "forex",
    "instrument": "USD/JPY",
    "side": "short",
-   "initialStop": 150.3,
+   "initialStop": "150.3",
    "setup": null,
    "legs": [
     {
      "id": "T5-L1",
      "kind": "entry",
      "time": "2026-03-06T01:00:00Z",
-     "price": 150,
-     "size": 0.1,
-     "fee": 0,
+     "price": "150",
+     "size": "0.1",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 0.006644,
@@ -373,15 +439,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T5-L2",
      "kind": "exit",
      "time": "2026-03-06T03:00:00Z",
-     "price": 150.5,
-     "size": 0.1,
-     "fee": 0.7,
+     "price": "150.5",
+     "size": "0.1",
+     "fee": "0.7",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 0.006644,
@@ -390,7 +457,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -407,13 +475,20 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-mt4",
+   "contractValue": null,
+   "stopSource": "file_at_close",
+   "dustRemainder": "0",
+   "broker": {
+    "netMinor": -3442,
+    "source": "mt4"
+   }
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -433,9 +508,9 @@
      "id": "T6-L1",
      "kind": "entry",
      "time": "2026-03-09T13:00:00Z",
-     "price": 200,
-     "size": 10,
-     "fee": 1,
+     "price": "200",
+     "size": "10",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -444,15 +519,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T6-L2",
      "kind": "exit",
      "time": "2026-03-09T17:00:00Z",
-     "price": 190,
-     "size": 10,
-     "fee": 1,
+     "price": "190",
+     "size": "10",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -461,7 +537,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -478,13 +555,20 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-ibkr",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": {
+    "netMinor": 9800,
+    "source": "ibkr"
+   }
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -497,16 +581,16 @@
    "market": "stock",
    "instrument": "KO",
    "side": "long",
-   "initialStop": 59,
+   "initialStop": "59",
    "setup": null,
    "legs": [
     {
      "id": "T7-L1",
      "kind": "entry",
      "time": "2026-03-10T09:00:00Z",
-     "price": 60,
-     "size": 100,
-     "fee": 0,
+     "price": "60",
+     "size": "100",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -515,15 +599,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T7-L2",
      "kind": "exit",
      "time": "2026-03-10T10:00:00Z",
-     "price": 60,
-     "size": 100,
-     "fee": 0,
+     "price": "60",
+     "size": "100",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -532,7 +617,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -549,13 +635,17 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-manual",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": null
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -575,9 +665,9 @@
      "id": "T8-L1",
      "kind": "entry",
      "time": "2026-03-07T10:00:00Z",
-     "price": 150,
-     "size": 2,
-     "fee": 0.3,
+     "price": "150",
+     "size": "2",
+     "fee": "0.3",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -586,7 +676,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -603,13 +694,17 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-kraken",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": null
   },
   {
-   "contractSize": 1,
+   "contractSize": "1",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -631,9 +726,9 @@
      "id": "T9-L1",
      "kind": "exit",
      "time": "2026-03-06T15:00:00Z",
-     "price": 120,
-     "size": 5,
-     "fee": 1,
+     "price": "120",
+     "size": "5",
+     "fee": "1",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -642,7 +737,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -659,13 +755,17 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-ibkr",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": null
   },
   {
-   "contractSize": 100000,
+   "contractSize": "100000",
    "quoteCurrency": "USD",
    "stopMoves": [],
    "target": null,
@@ -678,16 +778,16 @@
    "market": "forex",
    "instrument": "EUR/USD",
    "side": "long",
-   "initialStop": 1.085,
+   "initialStop": "1.085",
    "setup": "breakout",
    "legs": [
     {
      "id": "T10-L1",
      "kind": "entry",
      "time": "2026-03-11T08:00:00Z",
-     "price": 1.09,
-     "size": 0.1,
-     "fee": 0,
+     "price": "1.09",
+     "size": "0.1",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -696,15 +796,16 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     },
     {
      "id": "T10-L2",
      "kind": "exit",
      "time": "2026-03-11T10:00:00Z",
-     "price": 1.095,
-     "size": 0.1,
-     "fee": 0,
+     "price": "1.095",
+     "size": "0.1",
+     "fee": "0",
      "feeCurrency": "USD",
      "feeToAccount": 1,
      "quoteToAccount": 1,
@@ -713,7 +814,8 @@
       "importId": null,
       "row": null,
       "key": null
-     }
+     },
+     "broker": null
     }
    ],
    "plan": {
@@ -730,10 +832,14 @@
    "screenshotId": null,
    "leverage": null,
    "importId": null,
-   "stopAtClose": null,
    "createdAt": "2026-03-12T00:00:00Z",
    "updatedAt": "2026-03-12T00:00:00Z",
-   "entry": "manual"
+   "entry": "manual",
+   "accountId": "acc-paper",
+   "contractValue": null,
+   "stopSource": "user",
+   "dustRemainder": "0",
+   "broker": null
   }
  ],
  "expected": {
@@ -748,7 +854,8 @@
     "netMinor": 20700,
     "initialRisk": 140,
     "riskReason": null,
-    "r": 1.4785714285714286
+    "r": 1.4785714285714286,
+    "source": "broker"
    },
    "T2": {
     "avgEntry": 50,
@@ -760,7 +867,8 @@
     "netMinor": -12000,
     "initialRisk": 100,
     "riskReason": null,
-    "r": -1.2
+    "r": -1.2,
+    "source": "broker"
    },
    "T3": {
     "avgEntry": 59999.99999999999,
@@ -772,7 +880,8 @@
     "netMinor": 18972,
     "initialRisk": 99.96000000000001,
     "riskReason": null,
-    "r": 1.8979591836734693
+    "r": 1.8979591836734693,
+    "source": "app"
    },
    "T4": {
     "avgEntry": 1.085,
@@ -784,7 +893,8 @@
     "netMinor": 9860,
     "initialRisk": 99.99999999999788,
     "riskReason": null,
-    "r": 0.9860000000000209
+    "r": 0.9860000000000209,
+    "source": "broker"
    },
    "T5": {
     "avgEntry": 150,
@@ -796,7 +906,8 @@
     "netMinor": -3442,
     "initialRisk": 19.932000000000755,
     "riskReason": null,
-    "r": -1.7268713626328867
+    "r": -1.7268713626328867,
+    "source": "broker"
    },
    "T6": {
     "avgEntry": 200,
@@ -808,7 +919,8 @@
     "netMinor": 9800,
     "initialRisk": null,
     "riskReason": "no_stop",
-    "r": null
+    "r": null,
+    "source": "broker"
    },
    "T7": {
     "avgEntry": 60,
@@ -820,7 +932,8 @@
     "netMinor": 0,
     "initialRisk": 100,
     "riskReason": null,
-    "r": 0
+    "r": 0,
+    "source": "app"
    }
   },
   "S3": {
@@ -849,7 +962,9 @@
   "S4": {
    "value": 0.5714285714285714,
    "wins": 4,
-   "n": 7
+   "n": 7,
+   "losses": 2,
+   "breakEven": 1
   },
   "S5": {
    "avgWin": 148.33,
@@ -879,48 +994,59 @@
    "smallSample": true
   },
   "totalNetMinor": 43890,
-  "S10": [
-   {
-    "t": null,
-    "tradeId": null,
-    "equityMinor": 1000000
-   },
-   {
-    "t": "2026-03-02T20:30:00Z",
-    "tradeId": "T1",
-    "equityMinor": 1020700
-   },
-   {
-    "t": "2026-03-03T15:10:00Z",
-    "tradeId": "T2",
-    "equityMinor": 1008700
-   },
-   {
-    "t": "2026-03-04T22:30:00.000Z",
-    "tradeId": "T3",
-    "equityMinor": 1027672
-   },
-   {
-    "t": "2026-03-05T12:00:00Z",
-    "tradeId": "T4",
-    "equityMinor": 1037532
-   },
-   {
-    "t": "2026-03-06T03:00:00Z",
-    "tradeId": "T5",
-    "equityMinor": 1034090
-   },
-   {
-    "t": "2026-03-09T17:00:00Z",
-    "tradeId": "T6",
-    "equityMinor": 1043890
-   },
-   {
-    "t": "2026-03-10T10:00:00Z",
-    "tradeId": "T7",
-    "equityMinor": 1043890
-   }
-  ],
+  "S10": {
+   "points": [
+    {
+     "t": null,
+     "kind": "start",
+     "ref": null,
+     "equityMinor": 1000000
+    },
+    {
+     "t": "2026-03-02T20:30:00Z",
+     "kind": "trade",
+     "ref": "T1",
+     "equityMinor": 1020700
+    },
+    {
+     "t": "2026-03-03T15:10:00Z",
+     "kind": "trade",
+     "ref": "T2",
+     "equityMinor": 1008700
+    },
+    {
+     "t": "2026-03-04T22:30:00.000Z",
+     "kind": "trade",
+     "ref": "T3",
+     "equityMinor": 1027672
+    },
+    {
+     "t": "2026-03-05T12:00:00Z",
+     "kind": "trade",
+     "ref": "T4",
+     "equityMinor": 1037532
+    },
+    {
+     "t": "2026-03-06T03:00:00Z",
+     "kind": "trade",
+     "ref": "T5",
+     "equityMinor": 1034090
+    },
+    {
+     "t": "2026-03-09T17:00:00Z",
+     "kind": "trade",
+     "ref": "T6",
+     "equityMinor": 1043890
+    },
+    {
+     "t": "2026-03-10T10:00:00Z",
+     "kind": "trade",
+     "ref": "T7",
+     "equityMinor": 1043890
+    }
+   ],
+   "includesCash": false
+  },
   "S11": {
    "maxMinor": 12000,
    "maxPct": 0.01175663760164593,
@@ -941,7 +1067,8 @@
    },
    "currentMinor": 0,
    "recoveryGainPct": 0.011896500446118674,
-   "currentPct": 0
+   "currentPct": 0,
+   "note": null
   },
   "S12": {
    "setup": {
@@ -1132,6 +1259,96 @@
       "T3"
      ]
     }
+   },
+   "account": {
+    "acc-ibkr": {
+     "n": 3,
+     "netMinor": 18500,
+     "winRate": 0.6666666666666666,
+     "expectancyR": 0.13928571428571435,
+     "rKnown": 2,
+     "tradeIds": [
+      "T1",
+      "T2",
+      "T6"
+     ]
+    },
+    "acc-kraken": {
+     "n": 1,
+     "netMinor": 18972,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3"
+     ]
+    },
+    "acc-mt4": {
+     "n": 2,
+     "netMinor": 6418,
+     "winRate": 0.5,
+     "expectancyR": -0.3704356813164329,
+     "rKnown": 2,
+     "tradeIds": [
+      "T4",
+      "T5"
+     ]
+    },
+    "acc-manual": {
+     "n": 1,
+     "netMinor": 0,
+     "winRate": 0,
+     "expectancyR": 0,
+     "rKnown": 1,
+     "tradeIds": [
+      "T7"
+     ]
+    }
+   },
+   "session": {
+    "us_regular": {
+     "n": 2,
+     "netMinor": 8700,
+     "winRate": 0.5,
+     "expectancyR": 0.13928571428571435,
+     "rKnown": 2,
+     "tradeIds": [
+      "T1",
+      "T2"
+     ]
+    },
+    "none": {
+     "n": 1,
+     "netMinor": 18972,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3"
+     ]
+    },
+    "tokyo": {
+     "n": 2,
+     "netMinor": 6418,
+     "winRate": 0.5,
+     "expectancyR": -0.3704356813164329,
+     "rKnown": 2,
+     "tradeIds": [
+      "T4",
+      "T5"
+     ]
+    },
+    "us_extended": {
+     "n": 2,
+     "netMinor": 9800,
+     "winRate": 0.5,
+     "expectancyR": 0,
+     "rKnown": 1,
+     "tradeIds": [
+      "T6",
+      "T7"
+     ]
+    }
    }
   },
   "S13": {
@@ -1189,6 +1406,58 @@
    "marked": 6,
    "unmarked": 1,
    "value": 0.6666666666666666
+  },
+  "S8_breakdown": {
+   "T2": {
+    "r": -1.2,
+    "base": -1,
+    "slippageR": -0.1999999999999993,
+    "costsR": 0,
+    "otherR": -6.661338147750939e-16
+   },
+   "T5": {
+    "r": -1.7268713626328867,
+    "base": -1,
+    "slippageR": -0.6666666666666036,
+    "costsR": -0.060204695966283084,
+    "otherR": -2.220446049250313e-16
+   }
+  },
+  "S17": {
+   "perTrade": {
+    "T4": {
+     "pipSize": 0.0001,
+     "resultPips": 50.00000000000115,
+     "stopPips": 49.999999999998934
+    },
+    "T5": {
+     "pipSize": 0.01,
+     "resultPips": -50,
+     "stopPips": 30.000000000001137
+    }
+   },
+   "byPair": [
+    {
+     "instrument": "EUR/USD",
+     "pips": 50.00000000000115,
+     "n": 1
+    },
+    {
+     "instrument": "USD/JPY",
+     "pips": -50,
+     "n": 1
+    }
+   ]
+  },
+  "S18": {
+   "winners": {
+    "avgSeconds": 14249.975,
+    "n": 4
+   },
+   "losers": {
+    "avgSeconds": 4800,
+    "n": 2
+   }
   }
  }
 }

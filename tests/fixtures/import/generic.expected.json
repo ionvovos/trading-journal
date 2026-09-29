@@ -1,13 +1,88 @@
 {
- "about": "Hand-computed. Times carry their own offset; a row without an offset is skipped. accountCurrency USD, mode real. A blank fee is missing (anomaly), 0 is no fee. stop on an entry row is the initial stop; setup and notes on the first entry row go to the trade.",
+ "about": "Hand-computed against requirements c1510c2d. Times carry their own offset; a row without one is skipped. Account acc-manual (base USD). type blank = trade. A blank fee is missing (anomaly), 0 is no fee. stop on an entry row is the initial stop (stopSource file_initial); setup and notes of the first entry row go to the trade.",
  "format": "generic-csv",
- "rowsInFile": 5,
+ "rowsInFile": 7,
  "fills": 4,
- "skipped": [{ "id": "g5", "reasonKey": "import.skip.timeOffset" }],
- "trades": [
-  { "instrument": "KO", "side": "long", "status": "closed", "entryUtc": "2026-03-10T09:00:00Z", "exitUtc": "2026-03-10T10:00:00Z", "initialStop": 59, "grossMinor": 0, "feesMinor": 0, "netMinor": 0, "holds": [] },
-  { "instrument": "SPY", "side": "long", "status": "held", "holds": ["missing_fee"], "initialStop": 495, "setup": "breakout", "notes": "entry after the open, first hour", "afterAnswer": { "optionId": "fee_zero", "grossMinor": 5000, "feesMinor": 100, "netMinor": 4900 } }
+ "skipped": [
+  {
+   "id": "g6",
+   "reasonKey": "import.skip.timeOffset"
+  }
  ],
- "anomalies": [{ "kind": "missing_fee", "instruments": ["SPY"] }, { "kind": "unreadable_rows", "rows": 1 }],
- "closedIncludedNetMinor": 0
+ "trades": [
+  {
+   "instrument": "KO",
+   "side": "long",
+   "status": "closed",
+   "entryUtc": "2026-03-10T09:00:00Z",
+   "exitUtc": "2026-03-10T10:00:00Z",
+   "initialStop": 59,
+   "grossMinor": 0,
+   "feesMinor": 0,
+   "netMinor": 0,
+   "holds": [],
+   "stopSource": "file_initial"
+  },
+  {
+   "instrument": "SPY",
+   "side": "long",
+   "status": "held",
+   "holds": [
+    "missing_fee"
+   ],
+   "initialStop": 495,
+   "setup": "breakout",
+   "notes": "entry after the open, first hour",
+   "afterAnswer": {
+    "optionId": "fee_zero",
+    "grossMinor": 5000,
+    "feesMinor": 100,
+    "netMinor": 4900
+   },
+   "stopSource": "file_initial"
+  }
+ ],
+ "anomalies": [
+  {
+   "kind": "missing_fee",
+   "instruments": [
+    "SPY"
+   ]
+  },
+  {
+   "kind": "funding_unmatched",
+   "ids": [
+    "g5"
+   ]
+  },
+  {
+   "kind": "unreadable_rows",
+   "rows": 1
+  }
+ ],
+ "closedIncludedNetMinor": 0,
+ "statesZone": true,
+ "cash": [
+  {
+   "id": "g0",
+   "kind": "deposit",
+   "amount": "1000",
+   "currency": "USD",
+   "time": "2026-03-10T08:00:00Z"
+  }
+ ],
+ "funding": [
+  {
+   "id": "g5",
+   "instrument": "BTC-PERP",
+   "amount": "-1.50",
+   "currency": "USD",
+   "time": "2026-03-12T08:00:00Z"
+  }
+ ],
+ "rKnownShare": {
+  "known": 1,
+  "of": 1,
+  "note": "KO closed with stop 59; SPY is held out"
+ }
 }

@@ -1,17 +1,124 @@
 {
- "about": "Hand-computed. fileZone UTC (Kraken), accountCurrency USD, mode real, declared zone Europe/Athens, no earlier imports.",
+ "about": "Hand-computed against requirements c1510c2d. Account acc-kraken (base USD), zone stated by the format (UTC), declared zone Europe/Athens, no earlier imports. Default dust threshold = sizeStep of the file.",
  "format": "kraken-trades",
  "rowsInFile": 9,
  "fills": 8,
- "nonTrade": [],
- "skipped": [{ "txid": "TE1EEE-00005-000001", "reasonKey": "import.skip.number" }],
- "pairs": { "XXBTZUSD": "BTC/USD", "XETHZUSD": "ETH/USD", "XXBTZEUR": "BTC/EUR", "SOLUSD": "SOL/USD" },
- "trades": [
-  { "instrument": "BTC/USD", "side": "long", "status": "closed", "legs": 3, "avgEntry": 60000, "avgExit": 62400, "size": 0.0833, "grossMinor": 19992, "feesMinor": 1020, "netMinor": 18972, "holds": [] },
-  { "instrument": "ETH/USD", "side": "long", "status": "held", "holds": ["dust"], "remainder": 0.0005, "afterAnswer": { "optionId": "close_as_zero", "closedSize": 0.9995, "grossMinor": 9995, "feesMinor": 490, "netMinor": 9505, "note": "gross (2500-2400) x 0.9995 = 99.95; fees 2.40 + 2.49875 = 4.89875; net 95.05125 -> 95.05" } },
-  { "instrument": "BTC/EUR", "side": "long", "status": "held", "holds": ["rate_missing"], "afterAnswer": { "optionId": "rate", "value": 1.10, "grossMinor": 1100, "feesMinor": 122, "netMinor": 978, "note": "gross 1000 x 0.01 = 10.00 EUR x 1.10 = 11.00; fees (0.55 + 0.56) x 1.10 = 1.221; net 9.779 -> 9.78" } },
-  { "instrument": "SOL/USD", "side": "long", "status": "open", "size": 2, "holds": [] }
+ "skipped": [
+  {
+   "txid": "TE1EEE-00005-000001",
+   "reasonKey": "import.skip.number"
+  }
  ],
- "anomalies": [{ "kind": "dust", "instruments": ["ETH/USD"] }, { "kind": "rate_missing", "currency": "EUR" }, { "kind": "unreadable_rows", "rows": 1 }],
- "closedIncludedNetMinor": 18972
+ "pairs": {
+  "XXBTZUSD": "BTC/USD",
+  "XETHZUSD": "ETH/USD",
+  "XXBTZEUR": "BTC/EUR",
+  "SOLUSD": "SOL/USD"
+ },
+ "trades": [
+  {
+   "instrument": "BTC/USD",
+   "side": "long",
+   "status": "closed",
+   "legs": 3,
+   "avgEntry": 60000,
+   "avgExit": 62400,
+   "size": 0.0833,
+   "grossMinor": 19992,
+   "feesMinor": 1020,
+   "netMinor": 18972,
+   "holds": []
+  },
+  {
+   "instrument": "ETH/USD",
+   "side": "long",
+   "status": "open",
+   "holds": [],
+   "remaining": "0.0005",
+   "openLegs": [
+    {
+     "exitSize": "0.9995",
+     "realisedMinor": 9505,
+     "note": "average cost: (2500-2400) x 0.9995 = 99.95; exit fee 2.49875; entry fee pro rata 2.40 x 0.9995 = 2.3988; 95.05245 -> 95.05"
+    }
+   ],
+   "withDustThreshold": {
+    "dustThreshold": "0.001",
+    "status": "closed",
+    "dustRemainder": "0.0005",
+    "holds": [
+     "dust"
+    ],
+    "afterAnswer": {
+     "optionId": "close_with_remainder",
+     "grossMinor": 9995,
+     "feesMinor": 490,
+     "netMinor": 9505,
+     "note": "gross 99.95; fees 2.40 + 2.49875 = 4.89875; 95.05125 -> 95.05"
+    }
+   }
+  },
+  {
+   "instrument": "BTC/EUR",
+   "side": "long",
+   "status": "held",
+   "holds": [
+    "rate_missing"
+   ],
+   "afterAnswer": {
+    "optionId": "rate",
+    "value": 1.1,
+    "grossMinor": 1100,
+    "feesMinor": 122,
+    "netMinor": 978,
+    "note": "gross 1000 x 0.01 = 10.00 EUR x 1.10 = 11.00; fees (0.55 + 0.56) x 1.10 = 1.221; net 9.779 -> 9.78"
+   }
+  },
+  {
+   "instrument": "SOL/USD",
+   "side": "long",
+   "status": "open",
+   "size": 2,
+   "holds": []
+  }
+ ],
+ "anomalies": [
+  {
+   "kind": "rate_missing",
+   "currency": "EUR"
+  },
+  {
+   "kind": "unreadable_rows",
+   "rows": 1
+  }
+ ],
+ "closedIncludedNetMinor": 18972,
+ "statesZone": true,
+ "sizeStep": "0.00000001",
+ "cash": [],
+ "rKnownShare": {
+  "known": 0,
+  "of": 1
+ },
+ "quantityCase": {
+  "file": "kraken-quantity.csv",
+  "asset": "BTC",
+  "startQty": "0",
+  "brokerQty": "0.2995",
+  "expected": {
+   "impliedQty": "0.3",
+   "differenceQty": "-0.0005",
+   "explanations": [
+    {
+     "cause": "fee_in_asset",
+     "fillKeys": [
+      "kraken:TQ1QQQ-00008-000001",
+      "kraken:TQ2QQQ-00008-000002"
+     ],
+     "qty": "-0.0005",
+     "note": "fees 18 and 12 USD at 60000 = 0.0003 + 0.0002 BTC, deducted in BTC while the export shows them in USD"
+    }
+   ]
+  }
+ }
 }

@@ -1,5 +1,5 @@
 {
- "about": "Requirement cases (requirements.md S8, S9, S11, AC-P3.6). Money in minor units.",
+ "about": "Requirement cases (requirements.md at c1510c2d: S8, S9, S11, AC-P2.6, AC-P3.6). Money in minor units; inputs are decimal strings where they are prices or sizes.",
  "drawdown": {
   "ctx": {
    "startBalanceMinor": 1000000
@@ -52,15 +52,21 @@
   }
  },
  "stopSlippage": {
-  "entry": 50,
-  "stop": 48,
-  "size": 50,
-  "exit": 47.6,
-  "fees": 0,
+  "entry": "50",
+  "stop": "48",
+  "size": "50",
+  "exit": "47.60",
+  "fees": "0",
   "expected": {
    "netMinor": -12000,
    "initialRisk": 100,
-   "r": -1.2
+   "r": -1.2,
+   "breakdown": {
+    "base": -1,
+    "slippageR": -0.2,
+    "costsR": 0,
+    "otherR": 0
+   }
   }
  },
  "noLosses": {
@@ -93,6 +99,98 @@
    "x": -0.5,
    "d": 0,
    "minor": -1
+  }
+ ],
+ "stopSlippageWithFees": {
+  "entry": "50",
+  "stop": "48",
+  "size": "50",
+  "exit": "47.60",
+  "fees": "2.00",
+  "expected": {
+   "netMinor": -12200,
+   "initialRisk": 100,
+   "r": -1.22,
+   "breakdown": {
+    "base": -1,
+    "slippageR": -0.2,
+    "costsR": -0.02,
+    "otherR": 0
+   }
+  }
+ },
+ "drawdownTroughAtZero": {
+  "ctx": {
+   "startBalanceMinor": 100000
+  },
+  "netMinorInCloseOrder": [
+   20000,
+   -120000
+  ],
+  "expected": {
+   "maxMinor": 120000,
+   "recoveryGainPct": null,
+   "note": "equity_at_or_below_zero"
+  }
+ },
+ "positionSize": [
+  {
+   "input": {
+    "market": "stock",
+    "equity": "10000",
+    "riskPct": "1",
+    "entry": "50",
+    "stop": "48",
+    "contractSize": "1",
+    "quoteToAccount": 1,
+    "sizeStep": "1"
+   },
+   "expected": {
+    "size": "50",
+    "riskAmount": 100
+   }
+  },
+  {
+   "input": {
+    "market": "crypto",
+    "equity": "10000",
+    "riskPct": "1",
+    "entry": "60000",
+    "stop": "58800",
+    "contractSize": "1",
+    "quoteToAccount": 1,
+    "sizeStep": "0.0001"
+   },
+   "expected": {
+    "size": "0.0833",
+    "riskAmount": 99.96,
+    "note": "100 / 1200 = 0.08333..., rounded down to sizeStep 0.0001; risk at that size is 99.96"
+   }
+  },
+  {
+   "input": {
+    "market": "forex",
+    "equity": "10000",
+    "riskPct": "1",
+    "stopPips": "50",
+    "pipValuePerLot": "10",
+    "instrument": "EUR/USD",
+    "sizeStep": "0.01"
+   },
+   "expected": {
+    "size": "0.2",
+    "riskAmount": 100,
+    "pipSize": "0.0001"
+   }
+  },
+  {
+   "input": {
+    "market": "forex",
+    "instrument": "USD/JPY"
+   },
+   "expected": {
+    "pipSize": "0.01"
+   }
   }
  ]
 }

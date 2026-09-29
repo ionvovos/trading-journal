@@ -1,20 +1,130 @@
 {
- "about": "Hand-computed. Layout follows a real MT4 detailed statement (section 2.1). fileZone ny+7 (UTC+2 until 8 Mar 2026, UTC+3 from 8 Mar), accountCurrency from 'Currency: USD', mode real, declared zone Europe/Athens. Commission and taxes go on the close fill; swap goes to trade.funding (signed, negative = paid). Stops in the file are stopAtClose, not initialStop.",
+ "about": "Hand-computed against requirements c1510c2d. Account acc-mt4; the format does not state its zone, so it is asked once per account (answer ny+7: UTC+2 until 8 Mar 2026, UTC+3 from 8 Mar); declared zone Europe/Athens. Commission and Taxes are the close fill fee; Swap is broker.swap and trade funding (negative = paid). S / L is read as the stop with stopSource file_at_close (AC-P1.11); 0.00000 means no stop. Broker net = Profit + Commission + Taxes + Swap.",
  "format": "mt4-statement",
  "accountCurrency": "USD",
  "rowsInFile": 7,
  "rowsToFills": 4,
  "fills": 8,
- "openAtEnd": [{ "ticket": "1007", "instrument": "EUR/USD", "size": 0.1, "price": 1.08, "timeUtc": "2026-03-10T07:00:00Z" }],
- "nonTrade": [{ "kind": "deposit", "amount": 10000, "currency": "USD" }],
- "skipped": [{ "ticket": "1006", "reasonKey": "import.skip.cancelled" }],
- "fileSummary": { "closedPnl": 74.18, "deposits": 10000, "balance": 10074.18, "currency": "USD" },
- "trades": [
-  { "instrument": "EUR/USD", "side": "long", "status": "closed", "contractSize": 100000, "quoteToAccount": 1, "entryUtc": "2026-03-05T07:00:00Z", "exitUtc": "2026-03-05T12:00:00Z", "avgEntry": 1.085, "avgExit": 1.09, "size": 0.2, "stopAtClose": 1.08, "grossMinor": 10000, "feesMinor": 140, "fundingMinor": 0, "netMinor": 9860 },
-  { "instrument": "USD/JPY", "side": "short", "status": "closed", "contractSize": 100000, "quoteToAccount": 0.006644, "entryUtc": "2026-03-06T01:00:00Z", "exitUtc": "2026-03-06T03:00:00Z", "avgEntry": 150, "avgExit": 150.5, "size": 0.1, "stopAtClose": 150.3, "grossMinor": -3322, "feesMinor": 70, "fundingMinor": -50, "netMinor": -3442 },
-  { "instrument": "GBP/USD", "side": "long", "status": "closed", "positionId": "1004", "legs": 4, "entryUtc": "2026-03-09T07:00:00Z", "avgEntry": 1.27, "exits": [{ "size": 0.1, "price": 1.275, "utc": "2026-03-09T08:00:00Z" }, { "size": 0.2, "price": 1.268, "utc": "2026-03-09T13:00:00Z" }], "size": 0.3, "grossMinor": 1000, "feesMinor": 0, "fundingMinor": 0, "netMinor": 1000 }
+ "openAtEnd": [
+  {
+   "ticket": "1007",
+   "instrument": "EUR/USD",
+   "size": 0.1,
+   "price": 1.08,
+   "timeUtc": "2026-03-10T07:00:00Z"
+  }
  ],
- "anomalies": [{ "kind": "unreadable_rows", "rows": 1 }],
+ "skipped": [
+  {
+   "ticket": "1006",
+   "reasonKey": "import.skip.cancelled"
+  }
+ ],
+ "fileSummary": {
+  "closedPnl": 74.18,
+  "deposits": 10000,
+  "balance": 10074.18,
+  "currency": "USD"
+ },
+ "trades": [
+  {
+   "instrument": "EUR/USD",
+   "side": "long",
+   "status": "closed",
+   "contractSize": 100000,
+   "quoteToAccount": 1,
+   "entryUtc": "2026-03-05T07:00:00Z",
+   "exitUtc": "2026-03-05T12:00:00Z",
+   "avgEntry": 1.085,
+   "avgExit": 1.09,
+   "size": 0.2,
+   "grossMinor": 10000,
+   "feesMinor": 140,
+   "fundingMinor": 0,
+   "netMinor": 9860,
+   "initialStop": "1.08",
+   "stopSource": "file_at_close",
+   "broker": {
+    "netMinor": 9860,
+    "source": "mt4"
+   },
+   "source": "broker"
+  },
+  {
+   "instrument": "USD/JPY",
+   "side": "short",
+   "status": "closed",
+   "contractSize": 100000,
+   "quoteToAccount": 0.006644,
+   "entryUtc": "2026-03-06T01:00:00Z",
+   "exitUtc": "2026-03-06T03:00:00Z",
+   "avgEntry": 150,
+   "avgExit": 150.5,
+   "size": 0.1,
+   "grossMinor": -3322,
+   "feesMinor": 70,
+   "fundingMinor": -50,
+   "netMinor": -3442,
+   "initialStop": "150.3",
+   "stopSource": "file_at_close",
+   "broker": {
+    "netMinor": -3442,
+    "source": "mt4"
+   },
+   "source": "broker"
+  },
+  {
+   "instrument": "GBP/USD",
+   "side": "long",
+   "status": "closed",
+   "positionId": "1004",
+   "legs": 4,
+   "entryUtc": "2026-03-09T07:00:00Z",
+   "avgEntry": 1.27,
+   "exits": [
+    {
+     "size": 0.1,
+     "price": 1.275,
+     "utc": "2026-03-09T08:00:00Z"
+    },
+    {
+     "size": 0.2,
+     "price": 1.268,
+     "utc": "2026-03-09T13:00:00Z"
+    }
+   ],
+   "size": 0.3,
+   "grossMinor": 1000,
+   "feesMinor": 0,
+   "fundingMinor": 0,
+   "netMinor": 1000,
+   "initialStop": null,
+   "broker": {
+    "netMinor": 1000,
+    "source": "mt4"
+   },
+   "source": "broker"
+  }
+ ],
+ "anomalies": [
+  {
+   "kind": "unreadable_rows",
+   "rows": 1
+  }
+ ],
  "closedIncludedNetMinor": 7418,
- "crossCheck": "sum of trade netMinor 7418 equals fileSummary.closedPnl 74.18"
+ "crossCheck": "sum of trade netMinor 7418 equals fileSummary.closedPnl 74.18",
+ "statesZone": false,
+ "cash": [
+  {
+   "kind": "deposit",
+   "amount": "10000",
+   "currency": "USD",
+   "time": "2026-03-02T06:00:00Z"
+  }
+ ],
+ "rKnownShare": {
+  "known": 2,
+  "of": 3
+ }
 }

@@ -1,6 +1,8 @@
-time,instrument,market,side,size,price,fee,fee_currency,quote_currency,id,stop,setup,notes
-2026-03-10T11:00:00+02:00,KO,stock,buy,100,60,0,USD,USD,g1,59,,
-2026-03-10T12:00:00+02:00,KO,stock,sell,100,60,0,USD,USD,g2,,,
-2026-03-11T16:40:00+02:00,SPY,stock,buy,10,500,,USD,USD,g3,495,breakout,"entry after the open, first hour"
-2026-03-11T17:00:00+02:00,SPY,stock,sell,10,505,1,USD,USD,g4,,,
-2026-03-12T10:00:00,SPY,stock,buy,5,501,1,USD,USD,g5,,,
+time,type,instrument,market,side,size,price,fee,fee_currency,quote_currency,amount,currency,contract_value,id,stop,setup,notes
+2026-03-10T10:00:00+02:00,deposit,,,,,,,,,1000,USD,,g0,,,
+2026-03-10T11:00:00+02:00,trade,KO,stock,buy,100,60,0,USD,USD,,,,g1,59,,
+2026-03-10T12:00:00+02:00,trade,KO,stock,sell,100,60,0,USD,USD,,,,g2,,,
+2026-03-11T16:40:00+02:00,trade,SPY,stock,buy,10,500,,USD,USD,,,,g3,495,breakout,"entry after the open, first hour"
+2026-03-11T17:00:00+02:00,,SPY,stock,sell,10,505,1,USD,USD,,,,g4,,,
+2026-03-12T08:00:00+00:00,funding,BTC-PERP,crypto,,,,,,,-1.50,USD,,g5,,,
+2026-03-12T10:00:00,trade,SPY,stock,buy,5,501,1,USD,USD,,,,g6,,,
