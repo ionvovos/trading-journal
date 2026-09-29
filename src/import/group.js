@@ -137,7 +137,7 @@ export function groupFills(input, deps = {}) {
       const trade = {
         id: `${importId}:${f.key}${suffix}`,
         accountId: account.id, mode, market: f.market, instrument: f.instrument, side: dir > 0 ? 'long' : 'short',
-        contractSize: f.contractSize || '1', contractValue: null, quoteCurrency: f.quoteCurrency,
+        contractSize: f.contractSize || '1', contractValue: f.contractValue ? D.toString(f.contractValue) : null, quoteCurrency: f.quoteCurrency || base,
         legs: [], initialStop: null, stopSource: null, stopMoves: [], target: null, funding: 0, fundingEntries: [],
         broker: null, setup: null, plan: null, notes: '', moodBefore: null, moodAfter: null, screenshotId: null, leverage: null,
         importId, holds: [], excluded: null, dustRemainder: '0', closeDayOverride: null, closeTime: null,
@@ -150,7 +150,7 @@ export function groupFills(input, deps = {}) {
       const t = cur.trade;
       t.legs.push({
         id: `${t.id}:${t.legs.length + 1}`, kind, time: f.time, zone: declaredZone, price: f.price, size, fee,
-        feeCurrency: f.feeCurrency || f.quoteCurrency, feeToAccount: undefined, quoteToAccount: f.quoteToAccount ?? undefined,
+        feeCurrency: f.feeCurrency || f.quoteCurrency || base, feeToAccount: undefined, quoteToAccount: f.quoteToAccount ?? undefined,
         broker: brokerOnLeg && f.broker ? f.broker : null, source: { importId, row: f.row ?? null, key: f.key },
         _fill: f,
       });
@@ -272,7 +272,7 @@ export function groupFills(input, deps = {}) {
             q = Number(value) / Number(t.contractSize);
             if (typed !== undefined) accountUpdates.contractValues[t.instrument] = D.toString(typed);
           } else b.meta.set('contract_size_missing', { symbol: t.instrument });
-        } else q = rate(f.quoteCurrency);
+        } else q = rate(f.quoteCurrency || base);
         leg.quoteToAccount = q;
       }
       leg.feeToAccount = leg.fee === null || D.isZero(leg.fee) ? 1 : rate(leg.feeCurrency);

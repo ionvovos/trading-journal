@@ -420,3 +420,15 @@ test('MT4 opening fills carry no fee of their own (commission is on the closing 
   const generic = groupFills({ ...base, fills: [f('gen:1', 'buy', '1.085', T(7), null), f('gen:2', 'sell', '1.09', T(12), '1.4')] });
   assert.equal(generic.anomalies[0].kind, 'missing_fee', 'other formats still ask');
 });
+
+test('a blank quote or fee currency means the account currency; a perpetual contract value reaches the trade', () => {
+  const f = (k, side, price, time) => ({ ...fill({ key: k, instrument: 'BTC-PERP', market: 'crypto', side, size: '2', price, time, fee: '1', feeCurrency: null, quoteCurrency: null }), contractValue: '0.001' });
+  const r = groupFills({ ...base, fills: [f('gen:1', 'buy', '60000', T(9)), f('gen:2', 'sell', '61000', T(10))] });
+  assert.deepEqual(r.anomalies, [], 'no rate question for an unstated currency');
+  const t = r.trades[0];
+  assert.equal(t.quoteCurrency, 'USD');
+  assert.equal(t.contractValue, '0.001');
+  assert.equal(t.legs[0].feeCurrency, 'USD');
+  assert.equal(t.legs[0].quoteToAccount, 1);
+  assert.equal(t.legs[0].feeToAccount, 1);
+});
