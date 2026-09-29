@@ -1,0 +1,89 @@
+{
+ "at": "2026-09-29T18:50:12.587Z",
+ "checks": [
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 IBKR: 2,000 rows import in 10 s or less",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 IBKR: progress was visible while the import ran",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 IBKR: every question can be answered, each answer within 10 s",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Kraken: 2,000 rows import in 10 s or less",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Kraken: progress was visible while the import ran",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Kraken: every question can be answered, each answer within 10 s",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 MT4: 2,000 rows import in 10 s or less",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 MT4: progress was visible while the import ran",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 MT4: every question can be answered, each answer within 10 s",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Generic: 2,000 rows import in 10 s or less",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Generic: progress was visible while the import ran",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "timing",
+   "name": "AC-U2.1 Generic: every question can be answered, each answer within 10 s",
+   "ok": false,
+   "detail": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":130,\"changed\":true},{\"label\":\"No fee\",\"ms\":142,\"changed\":true},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30091,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30053,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30070,\"changed\":false},{\""
+  },
+  {
+   "flow": "timing",
+   "name": "no console error in the timing flow",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "texts": {
+  "timing-IBKR-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":119,\"changed\":true},{\"label\":\"Keep the broker’s realised P&LR stays unknown\",\"ms\":117,\"changed\":true},{\"label\":\"Earlier month\",\"ms\":115,\"changed\":true},{\"label\":\"Use the broker’s figureThe broker figure is the net; the app’s figure stays visible\",\"ms\":131,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":128,\"changed\":true}]",
+  "timing-Kraken-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":117,\"changed\":true},{\"label\":\"Leave out of statistics\",\"ms\":117,\"changed\":true},{\"label\":\"Type the rate\",\"ms\":115,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":116,\"changed\":true}]",
+  "timing-MT4-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":343,\"changed\":true},{\"label\":\"Earlier month\",\"ms\":352,\"changed\":true},{\"label\":\"Type the value\",\"ms\":342,\"changed\":true},{\"label\":\"Use the broker’s figureThe broker figure is the net; the app’s figure stays visible\",\"ms\":383,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":349,\"changed\":true}]",
+  "timing-Generic-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":130,\"changed\":true},{\"label\":\"No fee\",\"ms\":142,\"changed\":true},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30091,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30053,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30070,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30052,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30000,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30002,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30087,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30100,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30099,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30094,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30101,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30021,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30100,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30025,\"changed\":false}]"
+ }
+}
