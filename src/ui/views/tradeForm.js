@@ -211,3 +211,8 @@ export async function render(root, ctx, params = {}) {
 }
 
 export const pickAccount = pickSheet;
+
+// Contract for the sentence entry and the position-size helper (architecture section 10): open the form prefilled.
+export function openTradeForm(ctx, draft) {
+  ctx.navigate('#/trade/new', { draft });
+}
