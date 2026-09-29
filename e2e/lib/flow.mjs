@@ -80,7 +80,7 @@ export async function answerAll(f, { limit = 20, timeout = 30000 } = {}) {
     const qn = await f.b.ev("document.querySelector('section.q .qn')?.textContent ?? ''");
     const label = await f.b.ev(`(() => {
       const q = document.querySelector('section.q'); const opts = [...q.querySelectorAll('.opt:not(.off)')];
-      const pick = opts.find((o) => !/^(type|enter)/i.test(o.innerText.trim())) || opts[0]; pick.click(); return pick.innerText.split(String.fromCharCode(10))[0]; })()`);
+      const pick = opts.find((o) => !/^(type|enter|attach)/i.test(o.innerText.trim())) || opts[0]; pick.click(); return pick.innerText.split(String.fromCharCode(10))[0]; })()`);
     await sleep(150);
     await f.b.ev(`(() => { for (const inp of document.querySelectorAll('section.q .field input')) {
       const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; set.call(inp, inp.placeholder === 'YYYY-MM-DD' ? '2026-01-01' : '1'); inp.dispatchEvent(new Event('input', { bubbles: true })); } })()`);

@@ -107,6 +107,7 @@ async function seed(f) {
   await imp(f, 'MT4', 'mt4-statement.htm');
   await imp(f, 'MT4', 'generic.csv', false).catch(() => {}); // a second, unanswered import for the question screens
   await acct(f, 'Paper', 'EUR', 10000, 'paper');
+  await f.go('#/home', 500);
   await f.tap('Paper', { sel: '.mode-switch button' }); await sleep(500);
   await f.go('#/plan', 500);
   await f.fill('Write an item', 'The setup is on my list'); await f.tap('Add item');
@@ -114,6 +115,7 @@ async function seed(f) {
   for (const t of [['AAPL', '10', '100', '98', '105'], ['MSFT', '5', '200', '196', '198'], ['TSLA', '2', '50', '48', '52'], ['KO', '20', '60', '58', '57'], ['SPY', '3', '500', '495', '505']]) {
     await trade(f, { inst: t[0], size: t[1], entry: t[2], stop: t[3], exit: t[4] });
   }
+  await f.go('#/home', 500);
   await f.tap('Real', { sel: '.mode-switch button' }); await sleep(500);
 }
 
@@ -123,7 +125,7 @@ async function openCheck(f, name) {
   if (!ok) throw new Error('no broker check period for ' + name);
   await sleep(800);
 }
-const clickFirstRow = async (f) => { await f.tapSel('a.row, .list a, a[href^="#/trade/"]'); await sleep(700); };
+const clickFirstRow = async (f) => { await f.b.ev(`(() => { const a = [...document.querySelectorAll('a')].find((x) => /^#\\/trade\\/(?!new)/.test(x.getAttribute('href') || '')); a?.click(); })()`); await sleep(700); };
 
 // name -> async (f) that leaves the app in that state; `mode` picks the mode first
 const SCREENS = [
@@ -190,6 +192,8 @@ async function main(lang) {
     const want = s.mode || 'real';
     if (want !== modeNow.v) { await f.tap(want === 'paper' ? (lang === 'el' ? 'Χαρτί' : 'Paper') : (lang === 'el' ? 'Πραγματικ' : 'Real'), { sel: '.mode-switch button' }); await sleep(500); modeNow.v = want; }
     f.b.problems.length = 0;
+    await f.b.load('about:blank', 150); // a same-document hash change would keep the DOM, so leave the document first
+    await f.b.load(`${f.b.base}/index.html#/home`, 800); // a clean page: sheets stay open across route changes (finding F9)
     try { await s.run(f); } catch (e) { report.push({ png: `${s.name}${sfx}`, setupError: e.message }); continue; }
     await sleep(500);
     const problems = f.b.problems.filter((p) => !/summary\.js/.test(p));
@@ -201,7 +205,7 @@ async function main(lang) {
   await f.close();
 }
 
-if (!only.length) for (const fl of readdirSync(out)) if (/^[a-z-]+-\d+x\d+-(light|dark)-p\d+\.png$/.test(fl)) unlinkSync(join(out, fl));
+if (!only.length) for (const fl of readdirSync(out)) { const m = /^([a-z0-9-]+)-\d+x\d+-(light|dark)-p\d+\.png$/.exec(fl); if (m && langs.includes(m[1].endsWith('-el') || m[1].startsWith('about-el') ? 'el' : 'en')) unlinkSync(join(out, fl)); }
 for (const lang of langs) {
   console.log(`== ${lang}`);
   if (!only.length) await firstRunShots(lang);

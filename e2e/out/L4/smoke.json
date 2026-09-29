@@ -1,89 +1,376 @@
 {
- "at": "2026-09-29T18:50:12.587Z",
+ "at": "2026-09-29T22:09:25.938Z",
  "checks": [
   {
-   "flow": "timing",
-   "name": "AC-U2.1 IBKR: 2,000 rows import in 10 s or less",
+   "flow": "beginner",
+   "name": "AC-B1.5 the first run shows the legal-review §4 sentence verbatim, before any entry",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 IBKR: progress was visible while the import ran",
+   "flow": "beginner",
+   "name": "AC-P4.2 first screen after first run is Home in paper mode with a visible label",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 IBKR: every question can be answered, each answer within 10 s",
+   "flow": "beginner",
+   "name": "AC-U1.2 empty dashboard says what to do next and draws no chart",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Kraken: 2,000 rows import in 10 s or less",
+   "flow": "beginner",
+   "name": "AC-P2.5 example items are labelled as an example, yours to change, and none is preselected",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Kraken: progress was visible while the import ran",
+   "flow": "beginner",
+   "name": "AC-P2.1/W5 risk per trade and daily loss limit start empty",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Kraken: every question can be answered, each answer within 10 s",
+   "flow": "beginner",
+   "name": "AC-P2.1 plan saved",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 MT4: 2,000 rows import in 10 s or less",
+   "flow": "beginner",
+   "name": "AC-P2.2 with a plan active the checklist shows first",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 MT4: progress was visible while the import ran",
+   "flow": "beginner",
+   "name": "AC-P4.3 the paper form says results omit real fills, emotions and often costs",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 MT4: every question can be answered, each answer within 10 s",
+   "flow": "beginner",
+   "name": "AC-P1.2/S7 the form shows the risk and result as you type",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Generic: 2,000 rows import in 10 s or less",
+   "flow": "beginner",
+   "name": "AC-P1.1 a trade with instrument, side, size, entry, stop, exit and fees is saved in 30 s or fewer",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Generic: progress was visible while the import ran",
+   "flow": "beginner",
+   "name": "AC-U1.1 the first paper trade is saved within 3 taps after the first-run screens",
    "ok": true,
    "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "AC-U2.1 Generic: every question can be answered, each answer within 10 s",
-   "ok": false,
-   "detail": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":130,\"changed\":true},{\"label\":\"No fee\",\"ms\":142,\"changed\":true},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30091,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30053,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30070,\"changed\":false},{\""
+   "flow": "beginner",
+   "name": "AC-P1.3/S8 net after 1.00 fee is +49.00 and R is +2.45R",
+   "ok": true,
+   "detail": ""
   },
   {
-   "flow": "timing",
-   "name": "no console error in the timing flow",
+   "flow": "beginner",
+   "name": "AC-P1.5 the sentence is read by code field by field and shown before saving",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P1.5 one tap saves the parsed trade",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P1.5 a field that cannot be read stays empty and is asked for; the app never guesses a number",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P4.2 the journal carries the paper label",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P3.7 the statistics screen has a visible mode label",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P3.4 counts of held-out, open and excluded are shown",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "S4/S9 win rate and expectancy show n",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "S9 small-sample note below 30 trades",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-A5.1 a figure opens its formula in words with this user's numbers, the trades included and the excluded ones",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P6.2 one more tap opens the explanation of the term",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P6.1 learn entry for R opens with the user's own numbers and the words \"example numbers only\"",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P5.7 the review names its engine and says it was written by rules",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P5.8 the review states how many trades were left out, or none",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-B1.1 no advice words in the rendered review (banned list)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P3.7/P4.2 in real mode the paper trades appear in no figure and the label says Real",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "no console error, exception or CSP violation in the beginner flow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "AC-P8.2 the only network requests are same-origin",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "L4 F1: a page load makes no request that returns 404",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "beginner",
+   "name": "no CSP violation",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "the trader path lands on the import screen",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "three broker accounts exist",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P1.8/A4 IBKR: the import report shows rows, trades built and R known",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A2.2 IBKR: anomalies of one kind form one question listing the trades",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A4.1 the unreadable-rows question shows the skipped row with its reason",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A3.3 all questions answered: the report is complete",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A2.3 F2: after the answer keep-the-broker-P&L, the NVDA trade counts as closed on the statistics screen (4 closed, as the broker check counts it)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A2.3 F2: the same trade is listed in the journal",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A1.1 the broker check names the account, the period, the zone and the currency and can be skipped",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-A1.2 the broker check shows ours, broker, difference and the tolerance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P1.8 Kraken: report and questions",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P1.8 MT4: report and questions",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P1.11 MT4 S/L is read as a stop and labelled as stop at close",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P1.10 importing the IBKR file again creates no duplicate and the report says how many rows matched earlier imports",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "the journal lists trades from the imports with a Real label",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P3.4 statistics show counts of held-out, open and excluded trades",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "S12 buckets by setup, market, hour, weekday and session are present",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-B1.4 no bucket is labelled best or worst",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "S13 the calendar renders a month grid",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "no console error, exception or CSP violation in the trader flow",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "trader",
+   "name": "AC-P8.2 the only network requests are same-origin",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.6 a service worker is registered",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.1 with the network off the app reloads and opens Home",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.1 offline: a trade is logged",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.1 offline: statistics open",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P10.1 About opens offline",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.2 no external request in a full offline session",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.8 localStorage holds only known keys",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "flow": "offline",
+   "name": "AC-P8.8 no cookie is set",
    "ok": true,
    "detail": ""
   }
  ],
  "texts": {
-  "timing-IBKR-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":119,\"changed\":true},{\"label\":\"Keep the broker’s realised P&LR stays unknown\",\"ms\":117,\"changed\":true},{\"label\":\"Earlier month\",\"ms\":115,\"changed\":true},{\"label\":\"Use the broker’s figureThe broker figure is the net; the app’s figure stays visible\",\"ms\":131,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":128,\"changed\":true}]",
-  "timing-Kraken-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":117,\"changed\":true},{\"label\":\"Leave out of statistics\",\"ms\":117,\"changed\":true},{\"label\":\"Type the rate\",\"ms\":115,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":116,\"changed\":true}]",
-  "timing-MT4-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":343,\"changed\":true},{\"label\":\"Earlier month\",\"ms\":352,\"changed\":true},{\"label\":\"Type the value\",\"ms\":342,\"changed\":true},{\"label\":\"Use the broker’s figureThe broker figure is the net; the app’s figure stays visible\",\"ms\":383,\"changed\":true},{\"label\":\"Continue without them\",\"ms\":349,\"changed\":true}]",
-  "timing-Generic-answers": "[{\"label\":\"Count as two tradesSplit at zero\",\"ms\":130,\"changed\":true},{\"label\":\"No fee\",\"ms\":142,\"changed\":true},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30091,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30053,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30070,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30052,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30000,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30002,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30087,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30100,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30085,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30099,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30031,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30094,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30101,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30021,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30100,\"changed\":false},{\"label\":\"Attach to a trade\",\"ms\":30025,\"changed\":false}]"
+  "ibkr-report-before-answers": "Journal\nImport\n2 questions before these trades count\n\n1 trade is held out of your statistics until you answer. You can answer later from the journal.\n\nQUESTION 1 OF 2\n\nNVDA: 1 closing fill has no opening leg in your journal, so the position started before this file. How do you want to handle it?\n\nNVDA · 6 Mar\nType the opening price and date\nKeep the broker’s realised P&L\nR stays unknown\nLeave out of statistics\nAnswer\nQUESTION 2 OF 2\n\n2 rows could not be read. How do you want to continue?\n\nRow 17\nA number in this row cannot be read\nRow 18\nNot a stock, so not read\nContinue without them\nCancel the import\nAnswer\nRows\n11 in the file\nTrade fills\n8\nTrades built\n4\nCash rows, stored as cash\n1\nSkipped, cannot be read\n2\nTrades with R known\n0 of 3\nRow 17\nA number in this row cannot be read\nRow 18\nNot a stock, so not read\nR known on 0 of 3 trades\nThe file has no initial stop for the rest. Add them on one screen.\nCheck against your broker\nSave report as JSON\nSave report as page\nGo to the journal",
+  "ibkr-report-after-answers": "Journal\nImport\nImport read\n\n4 trades were built. The next step compares the total with your broker’s own figure.\n\nRows\n11 in the file\nTrade fills\n8\nTrades built\n4\nCash rows, stored as cash\n1\nSkipped, cannot be read\n2\nTrades with R known\n0 of 4\nRow 17\nA number in this row cannot be read\nRow 18\nNot a stock, so not read\nAnswered\nClosing fill with no opening leg\nKeep the broker’s realised P&L\nChange\nRows that cannot be read\nContinue without them\nChange\nR known on 0 of 4 trades\nThe file has no initial stop for the rest. Add them on one screen.\nCheck against your broker\nSave report as JSON\nSave report as page\nGo to the journal",
+  "ibkr-stats-after-answers": "Real\nPaper\nStats\nOverview\nBuckets\nMar 2026\nREAL\n4 closed\nSmall sample: 4 trades\nAverages move a lot below 30 trades (your setting).\nEquity and drawdown\nstart 17,000.00\n17.0k\n17.1k\n17.2k\n17.3k\n1 Mar\n9\n0\n−50\n−100\n−150\n−120.00\n1 Mar\n9\nEquity\nBelow the last peak\nMax drawdown\nloss\n−120.00 · −0.7%\nPeak to low\n2 Mar → 3 Mar\nRecovered\n9 Mar · needed +0.7%\n\nAmounts and dates come from closed trades only. Percents divide by equity including deposits and withdrawals. Swings inside a trade are not measured.\n\nBy setup\nA to Z, No setup last\nNo setup\ngain\n+234.00\nn 4 · won 75% · no R\nFigures\ntap any for its trades\nExpectancy\n–\nWin rate\n75.0% · 3 of 4\nBreak-even trades\n0\nAverage win\n+118.00\nAverage loss\n120.00\nProfit factor\n2.95\nHolding time, winners · losers\n3h 17m · 40m\nLongest streaks\n2 wins · 1 losses\nFees · funding and swap\n5.00 · 0.00\nHome\nJournal\nStats\nReview",
+  "ibkr-check-form": "Import\nBroker check\nIBKR · 2 Mar – 9 Mar 2026\ncut in America/New_York · USD\nWhich figure do you have?\nNet realised P&L\nBalance\nBroker’s net realised P&L for the period\nUSD\nIn the Activity Statement, the Total row of Realized P/L in the Trades section. It includes commissions.\nCompare\nSkip for now\nAnswer the import questions\nHome\nJournal\nStats\nReview",
+  "ibkr-check-result": "Import\nBroker check\nIBKR · 2 Mar – 9 Mar 2026\ncut in America/New_York · USD\nWhich figure do you have?\nNet realised P&L\nBalance\nBroker’s net realised P&L for the period\nUSD\nIn the Activity Statement, the Total row of Realized P/L in the Trades section. It includes commissions.\nCompare\nReconciled within 0.04\nReconciled\nTrades closed in the period\n+234.00\nApp total\n+234.00\nBroker figure\n+234.00\nDifference\n0.00\nTolerance\n0.04\nSkip for now\nAnswer the import questions\nHome\nJournal\nStats\nReview",
+  "kraken-report": "Journal\nImport\n2 questions before these trades count\n\n1 trade is held out of your statistics until you answer. You can answer later from the journal.\n\nQUESTION 1 OF 2\n\nBTC/EUR is priced in EUR, which differs from your account currency. What is the rate?\n\nBTC/EUR · 6 Mar\nType the rate\nAnswer\nQUESTION 2 OF 2\n\n1 row could not be read. How do you want to continue?\n\nRow 10\nA number in this row cannot be read\nContinue without them\nCancel the import\nAnswer\nRows\n9 in the file\nTrade fills\n8\nTrades built\n4\nSkipped, cannot be read\n1\nTrades with R known\n0 of 1\nRow 10\nA number in this row cannot be read\nR known on 0 of 1 trades\nThe file has no initial stop for the rest. Add them on one screen.\nCheck against your broker\nSave report as JSON\nSave report as page\nGo to the journal",
+  "mt4-report": "Journal\nImport\n1 question before these trades count\n\n0 trades are held out of your statistics until you answer. You can answer later from the journal.\n\nQUESTION 1 OF 1\n\n1 row could not be read. How do you want to continue?\n\nRow 9\nOrder that was not filled\nContinue without them\nCancel the import\nAnswer\nRows\n7 in the file\nTrade fills\n5\nTrades built\n3\nCash rows, stored as cash\n1\nSkipped, cannot be read\n1\nTrades with R known\n2 of 3\nRow 9\nOrder that was not filled\nR known on 2 of 3 trades\nThe file has no initial stop for the rest. Add them on one screen.\nCheck against your broker\nSave report as JSON\nSave report as page\nGo to the journal",
+  "ibkr-report-again": "Journal\nImport\nImport read\n\n0 trades were built. The next step compares the total with your broker’s own figure.\n\nRows\n11 in the file\nTrade fills\n9\nTrades built\n0\nMatched an earlier import\n8\nSkipped, cannot be read\n2\nTrades with R known\n0 of 0\nRow 17\nA number in this row cannot be read\nRow 18\nNot a stock, so not read\nAnswered\nRows that cannot be read\nContinue without them\nChange\nCheck against your broker\nBroker check\n2 Mar – 9 Mar 2026\nReconciled\nSave report as JSON\nSave report as page\nGo to the journal",
+  "trader-stats": "Real\nPaper\nStats\nOverview\nBuckets\nMar 2026\nREAL\n8 closed · 1 held out · 2 open\nSmall sample: 8 trades\nAverages move a lot below 30 trades (your setting).\nEquity and drawdown\nstart 17,000.00\n17.0k\n17.2k\n17.4k\n17.6k\n1 Mar\n9\n0\n−50\n−100\n−150\n−120.00\n1 Mar\n9\nEquity\nBelow the last peak\nMax drawdown\nloss\n−120.00 · −0.4%\nPeak to low\n2 Mar → 3 Mar\nRecovered\n5 Mar · needed +0.4%\n\nAmounts and dates come from closed trades only. Percents divide by equity including deposits and withdrawals. Swings inside a trade are not measured.\n\nR per trade\n2 with R · missing on 6\n1\n0\n0\n0\n0\n1\n0\n0\n0\n0\n0\nmean −0.37R\n−2R\n−1R\n0R\n+1R\n+2R\n+3R\nAbove 0R\nBelow 0R\nBy setup\nA to Z, No setup last\nNo setup\ngain\n+497.90\nn 8 · won 75% · −0.37R on 2 with R\nFigures\ntap any for its trades\nExpectancy\n−0.37R · +62.24\nWin rate\n75.0% · 6 of 8\nBreak-even trades\n0\nAverage win\n+108.72 · +0.99R\nAverage loss\n77.21 · 1.73R\nProfit factor\n4.22\nHolding time, winners · losers\n3h 38m · 1h 20m\nLongest streaks\n3 wins · 1 losses\nPips EUR/USD · n 1\n+50.0\nPips GBP/USD · n 1\n+3.3\nPips USD/JPY · n 1\n−50.0\nFees · funding and swap\n17.30 · 0.50\nHome\nJournal\nStats\nReview"
  }
 }
