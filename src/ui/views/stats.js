@@ -10,6 +10,9 @@ import { sectionHead } from '../../storage/viewkit.js';
 import { binR } from '../charts/histogram.js';
 import { startOfLocalDate } from '../../core/time.js';
 
+// The stored account filter still names an account of this mode (or is 'all').
+export const accountFilterValid = (filter, model, mode) => filter === 'all' || model.accounts.some((a) => a.id === filter && a.mode === mode);
+
 // Peak and trough positions on the equity curve for the shaded drawdown band, or undefined when there is no drawdown to mark.
 function ddMarks(s, pts) {
   const dd = s.drawdown;
@@ -50,6 +53,7 @@ export async function render(root, ctx, params = {}) {
 
   async function paint() {
     const model = await loadModel(ctx.store);
+    if (!accountFilterValid(ctx.accountFilter, model, ctx.mode)) { ctx.setAccountFilter('all'); return; } // repaints through the bus
     if (disposed) return;
     const { fmt, ui } = ctx;
     if (!month) month = defaultMonth(model.trades.filter((x) => x.mode === ctx.mode), ctx);
@@ -64,6 +68,9 @@ export async function render(root, ctx, params = {}) {
       allTime ? el('span', null) : ui.iconButton({ iconName: 'left', label: t('stats.period.prev'), onClick: () => { month = shiftMonth(month, -1); paint(); } }),
       el('button', { type: 'button', class: 'chip', 'aria-pressed': String(allTime), onClick: () => { allTime = !allTime; paint(); } }, allTime ? t('stats.period.all') : fmt.date(`${month}-15T12:00:00Z`, { style: 'monthYear', zone: 'UTC' }), ' ', ui.icon('down', 'sm')),
       allTime ? el('span', null) : ui.iconButton({ iconName: 'right', label: t('stats.period.next'), onClick: () => { month = shiftMonth(month, 1); paint(); } }));
+    // One chip per account of this mode (V2 G11): the closed set is "broker account (or all)"; without it five accounts are summed.
+    const modeAccounts = model.accounts.filter((a) => a.mode === ctx.mode);
+    const accountChips = modeAccounts.length > 1 ? el('div', { class: 'chips', role: 'group', 'aria-label': t('journal.f.accounts') }, ...[{ id: 'all', name: t('journal.f.accounts') }, ...modeAccounts].map((a) => el('button', { type: 'button', class: 'chip sm', 'aria-pressed': String(ctx.accountFilter === a.id), onClick: () => ctx.setAccountFilter(a.id) }, a.name))) : null;
     const tabs = ui.segmented({ ariaLabel: t('stats.tabs'), value: tab, options: TABS.map((x) => ({ value: x, label: t(`stats.tab.${x}`) })), onChange: (v) => ctx.navigate(`#/stats/${v}`) });
     if (!s) { mount(root, bar, el('main', { class: 'content' }, tabs, ui.stateBanner({ kind: 'danger', iconName: 'alert', title: t('home.error.title'), body: t('home.error.body') }))); return; }
 
@@ -138,7 +145,7 @@ export async function render(root, ctx, params = {}) {
       body = [eqCard, rCard, setupCard, figures];
     }
 
-    mount(root, bar, el('main', { class: 'content' }, tabs, periodBar, banner, ...rateBanners, smallSample, ...body));
+    mount(root, bar, el('main', { class: 'content' }, tabs, periodBar, accountChips, banner, ...rateBanners, smallSample, ...body));
     void pointIndex;
   }
   await paint();

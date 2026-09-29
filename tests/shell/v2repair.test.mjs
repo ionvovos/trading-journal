@@ -144,3 +144,23 @@ test('G10: a review card shows at most MAX_LINKS trade links and says how many m
   assert.deepEqual(capLinks(['a', 'b']), { shown: ['a', 'b'], more: 0 });
   assert.match(readFileSync(new URL('../../src/ui/views/review.js', import.meta.url), 'utf8'), /capLinks\(all\)/);
 });
+
+// ---- G11: account filter on Statistics
+test('G11: the statistics for one account leave the others out; the screen offers a chip per account of the mode', async () => {
+  const { accountFilterValid } = await import('../../src/ui/views/stats.js');
+  const a = ['e', 'u'].map((id, n) => acc(id, 'real', 'USD', 1));
+  const { ctx, store } = await ctxWith(a);
+  await store.trades.put(makeTrade({ id: 'w', accountId: 'e', entry: '10', exit: '20', size: '1', stop: '9', close: '2026-09-02T16:00:00Z', open: '2026-09-02T15:00:00Z' }));
+  await store.trades.put(makeTrade({ id: 'l', accountId: 'u', entry: '10', exit: '5', size: '1', stop: '9', close: '2026-09-03T16:00:00Z', open: '2026-09-03T15:00:00Z' }));
+  const model = await loadModel(store);
+  const all = await computeStats(ctx, model, { period: null });
+  ctx.setAccountFilter('e');
+  const one = await computeStats(ctx, model, { period: null });
+  assert.equal(all.included.length, 2);
+  assert.deepEqual(one.included.map((t) => t.id), ['w']);
+  assert.ok(one.netMinor > 0 && all.netMinor < one.netMinor);
+  assert.equal(accountFilterValid('e', model, 'real'), true);
+  assert.equal(accountFilterValid('e', model, 'paper'), false, 'a filter from the other mode resets to all');
+  assert.equal(accountFilterValid('all', model, 'paper'), true);
+  assert.match(readFileSync(new URL('../../src/ui/views/stats.js', import.meta.url), 'utf8'), /modeAccounts\.length > 1/);
+});
