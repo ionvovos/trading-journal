@@ -56,7 +56,7 @@ const L = {
   en: {
     banner: 'IBKR, September: difference open', bannerBody: `Your broker shows ${n2(IBKR_DIFF)} more. 2 trades may explain most of it.`,
     net: 'Net P&amp;L', month: 'September', sub: `${N_CLOSED} closed · 1 held out · 2 open`,
-    exp: 'Expectancy', expN: `n ${S.rk}<br>no R on ${S.n - S.rk}`, win: 'Win rate', winN: `${S.wins} of ${N_CLOSED}`, dd: 'Max drawdown', ddN: MINUS + n2(-DD.dd),
+    exp: 'Expectancy', expN: `n ${S.rk}<br>no R on ${S.n - S.rk}`, win: 'Win rate', winN: `${S.wins} of ${N_CLOSED}`, dd: 'Max drawdown', ddN: `${MINUS}${n2(-DD.dd)}<br>% incl. deposits`,
     check: 'Broker check', all: 'All periods', recent: 'Recent trades', seeAll: 'See all',
     st: { open: 'Difference', ok: 'Reconciled', skip: 'Skipped', ask: 'Not asked' },
     periods: [['IBKR', `Sep 2026 · +${n2(IBKR_DIFF)}`, 'open'], ['Kraken', 'Sep 2026', 'skip'], ['MT4 forex', 'Sep 2026 · imported 29 Sep', 'ask'], ['IBKR', `Aug 2026 · within ±0.14`, 'ok']],
@@ -65,7 +65,7 @@ const L = {
   el: {
     banner: 'IBKR, Σεπτέμβριος: ανοιχτή διαφορά', bannerBody: `Ο broker δείχνει ${n2(IBKR_DIFF, 'el')} παραπάνω. Μπορεί να το εξηγούν κυρίως 2 συναλλαγές.`,
     net: 'Καθαρό Κ/Ζ', month: 'Σεπτέμβριος', sub: `${N_CLOSED} κλειστές · 1 σε αναμονή · 2 ανοιχτές`,
-    exp: 'Μέσο R', expN: `n ${S.rk}<br>χωρίς R: ${S.n - S.rk}`, win: 'Κερδοφόρες', winN: `${S.wins} από ${N_CLOSED}`, dd: 'Μέγ. πτώση', ddN: MINUS + n2(-DD.dd, 'el'),
+    exp: 'Μέσο R', expN: `n ${S.rk}<br>χωρίς R: ${S.n - S.rk}`, win: 'Κερδοφόρες', winN: `${S.wins} από ${N_CLOSED}`, dd: 'Μέγ. πτώση', ddN: `${MINUS}${n2(-DD.dd, 'el')}<br>% με καταθέσεις`,
     check: 'Έλεγχος με τον broker', all: 'Όλες οι περίοδοι', recent: 'Πρόσφατες συναλλαγές', seeAll: 'Όλες',
     st: { open: 'Διαφορά', ok: 'Συμφωνεί', skip: 'Παραλείφθηκε', ask: 'Δεν ζητήθηκε' },
     periods: [['IBKR', `Σεπ 2026 · +${n2(IBKR_DIFF, 'el')}`, 'open'], ['Kraken', 'Σεπ 2026', 'skip'], ['MT4 forex', 'Σεπ 2026 · εισαγωγή 29 Σεπ', 'ask'], ['IBKR', 'Αύγ 2026 · εντός ±0,14', 'ok']],
@@ -673,9 +673,9 @@ ${equityChart(PTS, { h: 124, marks: true, noX: true })}
   <div><dt>Max drawdown ${info('drawdown')}</dt><dd>${money(DD.dd, { arrow: false })} · ${MINUS}${pct1(-DD.pct)}</dd></div>
   <div><dt>Peak to low</dt><dd>12 Sep → 19 Sep</dd></div>
   <div><dt>Recovered</dt><dd>25 Sep · needed +${pct1(DD.recoveryGain)}</dd></div>
-  <div><dt>Now below peak</dt><dd>${money(DD.current, { arrow: false })}</dd></div>
+  <div><dt>Now below peak</dt><dd>${money(DD.current, { arrow: false })} · ${MINUS}${pct1(-DD.currentPct)}</dd></div>
 </div>
-<p class="caption" style="margin-top:6px">Measured on closed trades; swings inside a trade are not measured.</p></section>
+<p class="caption" style="margin-top:6px">Amounts and dates come from closed trades only. Percents divide by equity including deposits and withdrawals: ${n2(DD.ePeak)} at the peak, ${n2(DD.eTrough)} at the low. Swings inside a trade are not measured.</p></section>
 <section class="card"><div class="card-h"><h3>R per trade</h3><span class="caption">${S.rk} with R · missing on ${S.n - S.rk}</span></div>
 ${rHistogram()}
 <div class="legend"><span><i class="sw gain"></i>Above 0R</span><span><i class="sw loss"></i>Below 0R</span></div></section>
@@ -744,7 +744,7 @@ ${tabbar('stats')}` }));
 
 // Learn popovers: expectancy (stats), R (trade detail), drawdown (stats)
 const popover = (top, arrow, term, body, number, extra = '') => `<div class="scrim" style="background:rgb(0 0 0 / 0.18)"></div>
-<div class="popover" role="dialog" aria-label="${term} explained" style="top:calc(var(--safe-top) + ${top}px);--arrow:${arrow}px">
+<div class="popover" role="dialog" aria-label="${term} explained" style="top:calc(var(--safe-top) + ${top}px);--arrow:${arrow}px;max-height:calc(100vh - var(--safe-top) - ${top + 16}px);overflow:auto">
   <div class="spread"><span class="tag info">${ic('book', 'xs')}Learn</span><button class="icon-btn" aria-label="Close" style="margin:-8px -10px">${ic('x')}</button></div>
   <h3 style="margin:0;font:700 20px/26px var(--font-display)">${term}</h3>
   <p style="font-size:15px;line-height:22px">${body}</p>
@@ -770,7 +770,7 @@ add('learn-drawdown', 'Statistics', 'Learn popover: drawdown', page({ title: 'Le
   <div><dt style="color:var(--accent);font-weight:600">Max drawdown ${ic('info', 'info-dot')}</dt><dd>${money(DD.dd, { arrow: false })} · ${MINUS}${pct1(-DD.pct)}</dd></div><div><dt>Peak to low</dt><dd>12 Sep → 19 Sep</dd></div></div></section>
 <section class="card" style="height:260px"></section></main>
 ${tabbar('stats')}
-${popover(262, 56, 'Drawdown', 'How far your balance fell from its highest point before it climbed back. It is measured from peak to low on closed trades.', `Your largest: <b class="loss">${MINUS}${n2(-DD.dd)}</b>, ${MINUS}${pct1(-DD.pct)} of the 12 Sep peak of ${n2(DD.peak.v)}, down to ${n2(DD.trough.v)} on 19 Sep. Getting back needed +${pct1(DD.recoveryGain)}, reached on 25 Sep.`, '<button class="btn plain">Why the gain is larger</button>')}` }));
+${popover(236, 56, 'Drawdown', 'How far your balance fell from its highest point before it climbed back, measured from peak to low on closed trades.', `Your largest: <b class="loss">${MINUS}${n2(-DD.dd)}</b> from the 12 Sep peak to the 19 Sep low. That is ${MINUS}${pct1(-DD.pct)} of your equity at the peak, ${n2(DD.ePeak)} including deposits and withdrawals. Getting back needed +${pct1(DD.recoveryGain)}, reached on 25 Sep.`, '<button class="btn plain">Recovery gain</button>')}` }));
 
 // ---------- COMPARE paper vs real ----------
 add('compare', 'Review', 'Your paper and real figures', page({ title: 'Your paper and real figures', body: `${navbar({ back: 'Review', title: 'Paper and real figures' })}
@@ -891,7 +891,7 @@ add('settings-key', 'Settings', 'Own key: what is sent, before turning it on (AC
 </main>
 <div class="actions"><button class="btn primary lg block">Turn on with this key</button><button class="btn ghost block">Cancel</button></div>` }));
 
-add('data', 'Settings', 'Data: storage refused, export done, delete everything', page({ title: 'Export and backup', body: `${navbar({ back: 'Settings', title: 'Your data' })}
+add('data', 'Settings', 'Data: storage refused, export done, delete everything', page({ title: 'Export and backup', cls: 'app has-toast', body: `${navbar({ back: 'Settings', title: 'Your data' })}
 <main class="content">
 <div class="banner attention" style="grid-template-columns:auto 1fr">${ic('alert')}<div class="body"><b style="color:var(--attention)">Storage is not protected</b>The browser did not grant lasting storage, so it may clear this app’s data when the phone runs low on space. Export a backup regularly.</div></div>
 <button class="btn secondary block">Ask the browser again</button>
@@ -906,6 +906,22 @@ add('data', 'Settings', 'Data: storage refused, export done, delete everything',
 </main>
 <div class="toast" role="status">${ic('checkc')}<span>Exported <b>trading-journal-2026-09-29.json</b> · 2.4 MB</span><button class="link" style="color:inherit;font-weight:600">Share</button></div>
 ${tabbar('home')}` }));
+
+add('data-delete', 'Settings', 'Delete everything: typed confirmation and the model choice (AC-P8.9)', page({ title: 'Delete everything', body: `${navbar({ back: 'Settings', title: 'Your data' })}<main class="content"><section class="card" style="height:300px"></section></main>${tabbar('home')}<div class="scrim"></div>
+<section class="sheet" role="dialog" aria-label="Delete everything" style="top:calc(var(--safe-top) + 40px)">
+<div class="grabber"></div>
+<div class="sheet-h"><button class="btn ghost">Cancel</button><h2>Delete everything</h2><span style="min-width:64px"></span></div>
+<div class="sheet-body">
+  <section class="card"><div class="card-h"><h3>This removes, from this device only</h3></div>
+  <div class="kv"><div><dt>Trades, real and paper</dt><dd>214</dd></div><div><dt>Accounts and cash movements</dt><dd>4 · 4</dd></div><div><dt>Plans and reviews</dt><dd>1 · 9</dd></div><div><dt>Import reports and screenshots</dt><dd>6 · 18</dd></div><div><dt>Settings and your own key</dt><dd>all</dd></div></div>
+  <p class="caption" style="margin-top:8px">There is no copy anywhere else. Last export 29 Sep.</p></section>
+  <button class="btn secondary block">${ic('export', 'sm')}Export first</button>
+  <div class="list"><div class="set-row" style="min-height:56px"><span class="check">${ic('check')}</span><span class="lbl">Also delete the downloaded model<small>830 MB. Leave it and reviews by the model keep working after you start again.</small></span></div></div>
+  <div class="field"><label>Type DELETE to confirm</label><div class="input focus">DELETE<span class="caret"></span></div></div>
+  <p class="caption">Afterwards the app opens at the first-run screen.</p>
+</div>
+<div class="sheet-foot"><button class="btn danger-btn lg block">Delete everything</button></div>
+</section>` }));
 
 const ABOUT = {
   en: {

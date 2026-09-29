@@ -24,7 +24,10 @@ const CHECKS = `(() => {
     return r.height + pad < 43.5;
   }).map((e) => (e.textContent.trim() || e.getAttribute('aria-label') || e.className).slice(0, 24) + ':' + Math.round(e.getBoundingClientRect().height));
   const native = [...document.querySelectorAll('select, input, textarea')].length;
-  return { overflowX: document.documentElement.scrollWidth - innerWidth, clipped, small, targets, native };
+  // elements past the left or right edge of the viewport, unless an ancestor scrolls or clips sideways (G23)
+  const clippedByAncestor = (e) => { for (let p = e.parentElement; p && p !== document.body; p = p.parentElement) { const o = getComputedStyle(p).overflowX; if (o !== 'visible') return true; } return false; };
+  const offscreen = [...document.querySelectorAll('body *')].filter((e) => vis(e) && !e.closest('.statusbar') && !e.closest('[aria-hidden=true]')).filter((e) => { const r = e.getBoundingClientRect(); return (r.right > innerWidth + 1 || r.left < -1) && !clippedByAncestor(e); }).map((e) => (e.className || e.tagName).toString().slice(0, 30));
+  return { overflowX: document.documentElement.scrollWidth - innerWidth, clipped, small, targets, native, offscreen };
 })()`;
 const SCROLLER = `(() => { const b = document.querySelector('.sheet-body'); return b && b.scrollHeight > b.clientHeight + 4 ? '.sheet-body' : ''; })()`;
 
@@ -57,7 +60,7 @@ await sleep(100);
 const external = b.network.filter((u) => !u.startsWith(b.base) && !u.startsWith('data:'));
 await b.close();
 const bad = (k) => report.filter((r) => (Array.isArray(r[k]) ? r[k].length : r[k] > 0));
-console.log(`${shots} screenshots of ${names.length} screens; overflow ${bad('overflowX').length}; clipped ${bad('clipped').length}; under 11px ${bad('small').length}; targets under 44px ${bad('targets').length}; native controls ${bad('native').length}; external requests ${external.length}; console problems ${b.problems.length}`);
-for (const k of ['overflowX', 'clipped', 'small', 'targets', 'native']) for (const r of bad(k)) console.log(k.toUpperCase(), r.png, JSON.stringify(r[k]));
+console.log(`${shots} screenshots of ${names.length} screens; overflow ${bad('overflowX').length}; past the viewport ${bad('offscreen').length}; clipped ${bad('clipped').length}; under 11px ${bad('small').length}; targets under 44px ${bad('targets').length}; native controls ${bad('native').length}; external requests ${external.length}; console problems ${b.problems.length}`);
+for (const k of ['overflowX', 'offscreen', 'clipped', 'small', 'targets', 'native']) for (const r of bad(k)) console.log(k.toUpperCase(), r.png, JSON.stringify(r[k]));
 for (const p of b.problems) console.log('PROBLEM', p);
 for (const u of external) console.log('EXTERNAL', u);

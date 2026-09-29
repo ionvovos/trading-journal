@@ -13,7 +13,7 @@
   --scrim: rgb(15 20 30 / 0.38);
   --line: #e2e5ea;
   --line-strong: #c9ced6;
-  --control-line: #858d99;    /* input and toggle outlines: 3:1 against the surface (WCAG 1.4.11) */
+  --control-line: #7a828e;    /* input, toggle and segment outlines: 3:1 against surface and surface-2 (WCAG 1.4.11) */
 
   /* Text */
   --text: #11151b;

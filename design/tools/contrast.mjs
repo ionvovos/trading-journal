@@ -43,6 +43,7 @@ const PAIRS = [
   ['chart-equity', 'surface', 3, 'equity line'],
   ['chart-dd', 'surface', 3, 'drawdown line'],
   ['control-line', 'surface', 3, 'input, toggle and checkbox outline (WCAG 1.4.11)'],
+  ['control-line', 'surface-2', 3, 'selected segment outline against its track'],
 ];
 
 let fail = 0;

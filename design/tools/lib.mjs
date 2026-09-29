@@ -258,7 +258,12 @@ export function equityPoints() {
   return pts;
 }
 
-export function ddStats(pts) {
+// Cash movements of the real accounts in September (day, amount): the same rows as the `cash` mockup.
+export const CASH = [[3, 500], [12, 250], [20, -300]];
+// S11 (architecture §3.2): amounts and dates from the trades-only curve; percents divide by equity including
+// deposits and withdrawals from the curve start up to that point, E(t).
+export function ddStats(pts, cash = CASH) {
+  const E = (p) => p.v + cash.filter(([d]) => d <= p.day).reduce((s, [, a]) => s + a, 0);
   let peak = pts[0], best = { dd: 0 };
   for (const p of pts) {
     if (p.v > peak.v) peak = p;
@@ -268,7 +273,13 @@ export function ddStats(pts) {
   const last = pts[pts.length - 1];
   const maxPeak = pts.reduce((a, b) => (b.v > a.v ? b : a));
   const rec = pts.find((p) => p.day > best.trough.day && p.v >= best.peak.v);
-  return { dd: best.dd, pct: (best.dd / best.peak.v) * 100, peak: best.peak, trough: best.trough, recovery: rec, recoveryGain: (best.peak.v / best.trough.v - 1) * 100, current: last.v - maxPeak.v, last };
+  const current = last.v - maxPeak.v;
+  return {
+    dd: best.dd, peak: best.peak, trough: best.trough, recovery: rec, current, last,
+    ePeak: E(best.peak), eTrough: E(best.trough),
+    pct: (best.dd / E(best.peak)) * 100, recoveryGain: (-best.dd / E(best.trough)) * 100, currentPct: (current / E(maxPeak)) * 100,
+    includesCash: cash.some(([d]) => d >= pts[0].day && d <= last.day),
+  };
 }
 // R distribution in 0.5R bins, from the trades with a known R
 const BIN_EDGES = [-Infinity, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, Infinity];

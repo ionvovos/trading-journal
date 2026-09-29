@@ -225,6 +225,11 @@
     "title": "Data: storage refused, export done, delete everything"
   },
   {
+    "name": "data-delete",
+    "group": "Settings",
+    "title": "Delete everything: typed confirmation and the model choice (AC-P8.9)"
+  },
+  {
     "name": "about",
     "group": "Settings",
     "title": "About: the one-page explanation (approved wording)"
