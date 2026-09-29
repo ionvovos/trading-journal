@@ -64,7 +64,7 @@ export default {
   'checklist.noneBody': 'Γράψτε δικούς σας κανόνες και αυτό το βήμα τους δείχνει πριν από κάθε συναλλαγή.',
 
   // ---- sizing
-  'sizing.title': 'Μέγεθος από το ρίσκο',
+  'sizing.title': 'Μέγεθος',
   'sizing.back': 'Νέα συναλλαγή',
   'sizing.equity': 'Κεφάλαιο λογαριασμού',
   'sizing.risk': 'Ρίσκο',
@@ -190,7 +190,7 @@ export default {
   'review.ui.mode': 'Ανασκόπηση: {mode}',
 
   // ---- paper and real comparison (#/review/compare); scope comparison
-  'compare.bar': 'Εικονικές και πραγματικές',
+  'compare.bar': 'Σύγκριση',
   'compare.title': 'Τα στοιχεία σας σε εικονικές και πραγματικές συναλλαγές',
   'compare.intro': 'Τα δικά σας μεγέθη και στις δύο λειτουργίες. Κάθε αριθμός ανοίγει στις συναλλαγές του.',
   'compare.k.followed': 'Τήρησαν το σχέδιό σας',
@@ -228,7 +228,7 @@ export default {
   'learnview.notFound': 'Δεν υπάρχει καταχώρηση για αυτόν τον όρο.',
 
   // ---- sentence entry
-  'sentence.title': 'Έλεγχος και αποθήκευση',
+  'sentence.title': 'Έλεγχος',
   'sentence.input': 'Μία πρόταση',
   'sentence.placeholder': 'αγόρασα 50 AAPL στα 227,40',
   'sentence.read': 'Ανάγνωση πρότασης',
