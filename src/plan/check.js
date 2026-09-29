@@ -30,9 +30,9 @@ export const hasRules = (plan) => Boolean(plan && (plan.items?.length || plan.se
 const dayOf = (iso, tz, cutoff = 0) => localParts(iso, tz, cutoff).date;
 
 // trade: store trade. ctx: { sameDayTrades: [trade] opened earlier the same local day, equityAtEntryMinor: integer|null,
-// tz, digits = 2, dayCutoffHour = 0 }. Values: 'pass' | 'fail' | 'unknown'.
+// accounts, tz, digits = 2, dayCutoffHour = 0 }. Values: 'pass' | 'fail' | 'unknown'.
 export function evaluatePlan(trade, plan, ctx = {}) {
-  const { sameDayTrades = [], equityAtEntryMinor = null, tz = 'UTC', digits = 2, dayCutoffHour = 0 } = ctx;
+  const { sameDayTrades = [], equityAtEntryMinor = null, tz = 'UTC', digits = 2, dayCutoffHour = 0, accounts = {} } = ctx;
   const auto = {};
   if (!plan) return { auto, suggestedFollowed: null };
   const at = entryTime(trade);
@@ -56,7 +56,7 @@ export function evaluatePlan(trade, plan, ctx = {}) {
       for (const o of sameDayTrades) {
         const c = closeTime(o);
         if (!c || Date.parse(c) >= Date.parse(at)) continue;
-        const m = tradeMoney(o, { digits });
+        const m = tradeMoney(o, { accounts });
         if (m) lost += m.netMinor;
       }
       auto.dailyLossLimit = lost <= -(Number(plan.dailyLossLimitPct) / 100) * equityAtEntryMinor + 1e-9 ? 'fail' : 'pass';

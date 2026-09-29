@@ -43,6 +43,7 @@ function addedWhileLosing(trade) {
 function plannedR(trade) {
   if (trade.target === null || trade.target === undefined || trade.target === '' || trade.initialStop === null || trade.initialStop === undefined) return null;
   const avg = averageEntry(trade);
+  if (avg === null) return null;
   const dist = Math.abs(avg - Number(trade.initialStop));
   return dist > 0 ? Math.abs(Number(trade.target) - avg) / dist : null;
 }
@@ -73,14 +74,14 @@ export function buildRows({ trades = [], cash = [], accounts = {}, plans = [], m
     const closeAt = closeTime(t);
     if (!at || !closeAt || !inPeriod(closeAt, period, tz)) continue;
     const digits = digitsFor(t, accountMap);
-    const money = tradeMoney(t, { digits });
+    const money = tradeMoney(t, { accounts: accountMap });
     const risk = initialRisk(t);
-    const equity = equityAtEntry(t, { account: accountMap[t.accountId], trades: counted, cash, digits });
+    const equity = equityAtEntry(t, { account: accountMap[t.accountId], trades: counted, cash });
     const posValue = positionValue(t);
     const plan = planOf(t);
     const same = sameDayBefore(t, counted, tz, dayCutoffHour);
     const equityMinor = equity === null ? null : Math.round(equity * 10 ** digits);
-    const evalResult = plan ? evaluatePlan(t, plan, { sameDayTrades: same, equityAtEntryMinor: equityMinor, tz, digits, dayCutoffHour }) : { auto: {}, suggestedFollowed: null };
+    const evalResult = plan ? evaluatePlan(t, plan, { sameDayTrades: same, equityAtEntryMinor: equityMinor, tz, digits, dayCutoffHour, accounts: accountMap }) : { auto: {}, suggestedFollowed: null };
     rows.push({
       id: t.id,
       instrument: t.instrument,
@@ -97,11 +98,11 @@ export function buildRows({ trades = [], cash = [], accounts = {}, plans = [], m
       holdSeconds: holdSeconds(t),
       netMinor: money.netMinor,
       digits,
-      r: rMultiple(t, { digits }),
+      r: rMultiple(t, { accounts: accountMap }),
       riskPct: equity && equity > 0 && risk.value !== null ? (risk.value / equity) * 100 : null,
       positionValuePct: equity && equity > 0 && posValue !== null ? (posValue / equity) * 100 : null,
       initialStop: t.initialStop ?? null,
-      stopMissing: t.initialStop === null || t.initialStop === undefined || t.initialStop === '',
+      stopMissing: !t.entryUnknown && (t.initialStop === null || t.initialStop === undefined || t.initialStop === ''), // a position opened before the file has no entry to hold a stop for
       stopMovedAway: stopMovedAway(t),
       addedWhileLosing: addedWhileLosing(t),
       plannedR: plannedR(t),

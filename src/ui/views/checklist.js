@@ -22,15 +22,16 @@ export function autoChecks(plan, trade, { trades, cash, accounts, tz, dayCutoffH
   const account = accounts.find((a) => a.id === trade.accountId) ?? null;
   const digits = digitsFor(trade, Object.fromEntries(accounts.map((a) => [a.id, a])));
   const same = sameDayBefore(trade, trades.filter((x) => x.id !== trade.id), tz, dayCutoffHour);
-  const eq = account ? equityAtEntry(trade, { account, trades: trades.filter((x) => x.id !== trade.id), cash, digits }) : null;
+  const eq = account ? equityAtEntry(trade, { account, trades: trades.filter((x) => x.id !== trade.id), cash }) : null;
   const equityMinor = eq === null ? null : Math.round(eq * 10 ** digits);
-  const result = evaluatePlan(trade, plan, { sameDayTrades: same, equityAtEntryMinor: equityMinor, tz, digits, dayCutoffHour });
+  const accountsById = Object.fromEntries(accounts.map((a) => [a.id, a]));
+  const result = evaluatePlan(trade, plan, { sameDayTrades: same, equityAtEntryMinor: equityMinor, tz, digits, dayCutoffHour, accounts: accountsById });
   let lostPct = null;
   if (equityMinor && equityMinor > 0) {
     const at = entryTime(trade);
     const lost = same.reduce((sum, o) => {
       const c = o.closeTime;
-      const m = c && Date.parse(c) < Date.parse(at) ? tradeMoney(o, { digits }) : null;
+      const m = c && Date.parse(c) < Date.parse(at) ? tradeMoney(o, { accounts: accountsById }) : null;
       return sum + (m ? m.netMinor : 0);
     }, 0);
     lostPct = (lost / equityMinor) * 100;

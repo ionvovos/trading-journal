@@ -11,14 +11,14 @@ const TABLE = { en: EN, el: EL };
 export const TERM_IDS = Object.freeze(EN.map((e) => e.id));
 
 // Terms worth reading next, by id.
-const RELATED = { T1: ['T2', 'T9'], T2: ['T1', 'T3'], T3: ['T2', 'T6', 'T25'], T4: ['T5'], T5: ['T4'], T6: ['T3', 'T25'], T7: ['T3'], T8: ['T1'], T9: ['T1', 'T17', 'T18'], T12: ['T14'], T14: ['T12', 'T13'], T15: ['T16'], T16: ['T15'], T17: ['T18', 'T9'], T18: ['T17'], T19: ['T20'], T20: ['T19'], T22: ['T23'], T23: ['T22', 'T24'], T24: ['T23'], T25: ['T3', 'T6'] };
+const RELATED = { T1: ['T2', 'T9'], T2: ['T1', 'T3'], T3: ['T2', 'T6', 'T25'], T4: ['T5'], T5: ['T4'], T6: ['T3', 'T25'], T7: ['T3'], T8: ['T1'], T9: ['T1', 'T17', 'T18'], T12: ['T14'], T14: ['T12', 'T13'], T15: ['T16'], T16: ['T15'], T17: ['T18', 'T9'], T18: ['T17'], T19: ['T20'], T20: ['T19'], T22: ['T23'], T23: ['T22', 'T24'], T24: ['T23'], T25: ['T3', 'T6'], T26: ['T27'], T27: ['T26'], T28: ['T4'], T29: ['T25'], T30: ['T31'], T31: ['T30'], T32: ['T2', 'T12', 'T14'], T33: ['T27'], T34: ['T35'], T35: ['T34'] };
 
 export const entries = (lang = 'en') => (TABLE[lang] ?? EN).map((e) => ({ ...e, source: EN.find((x) => x.id === e.id)?.source ?? null, related: RELATED[e.id] ?? [] }));
 export const entryFor = (slugOrId, lang = 'en') => entries(lang).find((e) => e.slug === slugOrId || e.id === slugOrId) ?? null;
 export const slugFor = (id) => EN.find((e) => e.id === id)?.slug ?? null;
 
 // The learn term to open from a figure (S-ids of the requirements). A figure with no term has no entry to open.
-export const TERM_FOR_FIGURE = Object.freeze({ S4: 'T6', S5: 'T6', S6: 'T7', S7: 'T1', S8: 'T2', S9: 'T3', S10: 'T4', S11: 'T4', S17: 'T17', S18: 'T24', P2_6: 'T9' });
+export const TERM_FOR_FIGURE = Object.freeze({ S4: 'T6', S5: 'T6', S6: 'T7', S7: 'T1', S8: 'T2', S9: 'T3', S2: 'T27', S3: 'T31', S10: 'T28', S11: 'T4', S13: 'T34', S16: 'T29', A1: 'T30', S17: 'T17', S18: 'T24', P2_6: 'T9' });
 
 // Every learn string with its guard scope, for tests/learn and the strings-boundary test: [{ key, text, scope }].
 export function learnStrings(lang) {
