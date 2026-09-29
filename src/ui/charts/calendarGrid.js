@@ -29,6 +29,7 @@ export function calendarGrid({ year, month, days, weeks = [], fmt = defaultFmt()
   const level = (v) => { const a = Math.abs(v) / max; return (v > 0 ? 'g' : 'l') + (a < 1 / 3 ? 1 : a < 2 / 3 ? 2 : 3); };
   const short = (minor) => {
     const v = minor / digits;
+    if (Math.abs(v) < 0.5) return '0'; // a day worth less than half a unit is "0", never "−0" (V2 G12)
     const sign = minor > 0 ? '+' : MINUS;
     return Math.abs(v) >= 1000 ? `${sign}${fmt.num(Math.abs(v) / 1000, 1)}k` : `${sign}${fmt.num(Math.round(Math.abs(v)), 0)}`;
   };

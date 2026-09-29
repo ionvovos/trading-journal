@@ -164,3 +164,15 @@ test('G11: the statistics for one account leave the others out; the screen offer
   assert.equal(accountFilterValid('all', model, 'paper'), true);
   assert.match(readFileSync(new URL('../../src/ui/views/stats.js', import.meta.url), 'utf8'), /modeAccounts\.length > 1/);
 });
+
+// ---- G12: small labels
+test('G12: "1 win · 2 losses" agrees in number in both languages; a calendar day worth under half a unit reads 0, not −0', async () => {
+  const en = (await import('../../src/i18n/en/data.js')).default['stats.streaks.value'];
+  const { formatMessage } = await import('../../src/i18n/i18n.js');
+  assert.equal(formatMessage(en, { w: 2, l: 1 }, 'en'), '2 wins · 1 loss');
+  assert.equal(formatMessage(en, { w: 1, l: 2 }, 'en'), '1 win · 2 losses');
+  const el = (await import('../../src/i18n/el/data.js')).default['stats.streaks.value'];
+  assert.equal(formatMessage(el, { w: 1, l: 3 }, 'el'), '1 κερδοφόρα · 3 ζημιογόνες');
+  const src = readFileSync(new URL('../../src/ui/charts/calendarGrid.js', import.meta.url), 'utf8');
+  assert.match(src, /Math\.abs\(v\) < 0\.5\) return '0'/);
+});

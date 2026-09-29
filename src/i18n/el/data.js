@@ -548,7 +548,7 @@ export default {
   'stats.pf.no_trades': 'χωρίς συναλλαγές',
   'stats.holding': 'Χρόνος διακράτησης, κερδοφόρες · ζημιογόνες',
   'stats.streaks': 'Μεγαλύτερες σειρές',
-  'stats.streaks.value': '{w} κερδοφόρες · {l} ζημιογόνες',
+  'stats.streaks.value': '{w, plural, one {# κερδοφόρα} other {# κερδοφόρες}} · {l, plural, one {# ζημιογόνα} other {# ζημιογόνες}}',
   'stats.pips': 'Pips {pair} · n {n}',
   'stats.fees': 'Χρεώσεις · funding και swap',
   'stats.by.setup': 'Ανά setup',
@@ -584,7 +584,7 @@ export default {
   'stats.session.outside': 'Εκτός συνεδριών',
   'stats.session.us_regular': 'Κανονικές ώρες ΗΠΑ',
   'stats.session.us_extended': 'Εκτεταμένες ώρες ΗΠΑ',
-  'stats.session.none': 'Χωρίς συνεδρία (crypto)',
+  'stats.session.none': 'Χωρίς ορισμένη συνεδρία (crypto, μετοχές εκτός ΗΠΑ)',
 
   // ημερολόγιο
   'calendar.title': 'Ημερολόγιο',

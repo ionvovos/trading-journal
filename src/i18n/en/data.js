@@ -549,7 +549,7 @@ export default {
   'stats.pf.no_trades': 'no trades',
   'stats.holding': 'Holding time, winners · losers',
   'stats.streaks': 'Longest streaks',
-  'stats.streaks.value': '{w} wins · {l} losses',
+  'stats.streaks.value': '{w, plural, one {# win} other {# wins}} · {l, plural, one {# loss} other {# losses}}',
   'stats.pips': 'Pips {pair} · n {n}',
   'stats.fees': 'Fees · funding and swap',
   'stats.by.setup': 'By setup',
@@ -585,7 +585,7 @@ export default {
   'stats.session.outside': 'Outside the sessions',
   'stats.session.us_regular': 'US regular hours',
   'stats.session.us_extended': 'US extended hours',
-  'stats.session.none': 'No session (crypto)',
+  'stats.session.none': 'No session defined (crypto, non-US stocks)',
 
   // calendar
   'calendar.title': 'Calendar',
