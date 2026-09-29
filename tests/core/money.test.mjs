@@ -83,3 +83,20 @@ test('minorToDecimal', () => {
   assert.equal(minorToDecimal(0, 2), '0.00');
   assert.throws(() => minorToDecimal(1.5, 2), TypeError);
 });
+
+import { parseUserDecimal } from '../../src/core/money.js';
+
+test('parseUserDecimal: form fields accept a decimal point or a decimal comma', () => {
+  assert.equal(parseUserDecimal('0,2'), '0.2');
+  assert.equal(parseUserDecimal('0.2'), '0.2');
+  assert.equal(parseUserDecimal(' 2410 '), '2410');
+  assert.equal(parseUserDecimal('1.085'), '1.085');
+  assert.equal(parseUserDecimal('1,085'), '1.085');
+  assert.equal(parseUserDecimal('1,234.50'), '1234.5');
+  assert.equal(parseUserDecimal('1.234,50'), '1234.5');
+  assert.equal(parseUserDecimal('1,234,567'), '1234567');
+  assert.equal(parseUserDecimal('1.234.567'), '1234567');
+  assert.equal(parseUserDecimal('-0,5'), '-0.5');
+  assert.equal(parseUserDecimal('10 000,50'), '10000.5');
+  for (const bad of ['', ' ', 'abc', '1,2,3,4x', null, undefined]) assert.equal(parseUserDecimal(bad), null, String(bad));
+});

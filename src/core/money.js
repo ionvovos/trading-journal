@@ -91,3 +91,25 @@ export function minorToDecimal(minor, digits) {
   const body = digits === 0 ? s : `${s.slice(0, s.length - digits)}.${s.slice(s.length - digits)}`;
   return (minor < 0 ? '-' : '') + body;
 }
+
+// A number typed by a person in a form field: one decimal separator, '.' or ','. With both present the
+// last one is the decimal separator ("1,234.50" and "1.234,50" both read 1234.5). A lone comma is a
+// decimal comma ("0,2"). Returns a normalised decimal string or null. Sentence entry is stricter: it asks
+// when a Greek input has a dot followed by exactly three digits (AC-P7.2); form fields do not.
+export function parseUserDecimal(str) {
+  if (typeof str === 'number') return parseDecimal(str);
+  if (typeof str !== 'string') return null;
+  const s = str.trim().replace(SPACES, '');
+  if (s === '') return null;
+  const lastDot = s.lastIndexOf('.');
+  const lastComma = s.lastIndexOf(',');
+  if (lastDot === -1 && lastComma === -1) return parseDecimal(s, '.');
+  if (lastDot !== -1 && lastComma !== -1) {
+    const decimal = lastComma > lastDot ? ',' : '.';
+    return parseDecimal(s, decimal);
+  }
+  const sep = lastComma !== -1 ? ',' : '.';
+  const count = s.split(sep).length - 1;
+  if (count > 1) return parseDecimal(s, sep === ',' ? '.' : ',');
+  return parseDecimal(s.replace(',', '.'), '.');
+}
