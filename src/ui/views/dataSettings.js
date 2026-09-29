@@ -9,6 +9,9 @@ import { downloadText, byteText, confirmSheet, toastMsg, pickSheet, nowIso } fro
 
 const REMIND_CHOICES = [25, 50, 100, 200, 0];
 
+// A file larger than this is refused before it is read (L4b F8): a restore holds the whole text in memory.
+export const MAX_IMPORT_BYTES = 100 * 1024 * 1024;
+
 async function persistState() {
   try {
     if (!navigator.storage?.persisted) return 'unknown';
@@ -54,6 +57,7 @@ async function doExport(ctx) {
 }
 
 async function restoreFile(ctx, file, notify) {
+  if (file.size > MAX_IMPORT_BYTES) { notify({ kind: 'danger', title: t('data.restore.failed'), body: t('export.error.tooBig', { detail: MAX_IMPORT_BYTES / (1024 * 1024) }) }); return; }
   const text = await file.text();
   const parsed = parseExport(text);
   if (!parsed.ok) { notify({ kind: 'danger', title: t('data.restore.failed'), body: t(parsed.errorKey, { detail: parsed.detail ?? '' }) }); return; }

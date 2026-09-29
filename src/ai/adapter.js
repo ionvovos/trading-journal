@@ -4,12 +4,12 @@
 import { AiError, describeAiError } from './http.js';
 import { createAnthropic, ANTHROPIC_DEFAULT_MODEL, ANTHROPIC_URL } from './anthropic.js';
 import { createOpenAi, OPENAI_DEFAULT_BASE_URL } from './openai.js';
-import { rewordPrompt, assistPrompt } from './prompts.js';
+import { arrangePrompt, assistPrompt } from './prompts.js';
 
 export { AiError, describeAiError, ANTHROPIC_DEFAULT_MODEL, OPENAI_DEFAULT_BASE_URL };
 
 export const PROVIDERS = Object.freeze(['none', 'anthropic', 'openai']);
-export const TIMEOUTS = Object.freeze({ reword: 45000, assist: 20000, test: 10000 });
+export const TIMEOUTS = Object.freeze({ arrange: 45000, assist: 20000, test: 10000 });
 
 // Strips code fences, takes the first balanced {...} and parses it.
 export function extractJson(text) {
@@ -46,11 +46,14 @@ export function extractJson(text) {
 
 const bad = (why) => new AiError('malformed', `The AI reply was not usable: ${why}.`);
 
-// { items: [{ id, text }] } -> the same, keeping only string ids and non-empty string texts.
-export function validateReword(obj) {
-  if (!obj || !Array.isArray(obj.items)) throw bad('no items');
-  const items = obj.items.filter((i) => i && typeof i.id === 'string' && typeof i.text === 'string' && i.text.trim()).map((i) => ({ id: i.id, text: i.text.replace(/\s+/g, ' ').trim() }));
-  return { items };
+// { order: [id, ...] } -> the ids that are in `knownIds`, each once, in the model's order. Everything else in the reply is dropped:
+// a text field, an unknown id and a repeated id never reach the review (RULING-L4-F5 R1).
+export function validateArrange(obj, knownIds = []) {
+  if (!obj || !Array.isArray(obj.order)) throw bad('no order');
+  const known = new Set(knownIds);
+  const order = [];
+  for (const id of obj.order) if (typeof id === 'string' && known.has(id) && !order.includes(id)) order.push(id);
+  return { order };
 }
 
 export const ASSIST_NUMBER_FIELDS = Object.freeze(['size', 'entry', 'stop', 'target', 'fee']);
@@ -69,13 +72,27 @@ export function validateAssist(obj, setups = []) {
   return { setup, notes, numbers };
 }
 
+const LOOPBACK = new Set(['localhost', '127.0.0.1', '[::1]']);
+
+// The device itself only: a `.local` name is another machine, so it is not local (L4b F2).
 export function isLocalUrl(url) {
   try {
-    const h = new URL(url).hostname;
-    return h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h.endsWith('.local');
+    return LOOPBACK.has(new URL(url).hostname);
   } catch {
     return false;
   }
+}
+
+// A typed address: https, or http to this device only; no user-info and no query string or fragment (a secret typed there would
+// be stored and exported as typed, L4b F1/F3). Returns { ok: true, url } or { ok: false, reason } with reason one of
+// `invalid`, `scheme`, `userinfo`, `query`.
+export function checkBaseUrl(text) {
+  let u;
+  try { u = new URL(String(text ?? '').trim()); } catch { return { ok: false, reason: 'invalid' }; }
+  if (u.protocol !== 'https:' && !(u.protocol === 'http:' && LOOPBACK.has(u.hostname))) return { ok: false, reason: 'scheme' };
+  if (u.username || u.password) return { ok: false, reason: 'userinfo' };
+  if (u.search || u.hash) return { ok: false, reason: 'query' };
+  return { ok: true, url: u };
 }
 
 // settings is the flat settings object. Returns the config or null.
@@ -94,12 +111,16 @@ export function configFromSettings(settings, key) {
   return null;
 }
 
-// The provider and host a key belongs to: what the key is bound to when saved, and what it is compared with before any request.
+// The provider, scheme and host (with port) a key belongs to: what the key is bound to when saved, and what it is compared with
+// before any request. An address that checkBaseUrl refuses has no binding, so no request is made to it (L4b F1).
 export function keyBinding(settings) {
   const provider = settings?.['ai.provider'];
   try {
-    if (provider === 'anthropic') return { provider, host: new URL(ANTHROPIC_URL).host };
-    if (provider === 'openai') return { provider, host: new URL(settings['ai.baseUrl'] || OPENAI_DEFAULT_BASE_URL).host };
+    if (provider === 'anthropic') { const u = new URL(ANTHROPIC_URL); return { provider, scheme: u.protocol.slice(0, -1), host: u.host }; }
+    if (provider === 'openai') {
+      const checked = checkBaseUrl(settings['ai.baseUrl'] || OPENAI_DEFAULT_BASE_URL);
+      if (checked.ok) return { provider, scheme: checked.url.protocol.slice(0, -1), host: checked.url.host };
+    }
   } catch { /* an unparseable address has no host to bind to */ }
   return null;
 }
@@ -132,8 +153,8 @@ export function createProvider(config, { fetch, getKey = () => null } = {}) {
     id: 'own-key',
     provider: core.id,
     model: core.model,
-    async reword(items, lang) {
-      return validateReword(await ask(rewordPrompt(items, lang), 1200, TIMEOUTS.reword)).items;
+    async arrange(items) {
+      return validateArrange(await ask(arrangePrompt(items), 300, TIMEOUTS.arrange), items.map((i) => i.id)).order;
     },
     async assist(text, { setups = [], lang = 'en' } = {}) {
       return validateAssist(await ask(assistPrompt(text, { setups, lang }), 300, TIMEOUTS.assist), setups);

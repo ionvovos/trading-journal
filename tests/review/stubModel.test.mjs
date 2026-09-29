@@ -19,16 +19,16 @@ const cases = {
   'garbage text': async () => 'this is not json',
   'a number': async () => 42,
   'null': async () => null,
-  'object with no items': async () => ({}),
-  'items with bad ids': async () => [{ id: 'zzz', text: 'Hello' }, { id: 5, text: 'x' }, null, { id: 'f1' }],
+  'an object with no order': async () => ({}),
+  'ids the code never sent': async () => ['zzz', 5, null, { id: 'f1' }],
   'a timeout': () => new Promise(() => {}),
   'a thrown provider error': async () => { throw Object.assign(new Error('boom'), { kind: 'network' }); },
 };
 
-for (const [name, reword] of Object.entries(cases)) {
+for (const [name, arrange] of Object.entries(cases)) {
   test(`stub model returning ${name}: figures, findings and text are unchanged`, async () => {
     const events = [];
-    const review = await runReview(inputOf(weeks.stocks), { engine: { id: 'on-device', reword }, timeoutMs: 30, bus: { emit: (n, d) => events.push([n, d]) } });
+    const review = await runReview(inputOf(weeks.stocks), { engine: { id: 'on-device', arrange }, timeoutMs: 30, bus: { emit: (n, d) => events.push([n, d]) } });
     assert.equal(figures(review), figures(base));
     assert.equal(review.engine, 'rules');
     assert.match(review.engineNote, /^(failed:|model_)/);
@@ -37,7 +37,7 @@ for (const [name, reword] of Object.entries(cases)) {
 }
 
 test('the review carries the engine and its state on every result (AC-P9.3)', async () => {
-  const review = await runReview(inputOf(weeks.crypto), { engine: { id: 'on-device', reword: async () => { throw new Error('x'); } } });
+  const review = await runReview(inputOf(weeks.crypto), { engine: { id: 'on-device', arrange: async () => { throw new Error('x'); } } });
   assert.ok(['rules', 'on-device', 'own-key'].includes(review.engine));
   assert.ok(typeof review.engineNote === 'string');
 });

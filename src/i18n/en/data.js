@@ -65,6 +65,7 @@ export default {
   'export.error.notJson': 'The file is not a JSON export. Nothing was changed.',
   'export.error.wrongFormat': 'The file is not a Trading Journal export. Nothing was changed.',
   'export.error.newerVersion': 'The file comes from a newer version of the app ({detail}). Nothing was changed.',
+  'export.error.tooBig': 'The file is larger than {detail} MB. It was not read and nothing was changed.',
   'export.error.badRow': 'A row in the file is not valid ({detail}). Nothing was changed.',
   'data.reminder.label': 'Remind me to export',
   'data.reminder.sub': 'After this many new trades',

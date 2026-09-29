@@ -11,7 +11,8 @@ import { parseSentence } from '../../src/sentence/parse.js';
 import { evaluatePlan } from '../../src/plan/check.js';
 import { parseExport } from '../../src/storage/exportImport.js';
 import { learnStrings } from '../../src/learn/index.js';
-import { reviewInput, legalTable, weeks } from './helpers.mjs';
+import { reviewInput, legalTable, weeks, visibleStrings, reviewWithReply } from './helpers.mjs';
+import { CORPUS, CORPUS_L4FIX } from './corpus.mjs';
 
 const LANGS = ['en', 'el'];
 const WEEKS = ['stocks', 'crypto', 'forex'];
@@ -108,45 +109,49 @@ for (const lang of LANGS) {
 
 // ---- paraphrases that contain none of the listed words. The model gate must not pass them (legal-review section 2 rule 10 says the
 //      template is the fallback; this corpus measures how often the scan alone would let advice through).
-const CORPUS = {
-  en: {
-    implicit_instruction: ['A smaller position size fits this record.', 'Cutting size after a loss matches the profitable days.', 'A cap of two trades per day would match this record.', 'Staying flat after a loss matches the days that ended positive.', 'The record supports a wider stop.', 'Sitting out the opening half hour suits this record.'],
-    prediction: ['More losses are likely.', 'This pattern usually continues.', 'Expect more of the same.', 'The next trade is likely to lose.', 'Tomorrow the market is due a bounce.', 'Losses tend to follow.'],
-    ranking: ['The breakout setup is the strongest.', 'The morning session is the strongest window.', 'Forex suits you.', 'Crypto is a poor fit.'],
-    label_on_person: ['You chase losses.', 'You tend to tilt after a loss.', 'You lose discipline after a loss.', 'You trade emotionally.'],
-    readiness: ['You can move to real money.', 'This record supports going real.', 'The record clears you for larger size.', 'Scaling up is justified.'],
-    platform: ['Kraken has lower fees.', 'Binance handles this well.', 'A different broker would have cost less.'],
-    hypothetical: ['A tighter stop would have saved money.', 'With a stop the outcome would have been different.'],
-    imperative_without_listed_verb: ['Then trim size.', 'Afterwards, trim the position.', 'Next, lower the risk per trade.', 'Also, stay out of the open.'],
-    hidden_characters: ['You sho​uld cut size.', 'You ѕhould cut size.', 'You ｓｈｏｕｌｄ cut size.', 'You s h o u l d cut size.'],
-  },
-  el: {
-    implicit_instruction: ['Ένα μικρότερο μέγεθος θέσης ταιριάζει σε αυτό το ιστορικό.', 'Λιγότερες συναλλαγές την ημέρα ταιριάζουν στις θετικές εβδομάδες.'],
-    prediction: ['Αναμένονται περισσότερες απώλειες.', 'Η αγορά τείνει να ανακάμψει.', 'Οι απώλειες είναι πιθανό να συνεχιστούν.'],
-    ranking: ['Η πρωινή συνεδρία είναι η ισχυρότερη.', 'Το forex σας ταιριάζει.', 'Το crypto δεν σας ταιριάζει.'],
-    label_on_person: ['Κυνηγάτε τις απώλειες.', 'Χάνετε την πειθαρχία σας μετά από απώλεια.', 'Συναλλάσσεστε συναισθηματικά.'],
-    readiness: ['Μπορείτε να περάσετε σε πραγματικά χρήματα.', 'Το ιστορικό δικαιολογεί μεγαλύτερο μέγεθος.'],
-    platform: ['Η Kraken έχει χαμηλότερες προμήθειες.'],
-  },
-};
-
 async function findingsFor(lang) {
   const items = [];
   for (const w of WEEKS) await runReview(reviewInput(w, { lang }), { engine: { id: 'x', reword: async (i) => { items.push(...i); return []; } } });
   return items;
 }
 
+// F5 is fixed structurally (RULING-L4-F5 R1): a model's reply is read for an order of ids and nothing else, so no sentence it writes is shown.
+// Every corpus sentence is put in every place a reply could carry text; the rendered strings must equal the rules-only review's, and the
+// stored review must not contain the sentence at all.
+const replyShapes = (s) => [
+  (p) => JSON.stringify({ order: p.items.map((i) => i.id), items: p.items.map((i) => ({ id: i.id, text: s })) }),
+  (p) => JSON.stringify({ order: p.items.map((i) => i.id), text: s, notes: s, question: s }),
+  () => JSON.stringify({ order: [s] }),
+  () => s,
+  (p) => JSON.stringify({ items: p.items.map((i) => ({ id: i.id, text: `${i.id} ${s}` })) }),
+];
+
 for (const lang of LANGS) {
-  test(`model gate, ${lang}: advice-shaped paraphrases that carry no listed word are rejected`, { todo: 'F5: the guard is a word list; measured pass rate of the corpus below is high (see reports/trading-journal/security-review.md), so a model that paraphrases advice reaches the screen' }, async () => {
-    const items = await findingsFor(lang);
-    const passed = [];
-    for (const item of items) for (const [cls, list] of Object.entries(CORPUS[lang])) for (const s of list) {
-      const text = `${item.ruleText} ${s}`;
-      if (screenModelText(text, item.facts, lang, { ruleText: item.ruleText }).ok) passed.push(`${cls}: ${s}`);
+  test(`model gate, ${lang}: no advice-shaped sentence of either corpus, in any reply shape, reaches the rendered review`, async () => {
+    const all = [...Object.values(CORPUS[lang]).flat(), ...Object.values(CORPUS_L4FIX[lang]).flat()];
+    assert.ok(all.length >= 20);
+    for (const name of WEEKS) {
+      const base = visibleStrings(await runReview(reviewInput(name, { lang }))).sort();
+      for (const s of all) {
+        for (const shape of replyShapes(s)) {
+          const { review } = await reviewWithReply(name, lang, shape);
+          assert.deepEqual(visibleStrings(review).sort(), base, `${name}/${lang}: ${s}`);
+          assert.equal(JSON.stringify(review).includes(s), false, `${name}/${lang} stored review carries: ${s}`);
+        }
+      }
     }
-    assert.deepEqual([...new Set(passed)], [], `${new Set(passed).size} advice-shaped sentences reach the screen`);
   });
 }
+
+test('positive control for the model gate: an order the model returns is applied (the model path really ran), and only the order changes', async () => {
+  const base = await runReview(reviewInput('stocks'));
+  const ids = base.findings.map((f) => f.id);
+  const { review, ids: asked } = await reviewWithReply('stocks', 'en', () => JSON.stringify({ order: [...ids].reverse() }));
+  assert.equal(review.engine, 'own-key');
+  assert.deepEqual(asked.sort(), base.findings.filter((f) => f.pattern !== 'plan_not_followed').map((f) => f.id).sort(), 'the finding that quotes the plan rule was not sent');
+  assert.notDeepEqual(review.findings.map((f) => f.id), ids, 'the order changed');
+  assert.deepEqual(visibleStrings(review).sort(), visibleStrings(base).sort());
+});
 
 // ---- a closed-vocabulary check would close F5 for wording that adds meaning: a model sentence may use only words of the sentence
 //      it rewords plus a fixed list of glue words. Prototype here to show it is feasible and does not reject the legitimate rewordings.
@@ -172,7 +177,7 @@ for (const lang of LANGS) {
 }
 
 // ---------------------------------------------------------------- 3c. model-written notes on a typed sentence
-test('sentence assist: model-written notes that are not in the typed sentence are dropped', { todo: 'F6: notes are accepted when they pass the word scan, even when the model wrote them (a paraphrased recommendation is saved as the trade\'s notes; the prompt says "copied from the sentence" but nothing checks it)' }, async () => {
+test('sentence assist: model-written notes that are not in the typed sentence are dropped', async () => {
   const sentence = 'Bought 50 AAPL at 100 stop 98';
   const parsed = parseSentence(sentence, { lang: 'en', setups: ['breakout'], instruments: ['AAPL'], now: '2026-09-25T10:00:00Z' });
   const engine = { id: 'own-key', assist: async () => ({ setup: null, notes: 'The record supports a wider stop and smaller size.', numbers: {} }) };
@@ -192,13 +197,24 @@ test('sentence assist: a model number that differs from the code parse never rep
 });
 
 // ---------------------------------------------------------------- 3d. hostile data that reaches the review
-test('an imported plan with malformed hours does not crash the plan check or the review', { todo: 'F7: parseExport validates a plan row by id only; hours of "junk" pass import and evaluatePlan/runReview then throw "bad time of day" (the checklist calls evaluatePlan on every saved trade, so one hostile plan can block trade entry until it is deleted; not traced in a browser)' }, async () => {
-  const hostile = { format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', plans: [{ id: 'p', active: true, hours: [{ from: '09:30', to: '11:30, cut your position size' }] }] };
-  const parsed = parseExport(JSON.stringify(hostile));
-  assert.equal(parsed.ok, true, 'the import accepted the row');
-  const plan = { ...weeks.stocks.plan, hours: parsed.data.plans[0].hours };
+test('an imported plan with malformed hours is refused at import (F7); a malformed plan already stored does not crash the plan check or the review', async () => {
+  const rows = (hours) => ({ format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', plans: [{ id: 'p', active: true, hours }] });
+  for (const hours of [[{ from: '09:30', to: '11:30, cut your position size' }], [{ from: '25:00', to: '11:00' }], [{ from: '09:30' }], 'junk', [null], [{ from: '9:5', to: '11:00' }]]) {
+    const parsed = parseExport(JSON.stringify(rows(hours)));
+    assert.equal(parsed.ok, false, JSON.stringify(hours));
+    assert.match(parsed.detail, /^plans\[0\]\.hours$/);
+  }
+  assert.equal(parseExport(JSON.stringify(rows([{ from: '09:30', to: '11:30' }, { from: '22:00', to: '02:00' }, { from: '00:00', to: '24:00' }]))).ok, true, 'real windows, wrapping ones included, still import');
+  for (const bad of [{ dailyCap: 0 }, { dailyCap: 1.5 }, { dailyCap: 'x' }, { riskPct: 'abc' }, { riskPct: -1 }, { dailyLossLimitPct: {} }, { items: 'x' }, { items: [{ id: 'i' }] }, { setups: [1] }]) {
+    const parsed = parseExport(JSON.stringify({ ...rows([]), plans: [{ id: 'p', ...bad }] }));
+    assert.equal(parsed.ok, false, JSON.stringify(bad));
+  }
+  assert.equal(parseExport(JSON.stringify({ ...rows([]), plans: [{ id: 'p', dailyCap: 3, riskPct: '1.5', dailyLossLimitPct: 2, items: [{ id: 'i', text: 'x' }], setups: ['a'] }] })).ok, true);
+  // a plan that is already stored (an older build, a hand-edited store) must not break the checklist or the review either
+  const plan = { ...weeks.stocks.plan, hours: [{ from: '09:30', to: '11:30, cut your position size' }, { from: 'junk', to: '10:00' }, null, { from: '09:30', to: '11:30' }] };
   assert.doesNotThrow(() => evaluatePlan(weeks.stocks.trades[0], plan, { sameDayTrades: [], equityAtEntryMinor: 1000000, tz: 'America/New_York' }));
-  await assert.doesNotReject(runReview(reviewInput('stocks', {}, (w) => { w.plan = plan; return w; })));
+  const review = await runReview(reviewInput('stocks', {}, (w) => { w.plan = plan; return w; }));
+  assert.equal(JSON.stringify(review).includes('cut your position size'), false, 'a malformed window is never printed');
 });
 
 test('a hostile plan cannot put advice into a review sentence through the hours field (the malformed value is refused before it is printed)', async () => {

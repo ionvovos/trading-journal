@@ -10,7 +10,7 @@ const memory = () => { const m = new Map(); return { getItem: (k) => m.get(k) ??
 const fakeDevice = ({ problem = null, loaded = false, loadError = null } = {}) => ({
   model: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', check: async () => problem, loaded: () => loaded,
   load: async ({ onProgress }) => { if (loadError) throw loadError; onProgress?.(50, 'half'); onProgress?.(100, 'done'); },
-  generate: async () => '{"items":[{"id":"f1","text":"Across the week 2 trades were off plan."}]}',
+  generate: async () => '{"order":["f2","f1","zzz"],"items":[{"id":"f1","text":"You should cut size."}]}',
 });
 const ANTH = { 'ai.provider': 'anthropic' };
 const setup = (device, { key = true, online = true } = {}) => {
@@ -77,10 +77,10 @@ test('the download reports progress on the bus, ends ready, and a failure ends f
   assert.equal(gone.events.at(-1).state, 'unavailable');
 });
 
-test('the on-device engine rewords through the model host and validates the reply', async () => {
+test('the on-device engine asks the model host for an order and keeps only the known ids of it (no text)', async () => {
   const { engines } = setup(fakeDevice({ loaded: true }), { key: false });
   const engine = await engines.resolve({ 'ai.device.consent': 'yes' }, 'en');
-  assert.deepEqual(await engine.reword([{ id: 'f1', ruleText: 'x', facts: {} }], 'en'), [{ id: 'f1', text: 'Across the week 2 trades were off plan.' }]);
+  assert.deepEqual(await engine.arrange([{ id: 'f1', pattern: 'busy_days', facts: {} }, { id: 'f2', pattern: 'days_over_cap', facts: {} }]), ['f2', 'f1']);
 });
 
 test('device host: capability check, watchdog, pinned model files (copied from thought-catcher, model and URL pinned)', async () => {

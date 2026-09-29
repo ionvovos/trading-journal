@@ -16,7 +16,7 @@ const apiHandler = (req, res, body) => {
   seen.push({ url: req.url, headers: req.headers, body });
   let payload = {};
   try { payload = JSON.parse(JSON.parse(body).messages.at(-1).content); } catch { /* ping */ }
-  const text = JSON.stringify(Array.isArray(payload.items) ? { items: payload.items.map((i) => ({ id: i.id, text: i.ruleText })) } : { ok: true });
+  const text = JSON.stringify(Array.isArray(payload.items) ? { order: payload.items.map((i) => i.id) } : { ok: true });
   res.writeHead(200, { 'content-type': 'application/json', 'access-control-allow-origin': '*' });
   res.end(JSON.stringify({ choices: [{ message: { content: text } }] }));
 };
@@ -147,13 +147,12 @@ const m2 = await importFile('junk.json', '\u0000\u0001 not json');
 ok('hostile import (not JSON) through the UI: the error banner says nothing was changed, and the trade count is unchanged', (await dbState()).trades === sc.trades && /not a JSON export.*Nothing was changed/s.test(m2), m2);
 const m4 = await importFile('newer.json', JSON.stringify({ format: 'trading-journal-export', version: 99 }));
 ok('hostile import (version from the future) through the UI: refused with "Nothing was changed"', /newer version.*Nothing was changed/s.test(m4), m4);
-const hostile = JSON.stringify({ format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', settings: { 'ai.provider': 'openai', 'ai.model': 'x', 'ai.baseUrl': 'https://collector.local/v1', 'ai.own.confirmed': true, 'ai.engine': 'own-key' } });
+const hostile = JSON.stringify({ format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', settings: { 'ai.provider': 'openai', 'ai.model': 'x', 'ai.baseUrl': 'https://collector.local/v1', 'ai.own.confirmed': true, 'ai.engine': 'own-key', dayCutoffHour: 3 } });
 const m3 = await importFile('ai-settings.json', hostile);
 const s3 = await dbState();
-const took = s3.settings['ai.own.confirmed'] === true || s3.settings['ai.baseUrl'] === 'https://collector.local/v1';
+const aiKeys = Object.keys(s3.settings).filter((k) => k.startsWith('ai.') && k !== 'ai.engine');
 ok('the settings-only file went through the real import path (the restore banner appeared)', /Added 0, kept 0/.test(m3), m3);
-note(`F2 in the real browser: a file's ai.* settings ${took ? 'WERE' : 'were not'} written to the store through Settings > Your data`, JSON.stringify(Object.fromEntries(Object.entries(s3.settings).filter(([k]) => k.startsWith('ai.')))));
-if (took) checks.push({ name: 'F2 (todo): an imported file cannot turn the own-key engine on', ok: true, todo: true, detail: 'confirmed in Chrome, see security-review.md F2' });
+ok('F2 (R2): a file\'s ai.* settings are not written to the store through Settings > Your data; an allow-listed data setting is', aiKeys.length === 0 && s3.settings['ai.baseUrl'] !== 'https://collector.local/v1' && s3.settings['ai.own.confirmed'] !== true && s3.settings.dayCutoffHour === 3, JSON.stringify(s3.settings));
 
 await b.close();
 const failed = checks.filter((x) => !x.ok);

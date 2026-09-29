@@ -14,13 +14,14 @@ export function createKeyStore(storage) {
 
   return {
     getKey() { const v = read(KEY_ENTRY); return v || null; },
-    // binding: { provider, host } for the provider the key is being saved for. Without a binding the key is stored unbound and
-    // getKeyFor never hands it out.
+    // binding: { provider, scheme, host } for the provider the key is being saved for (host includes the port). Without a complete
+    // binding the key is stored unbound and getKeyFor never hands it out. A key saved before the scheme was part of the binding
+    // has no scheme, so it is no longer handed out: the person types it again (L4b F1).
     setKey(key, binding) {
       const v = String(key ?? '').trim();
       if (!v) { remove(KEY_ENTRY); remove(BINDING_ENTRY); return; }
       write(KEY_ENTRY, v);
-      if (binding?.provider && binding?.host) write(BINDING_ENTRY, JSON.stringify({ provider: binding.provider, host: binding.host }));
+      if (binding?.provider && binding?.scheme && binding?.host) write(BINDING_ENTRY, JSON.stringify({ provider: binding.provider, scheme: binding.scheme, host: binding.host }));
       else remove(BINDING_ENTRY);
     },
     getKeyBinding() {
@@ -28,7 +29,7 @@ export function createKeyStore(storage) {
       if (!raw) return null;
       try {
         const b = JSON.parse(raw);
-        return b && typeof b.provider === 'string' && typeof b.host === 'string' ? { provider: b.provider, host: b.host } : null;
+        return b && typeof b.provider === 'string' && typeof b.scheme === 'string' && typeof b.host === 'string' ? { provider: b.provider, scheme: b.scheme, host: b.host } : null;
       } catch { return null; }
     },
     // The only way the app reads a key to send it.
@@ -36,7 +37,7 @@ export function createKeyStore(storage) {
       const key = this.getKey();
       const stored = this.getKeyBinding();
       if (!key || !binding || !stored) return null;
-      return stored.provider === binding.provider && stored.host === binding.host ? key : null;
+      return stored.provider === binding.provider && stored.scheme === binding.scheme && stored.host === binding.host ? key : null;
     },
     hasKeyFor(binding) { return this.getKeyFor(binding) !== null; },
     hasKey() { return Boolean(this.getKey()); },

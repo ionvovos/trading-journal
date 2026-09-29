@@ -7,19 +7,19 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 import { runReview } from '../../src/review/run.js';
-import { resolveProvider, describeAiError } from '../../src/ai/adapter.js';
+import { resolveProvider, describeAiError, keyBinding } from '../../src/ai/adapter.js';
 import { KEY_ENTRY, BINDING_ENTRY } from '../../src/ai/keystore.js';
 import { createMemoryStore } from '../../src/storage/memory.js';
 import { buildExport, parseExport, mergeImport } from '../../src/storage/exportImport.js';
 import { deleteAllData } from '../../src/storage/actions.js';
 import { saveAiSetting, loadAiSettings } from '../../src/ai/settings.js';
-import { makeEnv, recorder, saveOwnKey, ownKeySettings, reviewInput, hostOf, wire } from './helpers.mjs';
+import { makeEnv, recorder, saveOwnKey, ownKeySettings, reviewInput, hostOf, wire, weeks } from './helpers.mjs';
 
 const KEY_A = 'sk-ant-PROBE-KEY-A-0123456789';
 const KEY_O = 'sk-openai-PROBE-KEY-O-0123456789';
 const SETUPS = ['breakout', 'pullback'];
 
-// Every path that can send a key: the review reword, sentence assist, and Test connection.
+// Every path that can send a key: the review arrange call, sentence assist, and Test connection.
 async function driveEveryPath(env, settings) {
   const engine = await env.engines.resolve(settings, 'en');
   await runReview(reviewInput('stocks'), { engine, bus: env.bus });
@@ -29,7 +29,7 @@ async function driveEveryPath(env, settings) {
   const direct = resolveProvider(settings, env.keys, { fetch: env.rec.fetch });
   if (direct) {
     await direct.test().catch(() => {});
-    await direct.reword([{ id: 'f1', pattern: 'busy_days', facts: { n: 5 }, ruleText: '2 days had more trades than your median of 1 per day (n=5).' }], 'en').catch(() => {});
+    await direct.arrange([{ id: 'f1', pattern: 'busy_days', facts: { n: 5 } }]).catch(() => {});
   }
   return engine;
 }
@@ -108,13 +108,25 @@ test('OpenAI-compatible key saved, provider switched to Anthropic: the key is no
   assert.equal(env.rec.calls.length, 0);
 });
 
-test('a key is never sent in clear text to a non-local host: same host, scheme changed from https to http', { todo: 'F1: binding is provider + host only; the scheme is not part of it (CSP blocks the request in a browser, the code does not)' }, async () => {
+test('a key is never sent in clear text to a non-local host: same host, scheme changed from https to http (F1)', async () => {
   const env = makeEnv();
   const saved = { 'ai.provider': 'openai', 'ai.model': 'm', 'ai.baseUrl': BOUND };
   saveOwnKey(env.keys, ownKeySettings(saved), KEY_O);
   await driveEveryPath(env, ownKeySettings({ ...saved, 'ai.baseUrl': 'http://api.openai.com/v1' }));
   const clear = env.rec.calls.filter((c) => c.url.startsWith('http://') && !/^http:\/\/(localhost|127\.0\.0\.1)/.test(c.url));
   assert.equal(clear.some((c) => wire(c).includes(KEY_O)), false, 'key sent over http:// to a public host');
+  assert.equal(env.rec.calls.length, 0, 'an http address for a public host is refused: no request at all');
+});
+
+test('the scheme is part of the binding: a key saved for http://localhost is not handed to https://localhost, and a binding saved without a scheme (an older build) hands out nothing', () => {
+  const env = makeEnv();
+  const http = ownKeySettings({ 'ai.provider': 'openai', 'ai.model': 'm', 'ai.baseUrl': 'http://localhost:8080/v1' });
+  const https = ownKeySettings({ 'ai.provider': 'openai', 'ai.model': 'm', 'ai.baseUrl': 'https://localhost:8080/v1' });
+  saveOwnKey(env.keys, http, KEY_O);
+  assert.equal(env.keys.hasKeyFor(keyBinding(http)), true);
+  assert.equal(env.keys.hasKeyFor(keyBinding(https)), false);
+  env.storage.setItem(BINDING_ENTRY, JSON.stringify({ provider: 'openai', host: 'localhost:8080' }));
+  assert.equal(env.keys.hasKeyFor(keyBinding(http)), false, 'a scheme-less binding is treated as unbound');
 });
 
 test('a key saved for a local address goes to that port only', async () => {
@@ -179,20 +191,25 @@ test('delete-all removes the key and its binding, the AI settings, and every sto
 });
 
 // ---------------------------------------------------------------- 1d. findings: settings are exported and imported
-test('an imported file cannot switch the own-key engine on or point it at an address of its own', { todo: 'F2: mergeImport adds ai.* settings from the file, including ai.own.confirmed, ai.provider and ai.baseUrl (NEVER_EXPORT only names key/secret/token/apikey)' }, async () => {
-  const hostile = { format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', settings: { 'ai.provider': 'openai', 'ai.model': 'x', 'ai.baseUrl': 'https://collector.local/v1', 'ai.own.confirmed': true, 'ai.engine': 'own-key' } };
+test('an imported file cannot switch the own-key engine on or point it at an address of its own: its trades import, no ai.* setting does (R2, F2)', async () => {
+  const hostile = { format: 'trading-journal-export', version: 1, exportedAt: '2026-09-29T00:00:00Z', settings: { 'ai.provider': 'openai', 'ai.model': 'x', 'ai.baseUrl': 'https://collector.local/v1', 'ai.own.confirmed': true, 'ai.engine': 'own-key', 'ai.device.consent': 'yes', 'ai.key': 'sk-x', 'apiKey': 'sk-y', 'dayCutoffHour': 4, 'x.unknown': 'z', 'lang': { nested: true } }, trades: [weeks.stocks.trades[0]], accounts: [{ id: 'acc-s', name: 'Main', mode: 'real', baseCurrency: 'USD' }] };
   const parsed = parseExport(JSON.stringify(hostile));
   assert.equal(parsed.ok, true);
   const store = createMemoryStore();
-  await mergeImport(store, parsed.data);
+  const r = await mergeImport(store, parsed.data);
+  assert.equal(r.byStore.trades.added, 1, 'the trades of the file are imported');
+  assert.deepEqual(await store.allSettings(), { dayCutoffHour: 4 }, 'only an allow-listed data setting with a plain value comes from the file');
   const s = await loadAiSettings(store);
+  assert.equal(s['ai.own.confirmed'], false);
+  assert.equal(s['ai.baseUrl'], null);
+  assert.equal(s['ai.provider'], 'none');
   const env = makeEnv();
   const engine = await env.engines.resolve(s, 'en');
   await runReview(reviewInput('stocks'), { engine, bus: env.bus });
   assert.equal(env.rec.calls.length, 0, `review data went to ${env.rec.calls.map((c) => hostOf(c.url)).join(', ')} with no key and no consent screen`);
 });
 
-test('an address typed with a secret in it (query string or user-info) does not reach an export file', { todo: 'F3: ai.baseUrl is stored in settings and exported as typed; a provider URL such as ...?api-key=SECRET is written to the export in clear text' }, async () => {
+test('an address typed with a secret in it (query string or user-info) does not reach an export file (F3)', async () => {
   const store = createMemoryStore();
   await saveAiSetting({ store }, 'ai.baseUrl', 'https://gateway.example/v1?api-key=SECRET-IN-URL');
   await saveAiSetting({ store }, 'ai.model', 'm');

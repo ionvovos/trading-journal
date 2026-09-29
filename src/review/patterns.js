@@ -1,6 +1,7 @@
 // The review patterns (requirements AC-P5.1, architecture 5.2). Pure: rows in, findings out. Code decides what is found and which
 // trades sit behind it; wording is added later by templates.js. A finding with no trade ids is dropped (AC-P5.2).
 // Behavioural thresholds are defaults the user can change and are labelled "placeholder you set, not a recommendation" (W5).
+import { validHours } from '../plan/check.js';
 
 export const PATTERNS = Object.freeze([
   'plan_not_followed', 'entry_after_loss', 'busy_days', 'days_over_cap', 'no_setup_share', 'size_rising',
@@ -161,7 +162,7 @@ function holdingAndTarget(rows, { t }) {
 function outsideSetHours(rows, { plan }) {
   const hit = rows.filter((r) => r.planAuto.hours === 'fail');
   if (!hit.length) return null;
-  const hours = (plan?.hours ?? []).map((h) => `${h.from}-${h.to}`).join(', ');
+  const hours = validHours(plan?.hours).map((h) => `${h.from}-${h.to}`).join(', ');
   return { pattern: 'outside_set_hours', n: hit.length, tradeIds: ids(hit), facts: { n: hit.length, total: rows.length, hours }, threshold: { value: hours, from: 'plan' } };
 }
 

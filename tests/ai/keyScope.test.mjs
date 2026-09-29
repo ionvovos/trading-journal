@@ -7,7 +7,7 @@ import { keyBinding, resolveProvider } from '../../src/ai/adapter.js';
 
 const OLD_KEY = 'sk-ant-OLD-KEY-DO-NOT-LEAK';
 const NEW_KEY = 'sk-new-typed-key';
-const ITEMS = [{ id: 'f1', pattern: 'busy_days', facts: { n: 5 }, ruleText: '2 days had more trades than your median of 1 per day (n=5).' }];
+const ITEMS = [{ id: 'f1', pattern: 'busy_days', facts: { n: 5, median: 1 } }];
 
 const memoryStorage = () => {
   const m = new Map();
@@ -21,10 +21,10 @@ const TARGETS = {
   'openai, https://openrouter.ai/api/v1': { 'ai.provider': 'openai', 'ai.model': 'm', 'ai.baseUrl': 'https://openrouter.ai/api/v1' },
 };
 
-// A fetch that records every request and answers with a valid reword reply in both providers' shapes.
+// A fetch that records every request and answers with a valid arrange reply in both providers' shapes.
 const recorder = () => {
   const calls = [];
-  const body = JSON.stringify({ items: [{ id: 'f1', text: 'Across the week, 2 days had more trades than your median of 1 per day (n=5).' }] });
+  const body = JSON.stringify({ order: ['f1'] });
   const fetch = async (url, init) => {
     calls.push({ url, headers: init.headers, body: init.body });
     return new Response(JSON.stringify({ choices: [{ message: { content: body } }], content: [{ type: 'text', text: body }] }), { status: 200 });
@@ -39,30 +39,30 @@ const withAnthropicKey = () => {
   return keys;
 };
 
-test('keyBinding names provider and host, using the default host when the address is empty', () => {
-  assert.deepEqual(keyBinding(ANTHROPIC), { provider: 'anthropic', host: 'api.anthropic.com' });
-  assert.deepEqual(keyBinding(TARGETS['openai, no base URL (api.openai.com)']), { provider: 'openai', host: 'api.openai.com' });
-  assert.deepEqual(keyBinding(TARGETS['openai, http://localhost:11434/v1']), { provider: 'openai', host: 'localhost:11434' });
+test('keyBinding names provider, scheme and host, using the default host when the address is empty', () => {
+  assert.deepEqual(keyBinding(ANTHROPIC), { provider: 'anthropic', scheme: 'https', host: 'api.anthropic.com' });
+  assert.deepEqual(keyBinding(TARGETS['openai, no base URL (api.openai.com)']), { provider: 'openai', scheme: 'https', host: 'api.openai.com' });
+  assert.deepEqual(keyBinding(TARGETS['openai, http://localhost:11434/v1']), { provider: 'openai', scheme: 'http', host: 'localhost:11434' });
   assert.equal(keyBinding({ 'ai.provider': 'none' }), null);
 });
 
 test('positive control: the key goes to the provider and host it was saved for, and only there', async () => {
   const keys = withAnthropicKey();
   const { calls, fetch } = recorder();
-  const out = await resolveProvider(ANTHROPIC, keys, { fetch }).reword(ITEMS, 'en');
-  assert.equal(out.length, 1);
+  const out = await resolveProvider(ANTHROPIC, keys, { fetch }).arrange(ITEMS);
+  assert.deepEqual(out, ['f1']);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, 'https://api.anthropic.com/v1/messages');
   assert.equal(calls[0].headers['x-api-key'], OLD_KEY);
 });
 
 for (const [name, settings] of Object.entries(TARGETS)) {
-  test(`reword and Test paths: an Anthropic key is never sent after switching to ${name}`, async () => {
+  test(`arrange and Test paths: an Anthropic key is never sent after switching to ${name}`, async () => {
     const keys = withAnthropicKey();
     const { calls, fetch } = recorder();
     const provider = resolveProvider(settings, keys, { fetch });
     if (provider) {
-      await provider.reword(ITEMS, 'en').catch(() => {}); // a local address needs no key, so it may run, without the old key
+      await provider.arrange(ITEMS).catch(() => {}); // a local address needs no key, so it may run, without the old key
       await provider.test();
     }
     assert.equal(carriesKey(calls, OLD_KEY), false, `${name}: old key leaked`);
@@ -132,12 +132,13 @@ test('blocked storage: the key lives for the session only and nothing throws', (
   assert.equal(keys.getKey(), null);
 });
 
-test('the request body of the reword call holds the facts and rule sentences, no journal rows, and no key', async () => {
+test('the request body of the arrange call holds the pattern and figures, no sentence, no journal rows, and no key', async () => {
   const keys = withAnthropicKey();
   const { calls, fetch } = recorder();
-  await resolveProvider(ANTHROPIC, keys, { fetch }).reword(ITEMS, 'en');
+  await resolveProvider(ANTHROPIC, keys, { fetch }).arrange(ITEMS);
   const sent = JSON.stringify(calls[0].body);
   assert.equal(sent.includes(OLD_KEY), false);
-  assert.ok(sent.includes('ruleText') && sent.includes('median of 1 per day'));
+  assert.ok(sent.includes('busy_days') && sent.includes('median'));
+  assert.equal(sent.includes('ruleText'), false, 'no template sentence is sent');
   for (const banned of ['notes', 'screenshot', 'legs', 'accountId']) assert.equal(sent.includes(banned), false, banned);
 });

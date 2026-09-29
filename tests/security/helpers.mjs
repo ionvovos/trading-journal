@@ -39,7 +39,7 @@ export function recorder({ status = 200, body = null } = {}) {
     let payload = {};
     try { payload = JSON.parse(user); } catch { /* the test-connection ping */ }
     const reply = Array.isArray(payload.items)
-      ? { items: payload.items.map((i) => ({ id: i.id, text: i.ruleText })) }
+      ? { order: payload.items.map((i) => i.id) }
       : payload.sentence !== undefined ? { setup: null, notes: null } : { ok: true };
     const text = JSON.stringify(reply);
     return new Response(JSON.stringify({ choices: [{ message: { content: text } }], content: [{ type: 'text', text }] }), { status });
@@ -69,3 +69,26 @@ export function makeEnv({ storage = memoryStorage(), fetchImpl = null } = {}) {
 }
 
 export const ownKeySettings = (over = {}) => ({ 'ai.engine': 'own-key', 'ai.provider': 'anthropic', 'ai.model': '', 'ai.baseUrl': null, 'ai.own.confirmed': true, 'ai.device.consent': 'ask', ...over });
+
+// ---- L4 fix round (RULING-L4-F5 R1): what a review shows, and a review driven by a raw model reply
+import { createProvider } from '../../src/ai/adapter.js';
+import { runReview } from '../../src/review/run.js';
+
+// Every string the review view prints for a review: titles, sentences, questions and the summary lines (src/ui/views/review.js).
+export const visibleStrings = (review) => [...review.findings.flatMap((f) => [f.title, f.text, f.question]), ...Object.values(review.lines ?? {})].filter(Boolean);
+
+// A real provider (real JSON extraction and validation) whose HTTP answer is `content`; `content` may be a function of the parsed request.
+// Returns the finished review and the ids the request carried.
+export async function reviewWithReply(name, lang, content, over = {}) {
+  let ids = [];
+  const fetch = async (url, init = {}) => {
+    let payload = {};
+    try { payload = JSON.parse(JSON.parse(init.body).messages.at(-1).content); } catch { /* not JSON */ }
+    ids = Array.isArray(payload.items) ? payload.items.map((i) => i.id) : ids;
+    const text = typeof content === 'function' ? content(payload) : content;
+    return new Response(JSON.stringify({ choices: [{ message: { content: text } }] }), { status: 200 });
+  };
+  const provider = createProvider({ provider: 'openai', model: 'm', baseUrl: 'http://localhost:11434/v1' }, { fetch });
+  const review = await runReview(reviewInput(name, { lang, ...over }), { engine: provider });
+  return { review, ids };
+}

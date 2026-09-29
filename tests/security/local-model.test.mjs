@@ -4,10 +4,11 @@
 // `readings.json` is the manual reading of every sentence that is not a copy of the app's template. Findings not yet met are `todo` tests.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import fs, { readFileSync, readdirSync } from 'node:fs';
 import { replayReview, replaySentence } from './local-model/analyse.mjs';
 import { screenModelText, check, normalize } from '../../src/review/guard.js';
-import { legalTable } from './helpers.mjs';
+import { legalTable, reviewInput, visibleStrings, reviewWithReply } from './helpers.mjs';
+import { runReview } from '../../src/review/run.js';
 
 const OUT = new URL('./local-model/out/', import.meta.url);
 const files = readdirSync(OUT).filter((f) => /^(review|sentence)-.*\.json$/.test(f)).sort();
@@ -34,10 +35,13 @@ test('all 81 raw outputs are saved: 18 review prompts per model, 45 sentence phr
   for (const { file, run } of [...reviewRuns, ...sentenceRuns]) { assert.equal(run.exit, 0, file); assert.ok(run.raw.length > 0, file); }
 });
 
-test('the prompts are the app\'s own: rewordPrompt/assistPrompt output, unchanged', async () => {
-  const { rewordPrompt, assistPrompt } = await import('../../src/ai/prompts.js');
-  for (const { run } of reviewRuns) assert.deepEqual(run.prompt, rewordPrompt(run.items, run.lang));
+test('the sentence prompts are the app\'s own (assistPrompt, unchanged); the review outputs answer the L4b free-text prompt, which the app no longer sends', async () => {
+  const { assistPrompt, arrangePrompt } = await import('../../src/ai/prompts.js');
   for (const { run } of sentenceRuns) assert.deepEqual(run.prompt, assistPrompt(run.text, { setups: run.setups, lang: run.lang }));
+  for (const { run } of reviewRuns) {
+    assert.match(run.prompt.system, /You reword short sentences/, 'the saved outputs are replies to the retired reword prompt');
+    assert.equal(arrangePrompt(run.items).system.includes('reword'), false, 'the app\'s review prompt asks for an order, not for wording');
+  }
 });
 
 // ---------------------------------------------------------------- review outputs
@@ -83,18 +87,55 @@ test('positive control: the replay would have caught a breach — a real run wit
 const accepted = items.filter((i) => i.status === 'accepted_reworded');
 const observed = (code) => Object.entries(readings.runs).flatMap(([file, byItem]) => Object.entries(byItem).filter(([, v]) => v.status === 'accepted_reworded' && v.observations.includes(code)).map(([id]) => `${file} ${id}`));
 
-test('a model sentence never gives a figure a meaning it does not have: "across 5 days" and "across 3 days" where n counts trades', { todo: 'F9: the number check finds the digit among the facts; it does not know what n is. Two sentences of Ornith-1.5-9B (crypto week, English) state a wrong unit and reach the screen' }, () => {
-  const bad = accepted.filter((i) => observed('wrong_unit').includes(`${i.file} ${i.id}`));
-  assert.equal(bad.length, 2);
-  for (const i of bad) assert.equal(screenModelText(i.text, i.run.items.find((x) => x.id === i.id).facts, i.lang, { ruleText: i.ruleText }).ok, false, i.text);
+// R1 closes F9, F10 and F11 structurally: the review reads only an order of ids from a reply, so a sentence the model wrote cannot be
+// shown. Each saved reply is fed through the app's real provider code on the week and period it answered, and what the review then
+// renders is compared with the sentences the model wrote.
+const screenOf = new Map();
+async function screenFor({ file, run }) {
+  if (!screenOf.has(file)) {
+    const { review } = await reviewWithReply(run.week, run.lang, run.raw, run.period ? { period: run.period } : {});
+    const base = await runReview(reviewInput(run.week, { lang: run.lang, ...(run.period ? { period: run.period } : {}) }));
+    screenOf.set(file, { stored: JSON.stringify(review), shown: visibleStrings(review), templates: new Set(visibleStrings(base)) });
+  }
+  return screenOf.get(file);
+}
+
+test('all 148 saved model sentences of the L4b probe: none that differs from the app\'s own sentence reaches the rendered review; every rendered string is a template string', async () => {
+  let checked = 0;
+  for (const r of reviewRuns) {
+    const screen = await screenFor(r);
+    for (const s of screen.shown) assert.ok(screen.templates.has(s), `${r.file}: not a template string: ${s}`);
+    for (const i of items.filter((x) => x.file === r.file)) {
+      checked += 1;
+      if (i.text.trim() !== i.ruleText.trim()) assert.equal(screen.stored.includes(i.text.trim()), false, `${r.file} ${i.id}: ${i.text}`);
+    }
+  }
+  assert.equal(checked, 148);
 });
 
-test('a model sentence never shows internal field names: "(days=2, median=1, n=5)"', { todo: 'F10: six Greek sentences of Ornith-1.5-9B (crypto week) end in the fact keys, e.g. "(days=2, median=1, n=5)"; the figures match so the gate accepts them' }, () => {
-  assert.equal(observed('field_names_shown').length, 0, observed('field_names_shown').join('; '));
+const shownFor = async (code) => {
+  const rows = accepted.filter((i) => observed(code).includes(`${i.file} ${i.id}`));
+  assert.ok(rows.length > 0);
+  for (const i of rows) {
+    const screen = await screenFor({ file: i.file, run: i.run });
+    assert.equal(screen.stored.includes(i.text), false, i.text);
+  }
+  return rows.length;
+};
+
+test('F9: a model sentence that gives a figure a meaning it does not have ("across 5 days" where n counts trades) is not shown', async () => {
+  assert.equal(await shownFor('wrong_unit'), 2);
 });
 
-test('a reworded sentence keeps "the hours you set" and "marked not followed": no attribution or clause is dropped', { todo: 'F11: 6 accepted sentences drop "you set" (legal-review W4 wants the hours attributed to the user) and 2 drop "marked not followed"; nothing checks that the words of the template survive' }, () => {
-  assert.equal(observed('attribution_dropped').length + observed('clause_dropped').length, 0);
+test('F10: a model sentence that shows internal field names ("(days=2, median=1, n=5)") is not shown', async () => {
+  assert.equal(await shownFor('field_names_shown') > 0, true);
+});
+
+test('F11: a model sentence that drops "you set" or "marked not followed" is not shown; the template keeps both', async () => {
+  const n = (await shownFor('attribution_dropped')) + (await shownFor('clause_dropped'));
+  assert.ok(n >= 6);
+  const en = await runReview(reviewInput('stocks', { lang: 'en' }));
+  assert.ok(en.findings.some((f) => /the hours you set/.test(f.text)), 'the hours are attributed to the user in the template');
 });
 
 // ---------------------------------------------------------------- sentence entry
@@ -129,6 +170,17 @@ test('model-returned notes copy the typed sentence and carry no advice-shaped te
   }
 });
 
-test('a model number is never offered as a one-tap replacement of the code value', { todo: 'F12: sentence.js shows "Use <model value>" on every conflict and one tap writes it into the trade field; phrase 30 offers 1.2005 for an entry of 1200.5 (Greek thousands separator). The model numbers add nothing the code parse lacks, so the fix is to drop them from the prompt and the banner' }, () => {
-  assert.equal(sentences.reduce((n, s) => n + s.conflicts.length, 0), 0);
+test('a model number is never offered as a one-tap replacement of the code value (F12, R3): both values are shown, the person types the value, merged fields equal the code parse', () => {
+  const view = fs.readFileSync(new URL('../../src/ui/views/sentence.js', import.meta.url), 'utf8');
+  assert.equal(/conflict\.use|=\s*c\.model|\.model\s*\)?\s*;?\s*\}\s*\}/.test(view), false, 'no path writes the model value into a field');
+  assert.match(view, /sentence\.conflict\.type/, 'the person types the value');
+  assert.match(view, /parseUserDecimal\(String\(typed\[c\.field\]/, 'what is typed goes through the same decimal reader as the questions');
+  for (const lang of ['en', 'el']) {
+    const table = fs.readFileSync(new URL(`../../src/i18n/${lang}/review.js`, import.meta.url), 'utf8');
+    assert.equal(table.includes("'sentence.conflict.use'"), false, `${lang}: the Use button string is gone`);
+    assert.ok(table.includes("'sentence.conflict.type'") && table.includes("'sentence.conflict.set'"));
+  }
+  for (const s of sentences) assert.equal(s.mergedNumbersEqualCode, true, `phrase ${s.run.index}`);
+  const shown = sentences.filter((x) => x.conflicts.length);
+  assert.equal(shown.length, 5, 'the five misreads still surface as a banner with both values');
 });

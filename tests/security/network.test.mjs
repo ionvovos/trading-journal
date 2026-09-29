@@ -134,7 +134,7 @@ test('a review that quotes the user\'s own plan rule never sends that finding to
   for (const item of weeks.stocks.plan.items) assert.equal(all.includes(item.text), false);
 });
 
-test('sentence assist request: what is on the wire beyond the typed sentence', { todo: 'F4: assist also sends the user\'s setup names (the "setups" list); the disclosure on the AI screen lists the sentence but not the setup names' }, async () => {
+test('sentence assist request (F4): the setup names go with the typed sentence, and the disclosure on the AI screen says so, in both languages', async () => {
   const env = makeEnv();
   const s = ownKeySettings();
   saveOwnKey(env.keys, s, 'sk-ant-WIRE-0123456789');
@@ -143,7 +143,14 @@ test('sentence assist request: what is on the wire beyond the typed sentence', {
   const parsed = parseSentence(sentence, { lang: 'en', setups: [SETUP], instruments: ['AAPL'], now: '2026-09-25T10:00:00Z' });
   await assistSentence(engine, sentence, parsed, { lang: 'en', setups: [SETUP, 'ZQXSETUP-OTHER'] });
   assert.equal(env.rec.calls.length, 1);
-  assert.equal(env.rec.calls[0].body.includes('ZQXSETUP'), false, 'setup names left the device');
+  assert.equal(env.rec.calls[0].body.includes('ZQXSETUP'), true, 'the setup names are sent');
+  assert.equal(env.rec.calls[0].body.includes('Bought 50 AAPL'), true);
+  for (const lang of ['en', 'el']) {
+    const table = (await import(`../../src/i18n/${lang}/review.js`)).default;
+    assert.ok(table['ai.own.sent.setups'], `the disclosure row exists in ${lang}`);
+  }
+  const view = readFileSync(join(root, 'src/ui/views/aiSettings.js'), 'utf8');
+  assert.match(view, /sent\(t\('ai\.own\.sent\.setups'\), true\)/, 'the screen lists it as sent');
 });
 
 // ---------------------------------------------------------------- static: every host the code can name

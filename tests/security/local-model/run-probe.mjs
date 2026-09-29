@@ -2,6 +2,8 @@
 // calls a small local model through ais-os `tools/aios-local-model.mjs`, and saves every raw output to ./out/.
 //   node tests/security/local-model/run-probe.mjs review   <judgment|coding>
 //   node tests/security/local-model/run-probe.mjs sentence <coding|judgment>
+// L4 fix round: the review half now builds the ordering prompt of RULING-L4-F5 R1 (arrangePrompt). The 36 saved review outputs in ./out/
+// answer the free-text prompt of the L4b build; they are kept as the evidence that tests/security/local-model.test.mjs replays.
 // The tool sends one user turn, so the app's system text and user JSON are joined by a blank line (the app sends them as two roles).
 // Run outside the Bash sandbox (the sandbox blocks the local oMLX port). One model at a time: run one alias to the end before the next.
 import fs from 'node:fs';
@@ -9,7 +11,7 @@ import vm from 'node:vm';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { runReview } from '../../../src/review/run.js';
-import { rewordPrompt, assistPrompt } from '../../../src/ai/prompts.js';
+import { arrangePrompt, assistPrompt } from '../../../src/ai/prompts.js';
 import { parseSentence } from '../../../src/sentence/parse.js';
 import { weeks, reviewInput } from '../helpers.mjs';
 
@@ -37,7 +39,7 @@ const joined = ({ system, user }) => `${system}\n\n${user}`;
 // ---- review: the request the app builds for each seeded week (whole week, first half, second half), both languages
 async function capture(name, lang, period) {
   let captured = null;
-  await runReview(reviewInput(name, { lang, ...(period ? { period } : {}) }), { engine: { id: 'own-key', reword: async (items) => { captured = items; return []; } } });
+  await runReview(reviewInput(name, { lang, ...(period ? { period } : {}) }), { engine: { id: 'own-key', arrange: async (items) => { captured = items; return []; } } });
   return captured;
 }
 function variantsOf(name) {
@@ -56,7 +58,7 @@ if (kind === 'review') {
         if (fs.existsSync(file)) { console.log('have', file); continue; }
         const items = await capture(name, lang, period);
         if (!items || !items.length) { fs.writeFileSync(file, JSON.stringify({ model: alias, week: name, variant, lang, skipped: 'the app sends nothing to a model: no finding without a quoted plan rule' }, null, 2)); console.log('skip (no request)', name, variant, lang); continue; }
-        const prompt = rewordPrompt(items, lang);
+        const prompt = arrangePrompt(items);
         const r = await callModel(joined(prompt));
         fs.writeFileSync(file, JSON.stringify({ model: alias, week: name, variant, lang, period, items, prompt, joinedPrompt: joined(prompt), raw: r.raw, exit: r.code, error: r.err, ms: r.ms }, null, 2));
         console.log(alias, name, variant, lang, `exit=${r.code}`, `${r.ms}ms`, `${r.raw.length} chars`);

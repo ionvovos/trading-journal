@@ -4,7 +4,7 @@
 // Rendered inside the Settings page by src/ui/views/settings.js: renderAiSettings(body, ctx) -> cleanup.
 import { el, mount, t } from '../../review/viewkit.js';
 import { enginesFor, deviceHost, loadAiSettings, saveAiSetting, browserKeyStore } from '../../ai/index.js';
-import { keyBinding, resolveProvider, describeAiError, AiError } from '../../ai/adapter.js';
+import { keyBinding, resolveProvider, describeAiError, AiError, checkBaseUrl } from '../../ai/adapter.js';
 import { LLM_BYTES, deleteModelCaches } from '../../ai/device.js';
 
 const HOSTS = ['cdn.jsdelivr.net', 'huggingface.co', 'raw.githubusercontent.com'];
@@ -27,6 +27,8 @@ export async function renderAiSettings(root, ctx) {
   const off = ctx.bus.on('ai-state', (e) => { live = { ...live, ...e }; if (!disposed) paint(); });
   const set = async (k, v) => { s[k] = v; await saveAiSetting(ctx, k, v); };
   const draftSettings = () => ({ 'ai.provider': draft.provider, 'ai.model': draft.model, 'ai.baseUrl': draft.provider === 'openai' ? draft.baseUrl || null : null });
+  // a typed address with user-info, a query string or a fragment, or plain http off this device, is refused with the reason (L4b F1, F3)
+  const addressProblem = () => (draft.provider === 'openai' && draft.baseUrl.trim() ? checkBaseUrl(draft.baseUrl).reason ?? null : null);
   const errorText = (err) => (err instanceof AiError ? t(`ai.error.${err.kind}`) : describeAiError(err));
   const refresh = async () => { status = await engines.status(s, ctx.lang); if (!live.progress || live.state !== 'downloading') live = { ...live, engine: status.engine, state: status.state, reason: status.reason }; paint(); };
 
@@ -78,6 +80,8 @@ export async function renderAiSettings(root, ctx) {
 
   async function turnOnOwnKey() {
     const typed = draft.key.trim();
+    const problem = addressProblem();
+    if (problem) { message = t(`ai.own.badAddress.${problem}`); paint(); return; }
     const binding = keyBinding(draftSettings());
     if (!binding) return;
     if (draft.provider === 'openai' && !draft.model.trim()) { message = t('ai.own.needModel'); paint(); return; }
@@ -98,6 +102,8 @@ export async function renderAiSettings(root, ctx) {
   async function removeOwnKey() { keys.removeKey(); await turnOffOwnKey(); message = t('ai.own.removed'); paint(); }
 
   async function testConnection() {
+    const problem = addressProblem();
+    if (problem) { message = t(`ai.own.badAddress.${problem}`); paint(); return; }
     busy = true; message = ''; paint();
     try {
       const provider = resolveProvider(draftSettings(), keys, { fetch: (...a) => globalThis.fetch(...a), typedKey: draft.key.trim() });
@@ -142,7 +148,7 @@ export async function renderAiSettings(root, ctx) {
         ctx.ui.field({ label: t('ai.own.key'), value: draft.key, type: 'password', autocomplete: 'off', placeholder: saved ? mask(saved) : t('ai.own.key.placeholder'), help: t('ai.own.key.help'), onInput: (v) => { draft.key = v; } })),
       el('section', { class: 'card' },
         el('div', { class: 'card-h' }, el('h3', null, t('ai.own.sent.h'))),
-        el('dl', { class: 'kv' }, sent(t('ai.own.sent.figures'), true), sent(t('ai.own.sent.sentence'), true), sent(t('ai.own.sent.names'), false), sent(t('ai.own.sent.rule'), false), sent(t('ai.own.sent.notes'), false), sent(t('ai.own.sent.other'), false)),
+        el('dl', { class: 'kv' }, sent(t('ai.own.sent.figures'), true), sent(t('ai.own.sent.sentence'), true), sent(t('ai.own.sent.setups'), true), sent(t('ai.own.sent.names'), false), sent(t('ai.own.sent.rule'), false), sent(t('ai.own.sent.notes'), false), sent(t('ai.own.sent.other'), false)),
         el('p', { class: 'caption top-gap' }, t('ai.own.sent.note', { host }))),
       el('div', { class: 'action-stack' },
         ctx.ui.button({ label: t('ai.own.turnOn'), size: 'lg', block: true, disabled: busy, onClick: turnOnOwnKey }),

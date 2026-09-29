@@ -25,6 +25,12 @@ export function normalizePlan(input = {}) {
   };
 }
 
+// A time window that inLocalWindow can read: both ends HH:MM ('24:00' allowed for the end). A malformed window (a hand-edited or
+// imported plan) is ignored instead of throwing (L4b F7).
+const TIME_OF_DAY = /^(?:[01]?\d|2[0-3]):[0-5]\d$/;
+export const isWindow = (h) => Boolean(h) && typeof h === 'object' && typeof h.from === 'string' && typeof h.to === 'string' && TIME_OF_DAY.test(h.from) && (TIME_OF_DAY.test(h.to) || h.to === '24:00');
+export const validHours = (hours) => (Array.isArray(hours) ? hours.filter(isWindow) : []);
+
 export const hasRules = (plan) => Boolean(plan && (plan.items?.length || plan.setups?.length || plan.hours?.length || plan.dailyCap || plan.riskPct || plan.dailyLossLimitPct));
 
 const dayOf = (iso, tz, cutoff = 0) => localParts(iso, tz, cutoff).date;
@@ -37,8 +43,9 @@ export function evaluatePlan(trade, plan, ctx = {}) {
   if (!plan) return { auto, suggestedFollowed: null };
   const at = entryTime(trade);
 
-  if (plan.hours?.length) {
-    auto.hours = at ? (plan.hours.some((h) => inLocalWindow(at, tz, h.from, h.to)) ? 'pass' : 'fail') : 'unknown';
+  const hours = validHours(plan.hours);
+  if (hours.length) {
+    auto.hours = at ? (hours.some((h) => inLocalWindow(at, tz, h.from, h.to)) ? 'pass' : 'fail') : 'unknown';
   }
   if (plan.dailyCap) {
     auto.dailyCap = sameDayTrades.length + 1 > plan.dailyCap ? 'fail' : 'pass';

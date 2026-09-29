@@ -77,7 +77,7 @@ test('no export contains the own key (canary)', async () => {
   delete globalThis.localStorage;
   assert.ok(!text.includes(KEY), 'canary key absent');
   assert.ok(!text.includes('"ai.key"'), 'key-named setting absent');
-  assert.ok(text.includes('"ai.provider"'), 'other ai settings stay');
+  assert.ok(!text.includes('"ai.provider"') && !text.includes('"ai.host"'), 'ai.* is this device\'s engine choice and is not exported (L4b F2, F3)');
 });
 
 test('parseExport is all or nothing', () => {

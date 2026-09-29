@@ -64,6 +64,7 @@ export default {
   'export.error.notJson': 'Το αρχείο δεν είναι εξαγωγή JSON. Δεν άλλαξε τίποτα.',
   'export.error.wrongFormat': 'Το αρχείο δεν είναι εξαγωγή του Trading Journal. Δεν άλλαξε τίποτα.',
   'export.error.newerVersion': 'Το αρχείο προέρχεται από νεότερη έκδοση της εφαρμογής ({detail}). Δεν άλλαξε τίποτα.',
+  'export.error.tooBig': 'Το αρχείο είναι μεγαλύτερο από {detail} MB. Δεν διαβάστηκε και δεν άλλαξε τίποτα.',
   'export.error.badRow': 'Μια γραμμή του αρχείου δεν είναι έγκυρη ({detail}). Δεν άλλαξε τίποτα.',
   'data.reminder.label': 'Υπενθύμιση εξαγωγής',
   'data.reminder.sub': 'Μετά από τόσες νέες συναλλαγές',

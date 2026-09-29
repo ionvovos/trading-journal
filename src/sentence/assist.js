@@ -4,14 +4,17 @@
 import { cmp } from '../core/decimal.js';
 import { check } from '../review/guard.js';
 
-// parsed: parseSentence() result. assist: { setup, notes, numbers } from validateAssist, or null when no model ran.
-export function mergeAssist(parsed, assist, { lang = 'en' } = {}) {
+const squash = (s) => String(s ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+
+// parsed: parseSentence() result. assist: { setup, notes, numbers } from validateAssist, or null when no model ran. `text` is the sentence
+// the person typed: model notes are kept only when they are a piece of it (L4b F6), so the model cannot write anything of its own.
+export function mergeAssist(parsed, assist, { lang = 'en', text = '' } = {}) {
   const fields = { ...parsed.fields, notes: null };
   const conflicts = [];
   if (!assist) return { fields, conflicts, by: 'code' };
   if (fields.setup === null && assist.setup) fields.setup = assist.setup;
-  // model-written notes pass the same boundary scan as review text; a failing note is dropped
-  if (assist.notes && check(assist.notes, lang, { scope: 'review' }).ok) fields.notes = assist.notes;
+  // a note must be a substring of the typed sentence, then pass the boundary scan; anything else is dropped
+  if (assist.notes && squash(text).includes(squash(assist.notes)) && check(assist.notes, lang, { scope: 'review' }).ok) fields.notes = assist.notes;
   for (const [field, value] of Object.entries(assist.numbers ?? {})) {
     const code = parsed.fields[field];
     const ambiguous = parsed.ambiguous.some((a) => a.field === field);
@@ -26,7 +29,7 @@ export async function assistSentence(engine, text, parsed, { lang = 'en', setups
   if (!engine || engine.id === 'rules' || typeof engine.assist !== 'function') return { ...mergeAssist(parsed, null, { lang }), note: 'no_model' };
   try {
     const assist = await engine.assist(text, { setups, lang });
-    return { ...mergeAssist(parsed, assist, { lang }), note: '' };
+    return { ...mergeAssist(parsed, assist, { lang, text }), note: '' };
   } catch (err) {
     return { ...mergeAssist(parsed, null, { lang }), note: `failed:${err?.kind ?? 'error'}` };
   }

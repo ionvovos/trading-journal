@@ -3,7 +3,7 @@
 // the sentences that need a human reading. No live model is called here.
 //   node tests/security/local-model/analyse.mjs [--print]
 import fs from 'node:fs';
-import { extractJson, validateReword, validateAssist, ASSIST_NUMBER_FIELDS } from '../../../src/ai/adapter.js';
+import { extractJson, validateAssist, ASSIST_NUMBER_FIELDS } from '../../../src/ai/adapter.js';
 import { screenModelText, check, normalize } from '../../../src/review/guard.js';
 import { mergeAssist } from '../../../src/sentence/assist.js';
 import { cmp } from '../../../src/core/decimal.js';
@@ -12,10 +12,17 @@ const OUT = new URL('./out/', import.meta.url);
 const files = fs.readdirSync(OUT).filter((f) => f.endsWith('.json') && f !== 'summary.json' && f !== 'readings.json').sort();
 const load = (f) => JSON.parse(fs.readFileSync(new URL(f, OUT), 'utf8'));
 
+// The free-text reply shape of the L4b build ({ items: [{ id, text }] }). The app no longer accepts it (R1); the saved outputs are still
+// read this way so the L4b counts stay reproducible.
+function legacyRewordItems(obj) {
+  if (!obj || !Array.isArray(obj.items)) throw new Error('no items');
+  return obj.items.filter((i) => i && typeof i.id === 'string' && typeof i.text === 'string' && i.text.trim()).map((i) => ({ id: i.id, text: i.text.replace(/\s+/g, ' ').trim() }));
+}
+
 export function replayReview(run) {
   const out = { file: null, model: run.model, week: run.week, variant: run.variant, lang: run.lang, requested: run.items?.length ?? 0, parse: 'ok', returned: 0, items: [] };
   let items = [];
-  try { items = validateReword(extractJson(run.raw)).items; } catch (e) { out.parse = `unparseable: ${e.message}`; }
+  try { items = legacyRewordItems(extractJson(run.raw)); } catch (e) { out.parse = `unparseable: ${e.message}`; }
   out.returned = items.length;
   for (const item of run.items ?? []) {
     const got = items.find((x) => x.id === item.id);
@@ -48,7 +55,7 @@ export function replaySentence(run) {
   }
   out.setup = { model: assist.setup, expected: exp.setup ?? null, code: run.code.fields.setup ?? null };
   out.notes = assist.notes;
-  const merged = mergeAssist({ fields: run.code.fields, ambiguous: run.code.ambiguous ?? [] }, assist, { lang: run.lang });
+  const merged = mergeAssist({ fields: run.code.fields, ambiguous: run.code.ambiguous ?? [] }, assist, { lang: run.lang, text: run.text });
   out.conflicts = merged.conflicts.map((c) => c.field);
   out.mergedNumbersEqualCode = ASSIST_NUMBER_FIELDS.every((f) => merged.fields[f] === run.code.fields[f]);
   out.silent = out.misparse.filter((f) => !out.conflicts.includes(f));

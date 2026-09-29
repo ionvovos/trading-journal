@@ -1,14 +1,14 @@
 // The review (architecture 5.2, requirements P5). Code finds the patterns and the trades behind them; fixed templates write the
-// sentences and questions; a model may only reword a sentence, and every reworded sentence passes the guard, the number check and
-// the entity check or the template sentence stays. With no model the review is produced by rules and says so.
+// sentences and questions. A model may only put the findings in order (RULING-L4-F5 R1): it returns ids, never text, so no sentence it
+// writes can be shown. With no model the review is produced by rules and says so.
 import { buildRows } from './rows.js';
 import { findPatterns, processOutcome, optionalSections, PATTERNS } from './patterns.js';
 import { renderFinding, renderKey, TITLES } from './templates.js';
-import { check, screenModelText } from './guard.js';
+import { check } from './guard.js';
 import { RULES_ENGINE } from '../ai/engine.js';
 import { createFormat } from '../i18n/format.js';
 
-export const REWORD_TIMEOUT_MS = 60000;
+export const ARRANGE_TIMEOUT_MS = 60000;
 
 const withTimeout = (promise, ms) => new Promise((resolve, reject) => {
   const timer = setTimeout(() => reject(Object.assign(new Error('The model did not answer in time.'), { kind: 'timeout' })), ms);
@@ -17,7 +17,7 @@ const withTimeout = (promise, ms) => new Promise((resolve, reject) => {
 
 // input: { trades, cash, accounts, plans, settings, mode, period: { from, to, zone? }, lang, tz, now: Date|ISO }
 // deps:  { engine (from createEngines().resolve, default rules), bus, fmt }
-export async function runReview(input, { engine = RULES_ENGINE, bus = null, fmt = null, timeoutMs = REWORD_TIMEOUT_MS } = {}) {
+export async function runReview(input, { engine = RULES_ENGINE, bus = null, fmt = null, timeoutMs = ARRANGE_TIMEOUT_MS } = {}) {
   const { trades = [], cash = [], accounts = {}, plans = [], settings = {}, mode = 'real', period = null, lang = 'en', now = new Date() } = input;
   const tz = input.tz ?? settings.tz ?? 'UTC';
   const dayCutoffHour = Number(settings.dayCutoffHour ?? 0);
@@ -45,27 +45,30 @@ export async function runReview(input, { engine = RULES_ENGINE, bus = null, fmt 
 
   let engineId = 'rules';
   let engineNote = engine.id === 'rules' ? 'no_model' : '';
-  if (engine.id !== 'rules' && typeof engine.reword === 'function' && findings.some((x) => !x.segments.some((s) => s.quoted))) {
-    try {
-      // a finding that quotes the user's own rule is never sent: the quote is the user's words, and the template keeps that sentence
-      const items = findings.filter((x) => !x.segments.some((s) => s.quoted)).map((x) => ({ id: x.id, pattern: x.pattern, facts: x.shown, ruleText: x.ruleText, lang }));
-      const reworded = await withTimeout(engine.reword(items, lang), timeoutMs);
-      let used = 0;
-      let rejected = 0;
-      for (const item of Array.isArray(reworded) ? reworded : []) {
-        const target = findings.find((x) => x.id === item.id);
-        if (!target || typeof item.text !== 'string') continue;
-        // a finding with a quoted plan rule keeps its template: the quote is the user's words, not the model's
-        if (target.segments.some((s) => s.quoted)) continue;
-        const screen = screenModelText(item.text, target.shown, lang, { ruleText: target.ruleText });
-        if (screen.ok) { target.text = item.text.trim(); target.textBy = 'model'; used += 1; } else rejected += 1;
+  if (engine.id !== 'rules' && typeof engine.arrange === 'function') {
+    // The model only orders findings the code found (RULING-L4-F5 R1). Every sentence on screen is a template sentence, so no model
+    // text can reach the page. A finding that quotes the user's own rule is never sent and keeps its place.
+    const movable = findings.filter((x) => !x.segments.some((s) => s.quoted));
+    engineNote = 'model_no_change';
+    if (movable.length > 1) {
+      try {
+        const items = movable.map((x) => ({ id: x.id, pattern: x.pattern, facts: x.shown }));
+        const answer = await withTimeout(engine.arrange(items), timeoutMs);
+        const known = new Set(movable.map((x) => x.id));
+        const asked = [...new Set(Array.isArray(answer) ? answer.filter((id) => typeof id === 'string' && known.has(id)) : [])];
+        if (!asked.length) engineNote = 'model_rejected';
+        else {
+          const ordered = [...asked, ...movable.map((x) => x.id).filter((id) => !asked.includes(id))].map((id) => movable.find((x) => x.id === id));
+          let next = 0;
+          findings.forEach((x, i) => { if (!x.segments.some((s) => s.quoted)) findings[i] = ordered[next++]; });
+          engineId = engine.id;
+          engineNote = '';
+        }
+      } catch (err) {
+        engineId = 'rules';
+        engineNote = `failed:${err?.kind ?? 'error'}`;
+        bus?.emit?.('ai-state', { engine: engine.id, state: 'failed', reason: err?.kind ?? 'error' });
       }
-      engineId = used ? engine.id : 'rules';
-      engineNote = used ? '' : rejected ? 'model_rejected' : 'model_no_change';
-    } catch (err) {
-      engineId = 'rules';
-      engineNote = `failed:${err?.kind ?? 'error'}`;
-      bus?.emit?.('ai-state', { engine: engine.id, state: 'failed', reason: err?.kind ?? 'error' });
     }
   }
   for (const x of findings) { delete x.segments; delete x.ruleText; }

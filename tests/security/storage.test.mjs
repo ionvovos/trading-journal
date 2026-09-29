@@ -67,9 +67,12 @@ test('import: a large file (200,000 valid rows, about 60 MB) is validated in bou
   assert.ok(text.length > 40e6);
 });
 
-test('import: a file over a stated size limit is refused before it is read', { todo: 'F8: restoreFile reads the whole chosen file with file.text() and there is no size limit anywhere (an accidental or hostile multi-hundred-MB file stalls or crashes the tab; the risk stays on the person\'s own device)' }, () => {
+test('import: a file over a stated size limit is refused before it is read (F8)', async () => {
   const src = code('src/ui/views/dataSettings.js');
-  assert.match(src, /file\.size\s*[>]|\.size\s*>\s*MAX|MAX_IMPORT/i);
+  assert.match(src, /file\.size\s*>\s*MAX_IMPORT_BYTES/);
+  assert.ok(src.indexOf('file.size > MAX_IMPORT_BYTES') < src.indexOf('await file.text()'), 'the size check comes before the read');
+  const { MAX_IMPORT_BYTES } = await import('../../src/ui/views/dataSettings.js').catch(() => ({}));
+  if (MAX_IMPORT_BYTES !== undefined) assert.ok(MAX_IMPORT_BYTES >= 60e6 && MAX_IMPORT_BYTES <= 200e6, 'above the 60 MB file that parses in bounded time above');
 });
 
 test('import: rows already stored are kept, never overwritten by the file', async () => {

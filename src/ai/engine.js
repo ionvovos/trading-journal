@@ -1,8 +1,8 @@
 // The engine ladder (architecture 5.2): 1. own key, when set, confirmed and online; 2. on-device model, when the user agreed to the
 // download, the device can run it and it is loaded; 3. rules. The engine and its state are always reported (AC-P9.3, AC-P5.7) on the
 // bus as `ai-state { engine, state, progress, reason }`. Pure apart from the injected `device`, `fetch` and `keys`.
-import { extractJson, resolveProvider, validateReword, validateAssist, TIMEOUTS, describeAiError } from './adapter.js';
-import { rewordPrompt, assistPrompt, asMessages } from './prompts.js';
+import { extractJson, resolveProvider, validateArrange, validateAssist, TIMEOUTS, describeAiError } from './adapter.js';
+import { arrangePrompt, assistPrompt, asMessages } from './prompts.js';
 import { LLM_BYTES } from './device.js';
 
 // B2 measured English only. For Greek the on-device rung stays off until L4 rates the model's Greek acceptable on the three seeded weeks.
@@ -10,15 +10,15 @@ export const DEVICE_GREEK_OK = false;
 
 export const STATES = Object.freeze(['ready', 'downloading', 'unavailable', 'failed']);
 
-export const RULES_ENGINE = Object.freeze({ id: 'rules', reword: null, assist: null });
+export const RULES_ENGINE = Object.freeze({ id: 'rules', arrange: null, assist: null });
 
-// device: createDeviceHost() result. Wraps its generate() as the same reword/assist surface as an own-key provider.
+// device: createDeviceHost() result. Wraps its generate() as the same arrange/assist surface as an own-key provider.
 export function deviceEngine(device) {
   const ask = async (prompt, maxTokens, timeoutMs) => extractJson(await device.generate(asMessages(prompt), { maxTokens, timeoutMs }));
   return {
     id: 'on-device',
     model: device.model,
-    async reword(items, lang) { return validateReword(await ask(rewordPrompt(items, lang), 900, 60000)).items; },
+    async arrange(items) { return validateArrange(await ask(arrangePrompt(items), 300, 60000), items.map((i) => i.id)).order; },
     async assist(text, { setups = [], lang = 'en' } = {}) { return validateAssist(await ask(assistPrompt(text, { setups, lang }), 300, TIMEOUTS.assist), setups); },
   };
 }

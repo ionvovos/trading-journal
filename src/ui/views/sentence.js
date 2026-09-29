@@ -28,6 +28,7 @@ export async function render(root, ctx, params = {}) {
   let parsed = null;
   let fields = null;
   let conflicts = [];
+  const typed = {}; // the value being typed beside each conflict, by field
   let assistNote = '';
   let engineId = 'rules';
   let asked = ''; // the answer being typed for the current question
@@ -41,6 +42,7 @@ export async function render(root, ctx, params = {}) {
     parsed = parseSentence(text, { lang: ctx.lang, setups, instruments: knownInstruments });
     fields = { ...parsed.fields, notes: null };
     conflicts = [];
+    for (const k of Object.keys(typed)) delete typed[k];
     assistNote = '';
     engineId = 'rules';
     paint();
@@ -102,10 +104,19 @@ export async function render(root, ctx, params = {}) {
     el('span', { class: 'lbl' }, fieldLabel(f), parsed.derived.includes(f) ? el('small', null, t('sentence.derived', { pips: parsed.fields.stopPips })) : null),
     el('span', { class: 'val num strong' }, valueText(f, fields[f])))));
 
+  // Both readings are shown and neither is applied: the person types the value they mean (L4b F12, RULING-L4-F5 R3). The model's
+  // number is never a button, so it cannot reach a trade field except through what the person types.
   const conflictBlock = () => conflicts.map((c) => el('div', { class: 'banner attention' }, ctx.ui.icon('info'),
     el('div', { class: 'body' },
       c.code === null ? t('sentence.conflict.none', { field: fieldLabel(c.field), model: c.model }) : t('sentence.conflict', { field: fieldLabel(c.field), model: c.model, code: c.code }),
-      el('div', { class: 'btn-row' }, ctx.ui.button({ label: t('sentence.conflict.use', { value: c.model }), kind: 'secondary', onClick: () => { fields[c.field] = c.model; conflicts = conflicts.filter((x) => x !== c); paint(); } }))),
+      ctx.ui.field({ label: t('sentence.conflict.type', { field: fieldLabel(c.field).toLocaleLowerCase(ctx.lang) }), value: typed[c.field] ?? '', inputmode: 'decimal', onInput: (v) => { typed[c.field] = v; } }),
+      el('div', { class: 'btn-row' }, ctx.ui.button({ label: t('sentence.conflict.set'), kind: 'secondary', onClick: () => {
+        const value = parseUserDecimal(String(typed[c.field] ?? '').trim());
+        if (value === null || value === undefined) return;
+        fields[c.field] = value;
+        conflicts = conflicts.filter((x) => x !== c);
+        paint();
+      } }))),
     el('span', { class: 'spacer' })));
 
   async function save() {

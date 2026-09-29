@@ -2,7 +2,8 @@
 // The own AI key lives only in localStorage and is never in a store, so no export can contain it;
 // settings whose name looks like a key or secret are dropped anyway as a second guard.
 import { DB_VERSION, EXPORT_FORMAT, ROW_STORES, migrateExport } from './migrate.js';
-import { NEVER_EXPORT } from './settings.js';
+import { NEVER_EXPORT, isImportableSetting } from './settings.js';
+import { isWindow } from '../plan/check.js';
 
 export const APP_VERSION = '1.0.0';
 
@@ -24,6 +25,20 @@ export function exportFileName(exportedAt) {
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const str = (v) => typeof v === 'string' && v !== '';
 
+// A plan row: every field the plan check reads has to be well formed, so that a file cannot leave a plan that breaks trade entry or the
+// review (L4b F7). Absent fields are fine; hours windows must be real times of day.
+const decimalOrNull = (v) => v === undefined || v === null || v === '' || ((typeof v === 'number' || typeof v === 'string') && Number.isFinite(Number(v)) && Number(v) > 0);
+const planError = (r) => {
+  if (!str(r.id)) return 'id';
+  if (r.hours !== undefined && (!Array.isArray(r.hours) || !r.hours.every(isWindow))) return 'hours';
+  if (r.dailyCap !== undefined && r.dailyCap !== null && !(Number.isInteger(r.dailyCap) && r.dailyCap > 0)) return 'dailyCap';
+  if (!decimalOrNull(r.riskPct)) return 'riskPct';
+  if (!decimalOrNull(r.dailyLossLimitPct)) return 'dailyLossLimitPct';
+  if (r.items !== undefined && (!Array.isArray(r.items) || !r.items.every((i) => isObj(i) && typeof i.text === 'string'))) return 'items';
+  if (r.setups !== undefined && (!Array.isArray(r.setups) || !r.setups.every((s) => typeof s === 'string'))) return 'setups';
+  return null;
+};
+
 // Row validators: return an error detail string or null.
 const CHECKS = {
   accounts: (r) => (!str(r.id) ? 'id' : !str(r.name) ? 'name' : !['real', 'paper'].includes(r.mode) ? 'mode' : !str(r.baseCurrency) ? 'baseCurrency' : null),
@@ -31,7 +46,7 @@ const CHECKS = {
   cash: (r) => (!str(r.id) ? 'id' : !str(r.accountId) ? 'accountId' : !['deposit', 'withdrawal', 'other'].includes(r.kind) ? 'kind' : !str(r.amount) ? 'amount' : !str(r.time) ? 'time' : null),
   imports: (r) => (!str(r.id) ? 'id' : !str(r.accountId) ? 'accountId' : !str(r.formatId) ? 'formatId' : null),
   reconciliations: (r) => (!str(r.id) ? 'id' : !str(r.accountId) ? 'accountId' : null),
-  plans: (r) => (!str(r.id) ? 'id' : null),
+  plans: (r) => planError(r),
   reviews: (r) => (!str(r.id) ? 'id' : null),
   blobs: (r) => (!str(r.id) ? 'id' : !str(r.dataUrl) || !r.dataUrl.startsWith('data:') ? 'dataUrl' : null),
 };
@@ -77,7 +92,8 @@ export async function mergeImport(store, data) {
     plan.push([name, fresh]);
   }
   const currentSettings = await store.allSettings();
-  const settingsToAdd = Object.entries(data.settings || {}).filter(([k]) => !Object.hasOwn(currentSettings, k) && !NEVER_EXPORT.test(k));
+  // only data settings, only ones not set yet; `ai.*`, keys and any name outside the allow-list never come from a file
+  const settingsToAdd = Object.entries(data.settings || {}).filter(([k, v]) => isImportableSetting(k, v) && !NEVER_EXPORT.test(k) && !Object.hasOwn(currentSettings, k));
   await store.transaction((tx) => {
     for (const [name, rows] of plan) tx.putMany(name, rows);
     for (const [k, v] of settingsToAdd) tx.put('settings', { key: k, value: v });
