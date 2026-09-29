@@ -21,16 +21,19 @@
 <div class="app has-actions">
 <header class="topbar"><button class="back"><svg class="i " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Home</button><h1 class="title-sm">Broker check</h1><span class="badge real"><span class="dot"></span>Real</span></header>
 <main class="content">
-<p class="sub" style="text-align:center;margin-top:-4px">IBKR · 1–29 Sep 2026 · USD</p>
+<p class="sub" style="text-align:center;margin-top:-4px">IBKR · 1–29 Sep 2026, New York time · USD</p>
 <section class="card">
-  <div class="pv-grid"><div><span class="caption">Broker</span><b class="num" style="font-size:20px">728.10</b></div><div><span class="caption">Journal</span><b class="num" style="font-size:20px">702.30</b></div></div>
-  <div class="spread" style="margin-top:12px"><span class="status open"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5h14M5 14.5h14M15 5L9 19"/></svg>Difference open</span><b class="num" style="font-size:20px;color:var(--attention)">+25.80</b></div>
-  <p class="caption" style="margin-top:8px">3 trades add up to the whole difference. Nothing has been changed; you decide each one.</p>
+  <div class="pv-grid"><div><span class="caption">Broker</span><b class="num" style="font-size:20px">381.50</b></div><div><span class="caption">Journal</span><b class="num" style="font-size:20px">341.20</b></div></div>
+  <div class="spread" style="margin-top:12px"><span class="status open"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5h14M5 14.5h14M15 5L9 19"/></svg>Difference open</span><b class="num" style="font-size:20px;color:var(--attention)">+40.30</b></div>
+  <div class="kv" style="margin-top:6px"><div><dt>2 trades may explain</dt><dd>+42.30</dd></div><div><dt>Unexplained difference</dt><dd style="color:var(--attention)">−2.00</dd></div></div>
+  <p class="caption" style="margin-top:6px">Nothing has been changed. The unexplained part is not matched to any trade and not folded into fees or any figure.</p>
 </section>
 <section class="card"><div class="card-h"><h3>Possible causes</h3><span class="caption">broker − journal</span></div>
 <div class="pattern"><div class="spread" style="align-items:flex-start"><h4>MSFT, 24 Sep, held out</h4><span class="num" style="font-weight:700;white-space:nowrap">+64.20</span></div><p class="sub">IBKR counts this trade. The journal waits for your answer about the 10 shares bought before the file starts.</p><div class="spread wrap"><a class="trade-link" href="#">MSFT · sell 30</a><button class="btn secondary" style="font-size:14px;padding:0 14px">Answer</button></div></div>
 <div class="pattern"><div class="spread" style="align-items:flex-start"><h4>AAPL, 18 Sep, counted twice</h4><span class="num" style="font-weight:700;white-space:nowrap">−21.90</span></div><p class="sub">You chose “Keep both” for 2 fills that repeat the 17 Sep import.</p><div class="spread wrap"><a class="trade-link" href="#">AAPL · 2 fills</a><button class="btn secondary" style="font-size:14px;padding:0 14px">Merge instead</button></div></div>
-<div class="pattern"><div class="spread" style="align-items:flex-start"><h4>AMD, 22 Sep, fee field empty</h4><span class="num" style="font-weight:700;white-space:nowrap">−16.50</span></div><p class="sub">You chose “No fee”. A fee of 16.50 would account for the rest.</p><div class="spread wrap"><a class="trade-link" href="#">AMD · long 60</a><button class="btn secondary" style="font-size:14px;padding:0 14px">Type fee</button></div></div>
+</section>
+<section class="card"><div class="card-h"><h3>Also check</h3></div>
+<div class="pattern"><h4>AMD, 22 Sep, fee field empty</h4><p class="sub">Type the fee from your IBKR statement; the difference is recomputed. The app does not guess a fee.</p><div class="spread wrap"><a class="trade-link" href="#">AMD · long 60 shares</a><button class="btn secondary" style="font-size:14px;padding:0 14px">Type fee</button></div></div>
 </section>
 </main>
 <div class="actions"><button class="btn primary lg block">Compare again after changes</button><button class="btn ghost block">Keep the difference open</button></div>

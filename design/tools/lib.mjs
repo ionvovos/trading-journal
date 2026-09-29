@@ -131,33 +131,133 @@ export const MK = { stock: ['stock', 'Stock'], crypto: ['crypto', 'Crypto'], fx:
 export const mk = (m) => `<span class="mk ${m}" aria-label="${MK[m][1]}">${ic(m === 'stock' ? 'stock' : m === 'crypto' ? 'crypto' : 'fx')}</span>`;
 
 // ---------- sample data (real mode, September 2026, USD, declared zone Europe/Athens) ----------
+// One row per closed trade. Every figure a mockup shows is computed from these rows (G15); build-mockups asserts the totals.
 export const START = 12500;
-// day, net P&L of trades closed that day, closed trades that day
-export const DAYS = [
-  [1, 212.40, 2], [2, 96.10, 1], [3, -84.30, 1], [4, 148.80, 2], [7, 61.20, 1], [8, 95.60, 2], [9, -40.20, 1], [10, 77.90, 1],
-  [11, -12.30, 1], [12, 72.20, 1], [14, -214.60, 2], [15, -188.30, 2], [16, 42.10, 1], [17, -236.90, 3], [18, -121.40, 2],
-  [19, -123.20, 1], [21, 188.40, 2], [22, 142.70, 2], [23, 96.30, 1], [24, 210.50, 2], [25, 264.80, 2], [26, 98.20, 1],
-  [28, 616.10, 3], [29, -117.50, 1],
+// day, entry, exit (Athens), instrument, market, account, setup, side, size, net USD, R (null = no stop), followed plan, pips (forex)
+const ROWS = [
+  [1, '11:20', '15:40', 'EUR/USD', 'fx', 'MT4 forex', 'Pullback', 'Long', '0.50 lot', 130.40, 1.63, true, 26.8],
+  [1, '17:05', '20:30', 'NVDA', 'stock', 'IBKR', 'Breakout', 'Long', '30 shares', 82.00, 0.62, true],
+  [2, '16:48', '21:10', 'MSFT', 'stock', 'IBKR', 'Breakout', 'Long', '25 shares', 96.10, null, false],
+  [3, '18:12', '22:40', 'AAPL', 'stock', 'IBKR', 'Range fade', 'Short', '40 shares', -84.30, -0.84, true],
+  [4, '04:15', '08:50', 'USD/JPY', 'fx', 'MT4 forex', null, 'Long', '0.40 lot', -27.50, -0.55, false, -9.3],
+  [4, '10:30', '20:05', 'BTC/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '0.08 BTC', 176.30, 1.41, true],
+  [7, '14:02', '19:44', 'ETH/USD', 'crypto', 'Kraken', 'Pullback', 'Long', '0.8 ETH', 61.20, 0.49, true],
+  [8, '12:30', '16:10', 'GBP/USD', 'fx', 'MT4 forex', 'Range fade', 'Short', '0.30 lot', -44.60, -0.45, true, -13.9],
+  [8, '16:41', '21:55', 'AMD', 'stock', 'IBKR', 'Pullback', 'Long', '60 shares', 140.20, 1.12, true],
+  [9, '17:20', '19:05', 'TSLA', 'stock', 'IBKR', 'Breakout', 'Long', '12 shares', -40.20, -0.32, true],
+  [10, '15:10', '18:20', 'EUR/USD', 'fx', 'MT4 forex', 'Pullback', 'Long', '0.40 lot', 77.90, 0.78, true, 20.2],
+  [11, '22:40', '23:55', 'ETH/USD', 'crypto', 'Kraken', 'Range fade', 'Short', '0.6 ETH', -12.30, null, false],
+  [12, '11:05', '17:30', 'SOL/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '18 SOL', 72.20, 0.60, true],
+  [14, '16:35', '18:02', 'NVDA', 'stock', 'IBKR', 'Breakout', 'Long', '35 shares', -118.00, -0.98, true],
+  [14, '18:30', '20:15', 'EUR/USD', 'fx', 'MT4 forex', 'Breakout', 'Long', '0.60 lot', -96.60, -0.97, true, -15.4],
+  [15, '17:00', '19:30', 'AAPL', 'stock', 'IBKR', 'Pullback', 'Long', '45 shares', -112.50, -0.90, true],
+  [15, '20:10', '23:40', 'BTC/USD', 'crypto', 'Kraken', 'Range fade', 'Short', '0.06 BTC', -75.80, -0.63, true],
+  [16, '16:52', '22:10', 'MSFT', 'stock', 'IBKR', 'Pullback', 'Long', '20 shares', 42.10, 0.35, true],
+  [17, '16:34', '17:20', 'AMD', 'stock', 'IBKR', 'Breakout', 'Long', '70 shares', -98.40, -1.23, true],
+  [17, '17:45', '20:30', 'USD/JPY', 'fx', 'MT4 forex', 'Range fade', 'Short', '0.50 lot', -61.20, -0.87, false, -17.3],
+  [17, '21:10', '23:30', 'ETH/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '1.0 ETH', -77.30, -0.77, false],
+  [18, '16:31', '16:58', 'AAPL', 'stock', 'IBKR', null, 'Long', '60 shares', -72.40, -1.81, false],
+  [18, '17:20', '19:40', 'GBP/USD', 'fx', 'MT4 forex', 'Pullback', 'Long', '0.40 lot', -49.00, -0.49, true, -11.5],
+  [19, '12:15', '18:40', 'BTC/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '0.07 BTC', -123.20, -1.03, true],
+  [21, '12:05', '16:20', 'ETH/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '1.1 ETH', 275.00, 1.72, true],
+  [21, '16:45', '22:40', 'AMD', 'stock', 'IBKR', 'Pullback', 'Long', '50 shares', -86.60, -1.08, false],
+  [22, '16:38', '17:05', 'AMD', 'stock', 'IBKR', 'Pullback', 'Long', '60 shares', -30.00, -0.30, true],
+  [22, '17:22', '21:40', 'EUR/USD', 'fx', 'MT4 forex', 'Pullback', 'Long', '1.20 lot', 172.70, 1.44, false, 15.0],
+  [23, '20:15', '22:50', 'GBP/USD', 'fx', 'MT4 forex', null, 'Short', '0.30 lot', 96.30, null, false, 33.0],
+  [24, '15:05', '16:40', 'SOL/USD', 'crypto', 'Kraken', 'Range fade', 'Short', '20 SOL', -40.00, -0.50, true],
+  [24, '17:02', '22:30', 'TSLA', 'stock', 'IBKR', 'Breakout', 'Long', '30 shares', 250.50, 1.67, false],
+  [25, '10:20', '13:05', 'ETH/USD', 'crypto', 'Kraken', 'Pullback', 'Long', '1.2 ETH', -105.40, -1.72, false],
+  [25, '16:40', '22:45', 'AAPL', 'stock', 'IBKR', 'Breakout', 'Long', '80 shares', 370.20, 3.08, true],
+  [26, '23:12', '23:58', 'ETH/USD', 'crypto', 'Kraken', 'Breakout', 'Long', '1.2 ETH', 98.20, 1.36, false],
+  [28, '11:05', '16:20', 'EUR/USD', 'fx', 'MT4 forex', 'Breakout', 'Long', '1.00 lot', 326.12, 1.09, true, 33.0],
+  [28, '17:41', '21:05', 'NVDA', 'stock', 'IBKR', 'Range fade', 'Short', '20 shares', 120.00, 2.00, true],
+  [28, '13:30', '22:15', 'BTC/USD', 'crypto', 'Kraken', 'Pullback', 'Long', '0.05 BTC', 169.98, 2.79, true],
+  [29, '17:05', '19:02', 'AAPL', 'stock', 'IBKR', 'Breakout', 'Long', '50 shares', -117.50, -0.94, true],
 ];
 const cents = (v) => Math.round(v * 100);
-export const MONTH_TOTAL = DAYS.reduce((s, d) => s + cents(d[1]), 0) / 100;
-export const N_CLOSED = DAYS.reduce((s, d) => s + d[2], 0);
-// One equity point per closed trade. A day's total is split across its trades with fixed weights, same sign.
+const mins = (s) => Number(s.slice(0, 2)) * 60 + Number(s.slice(3));
+const WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekday = (d) => WD[(d + 0) % 7]; // 1 Sep 2026 is a Tuesday: day 1 -> index 1
+export const TRADES = ROWS.map(([day, entry, exit, sym, m, acct, setup, side, size, net, r, followed, pips], i) => ({
+  id: i + 1, day, entry, exit, sym, m, acct, setup, side, size, net, r, followed, pips: pips ?? null,
+  hour: Number(entry.slice(0, 2)), wd: weekday(day), hold: mins(exit) - mins(entry),
+})).sort((a, b) => a.day - b.day || mins(a.exit) - mins(b.exit));
+
+// Forex session of the entry, per architecture §3.2 S12 (Athens is UTC+3, London UTC+1, New York UTC-4 in September)
+function session(t) {
+  if (t.m === 'crypto') return 'No session (crypto)';
+  const a = mins(t.entry);
+  if (t.m === 'stock') return a >= mins('16:30') && a < mins('23:00') ? 'US regular' : 'US outside regular';
+  const lon = a >= mins('10:00') && a < mins('19:00');
+  const ny = a >= mins('15:00') || a < mins('00:00');
+  if (lon && a >= mins('15:00')) return 'London and New York';
+  if (lon) return 'London';
+  if (ny) return 'New York';
+  if (a >= mins('03:00') && a < mins('12:00')) return 'Tokyo';
+  return 'Sydney';
+}
+const SESSION_ORDER = ['London and New York', 'London', 'New York', 'Tokyo', 'Sydney', 'US regular', 'US outside regular', 'No session (crypto)'];
+
+const r2 = (v) => Math.round(v * 100) / 100;
+function summarise(ts) {
+  const n = ts.length;
+  const net = ts.reduce((s, t) => s + cents(t.net), 0) / 100;
+  const wins = ts.filter((t) => t.net > 0), losses = ts.filter((t) => t.net < 0);
+  const rk = ts.filter((t) => t.r != null);
+  const sumR = r2(rk.reduce((s, t) => s + t.r, 0));
+  const winsR = rk.filter((t) => t.r > 0), lossR = rk.filter((t) => t.r < 0);
+  return {
+    n, net, wins: wins.length, losses: losses.length, even: n - wins.length - losses.length,
+    winRate: n ? (wins.length / n) * 100 : 0, rk: rk.length, sumR, expR: rk.length ? sumR / rk.length : null,
+    expCur: n ? net / n : 0,
+    avgWin: wins.length ? wins.reduce((s, t) => s + t.net, 0) / wins.length : 0,
+    avgLoss: losses.length ? -losses.reduce((s, t) => s + t.net, 0) / losses.length : 0,
+    avgWinR: winsR.length ? winsR.reduce((s, t) => s + t.r, 0) / winsR.length : 0,
+    avgLossR: lossR.length ? -lossR.reduce((s, t) => s + t.r, 0) / lossR.length : 0,
+    winRShare: rk.length ? (winsR.length / rk.length) * 100 : 0,
+    pf: losses.length ? wins.reduce((s, t) => s + t.net, 0) / -losses.reduce((s, t) => s + t.net, 0) : null,
+    ids: ts.map((t) => t.id),
+  };
+}
+function group(key, order) {
+  const keys = order ?? [...new Set(TRADES.map(key))].sort((a, b) => (a === null) - (b === null) || String(a).localeCompare(String(b)));
+  return keys.filter((k) => TRADES.some((t) => key(t) === k)).map((k) => ({ key: k ?? 'No setup', ...summarise(TRADES.filter((t) => key(t) === k)) }));
+}
+function streaks() {
+  let w = 0, l = 0, bw = 0, bl = 0;
+  for (const t of TRADES) { if (t.net > 0) { w += 1; l = 0; } else if (t.net < 0) { l += 1; w = 0; } bw = Math.max(bw, w); bl = Math.max(bl, l); }
+  return { wins: bw, losses: bl };
+}
+const avgMin = (ts) => ts.reduce((s, t) => s + t.hold, 0) / ts.length;
+export const S = {
+  ...summarise(TRADES),
+  setups: group((t) => t.setup),
+  markets: group((t) => ({ stock: 'Stocks', crypto: 'Crypto', fx: 'Forex' })[t.m]),
+  accounts: group((t) => t.acct),
+  weekdays: group((t) => t.wd, WD),
+  hours: group((t) => t.hour, Array.from({ length: 24 }, (_, i) => i)),
+  sessions: group(session, SESSION_ORDER),
+  streaks: streaks(),
+  followed: summarise(TRADES.filter((t) => t.followed)),
+  offPlan: summarise(TRADES.filter((t) => !t.followed)),
+  holdWin: avgMin(TRADES.filter((t) => t.net > 0)), holdLoss: avgMin(TRADES.filter((t) => t.net < 0)),
+  pips: ['EUR/USD', 'GBP/USD', 'USD/JPY'].map((p) => ({ pair: p, n: TRADES.filter((t) => t.sym === p).length, pips: r2(TRADES.filter((t) => t.sym === p).reduce((s, t) => s + t.pips, 0)) })),
+};
+export const week = (a, b) => TRADES.filter((t) => t.day >= a && t.day <= b);
+export const summary = summarise;
+
+// Day totals (calendar) and counts, derived from the rows
+export const DAYS = [...new Set(TRADES.map((t) => t.day))].map((d) => [d, TRADES.filter((t) => t.day === d).reduce((s, t) => s + cents(t.net), 0) / 100, TRADES.filter((t) => t.day === d).length]);
+export const MONTH_TOTAL = S.net;
+export const N_CLOSED = S.n;
+// One equity point per closed trade, in close order (S10)
 export function equityPoints() {
   const pts = [{ v: START, day: 1 }];
   let eq = cents(START);
-  for (const [day, total, n] of DAYS) {
-    const w = Array.from({ length: n }, (_, i) => [0.62, 0.38, 0.5][i] ?? 1).slice(0, n);
-    const sw = w.reduce((a, b) => a + b, 0);
-    let left = cents(total);
-    w.forEach((x, i) => {
-      const part = i === n - 1 ? left : Math.round((cents(total) * x) / sw);
-      left -= part; eq += part;
-      pts.push({ v: eq / 100, day });
-    });
-  }
+  for (const t of TRADES) { eq += cents(t.net); pts.push({ v: eq / 100, day: t.day }); }
   return pts;
 }
+
 export function ddStats(pts) {
   let peak = pts[0], best = { dd: 0 };
   for (const p of pts) {
@@ -170,10 +270,9 @@ export function ddStats(pts) {
   const rec = pts.find((p) => p.day > best.trough.day && p.v >= best.peak.v);
   return { dd: best.dd, pct: (best.dd / best.peak.v) * 100, peak: best.peak, trough: best.trough, recovery: rec, recoveryGain: (best.peak.v / best.trough.v - 1) * 100, current: last.v - maxPeak.v, last };
 }
-// R distribution, 0.5R bins, R known on 35 trades (19 losing, 16 winning)
-export const RBINS = [['≤−1.5', 1, -1.75], ['', 4, -1.25], ['', 9, -0.75], ['', 5, -0.25], ['', 3, 0.25], ['', 4, 0.75], ['', 3, 1.25], ['', 3, 1.75], ['', 1, 2.25], ['', 1, 2.75], ['≥3', 1, 3.25]];
-export const SETUPS = [['Breakout', 14, 1012.40, 0.48, 13], ['No setup', 5, 104.70, 0.05, 4], ['Pullback', 11, 486.20, 0.22, 11], ['Range fade', 8, -318.70, -0.31, 7]]; // alphabetical, no row highlighted (AC-B1.4)
-export const MARKETS = [['Stocks', 16, 702.30], ['Crypto', 12, 391.10], ['Forex', 10, 191.20]];
+// R distribution in 0.5R bins, from the trades with a known R
+const BIN_EDGES = [-Infinity, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, Infinity];
+export const RBINS = BIN_EDGES.slice(0, -1).map((lo, i) => [lo, BIN_EDGES[i + 1], TRADES.filter((t) => t.r != null && t.r >= lo && t.r < BIN_EDGES[i + 1]).length, i < 4 ? -1 : 1]);
 
 // ---------- charts (viewBox width 296 = content width at 360 px, so text never renders below 11 px) ----------
 const W = 296;
@@ -227,26 +326,26 @@ ${g}<path class="dd" d="${area}"/><text class="lbl-loss" x="${(x(ti) + 8).toFixe
 <text x="0" y="${h - 2}">1 Sep</text><text x="${pw}" y="${h - 2}" text-anchor="end">29</text></svg>`;
 }
 
-export function rHistogram({ h = 132, mean = 0.21, lang = 'en' } = {}) {
-  const pw = W, top = 16, ph = h - top - 18;
-  const max = Math.max(...RBINS.map((b) => b[1]));
+export function rHistogram({ h = 146, mean = S.expR, lang = 'en' } = {}) {
+  const pw = W, top = 34, ph = h - top - 22;
+  const max = Math.max(...RBINS.map((b) => b[2]));
   const bw = pw / RBINS.length;
   const xr = (r) => ((r + 2) / 5.5) * pw; // -2 .. 3.5
-  let bars = '';
-  RBINS.forEach(([, n, mid], i) => {
+  const mx = xr(mean);
+  let bars = '', counts = '';
+  RBINS.forEach(([, , n, sign], i) => {
     const bh = (n / max) * ph;
-    const cls = mid < 0 ? 'lossbar' : 'gainbar';
-    bars += `<rect class="${cls}" x="${(i * bw + 2).toFixed(1)}" y="${(top + ph - bh).toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${bh.toFixed(1)}" rx="2"/><text x="${(i * bw + bw / 2).toFixed(1)}" y="${(top + ph - bh - 4).toFixed(1)}" text-anchor="middle">${n}</text>`;
+    bars += `<rect class="${sign < 0 ? 'lossbar' : 'gainbar'}" x="${(i * bw + 2).toFixed(1)}" y="${(top + ph - bh).toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${bh.toFixed(1)}" rx="2"/>`;
+    counts += `<text class="halo" x="${(i * bw + bw / 2).toFixed(1)}" y="${(top + ph - bh - 4).toFixed(1)}" text-anchor="middle">${n}</text>`;
   });
   let xs = '';
-  for (const r of [-1, 0, 1, 2, 3]) xs += `<text x="${xr(r).toFixed(1)}" y="${h - 2}" text-anchor="middle">${r > 0 ? '+' : r < 0 ? MINUS : ''}${Math.abs(r)}R</text>`;
-  xs += `<text x="0" y="${h - 2}">${MINUS}2</text>`;
-  const mx = xr(mean);
+  for (const r of [-2, -1, 0, 1, 2, 3]) xs += `<text x="${xr(r).toFixed(1)}" y="${h - 2}" text-anchor="${r === -2 ? 'start' : 'middle'}">${r > 0 ? '+' : r < 0 ? MINUS : ''}${Math.abs(r)}R</text>`;
+  // The average label sits in its own top row; counts carry a surface-coloured halo so the dashed line never runs through a digit.
   return `<svg class="chart" viewBox="0 0 ${W} ${h}" role="img" aria-label="Distribution of R-multiples">
 <line class="zero" x1="${xr(0)}" x2="${xr(0)}" y1="${top - 4}" y2="${top + ph}"/>${bars}
 <line x1="0" x2="${pw}" y1="${top + ph}" y2="${top + ph}" class="zero"/>
-<line x1="${mx.toFixed(1)}" x2="${mx.toFixed(1)}" y1="2" y2="${top + ph}" style="stroke:var(--chart-equity);stroke-width:1.6;stroke-dasharray:4 3"/>
-<text class="hl" x="${(mx + 5).toFixed(1)}" y="10" style="fill:var(--chart-equity)">avg ${signed(mean, lang)}R</text>${xs}</svg>`;
+${counts}<line x1="${mx.toFixed(1)}" x2="${mx.toFixed(1)}" y1="14" y2="${top - 8}" style="stroke:var(--chart-equity);stroke-width:1.6"/><path d="M${(mx - 4).toFixed(1)},${top - 9}L${(mx + 4).toFixed(1)},${top - 9}L${mx.toFixed(1)},${top - 3}Z" style="fill:var(--chart-equity)"/><path d="M${(mx - 4).toFixed(1)},${top + ph + 7}L${(mx + 4).toFixed(1)},${top + ph + 7}L${mx.toFixed(1)},${top + ph + 1}Z" style="fill:var(--chart-equity)"/>
+<text class="hl" x="${(mx + 5).toFixed(1)}" y="11" style="fill:var(--chart-equity)">average ${signed(mean, lang)}R</text>${xs}</svg>`;
 }
 
 export function calendar({ lang = 'en', sel = 28 } = {}) {

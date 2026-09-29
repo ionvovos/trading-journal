@@ -42,12 +42,17 @@
   {
     "name": "log-trade",
     "group": "Log",
-    "title": "Log a trade: sheet"
+    "title": "Log a trade: sheet with entry and exit times and legs"
   },
   {
     "name": "log-sentence",
     "group": "Log",
     "title": "One-sentence entry: confirm and one question (paper)"
+  },
+  {
+    "name": "log-sentence-el",
+    "group": "Log",
+    "title": "Greek sentence entry with an ambiguous “1.085” (AC-P7.2)"
   },
   {
     "name": "log-error",
@@ -60,9 +65,24 @@
     "title": "Pre-trade checklist"
   },
   {
+    "name": "plan",
+    "group": "Log",
+    "title": "Plan editor: empty plan, examples to pick"
+  },
+  {
+    "name": "sizing",
+    "group": "Log",
+    "title": "Position size from risk, forex with pip size"
+  },
+  {
     "name": "trade-detail",
     "group": "Journal",
-    "title": "Trade detail"
+    "title": "Trade detail, stock"
+  },
+  {
+    "name": "trade-detail-fx",
+    "group": "Journal",
+    "title": "Trade detail, forex with pips and lots"
   },
   {
     "name": "journal",
@@ -70,9 +90,24 @@
     "title": "Journal list with filters, held out, open, R unknown"
   },
   {
+    "name": "stops",
+    "group": "Journal",
+    "title": "Initial stops after an import (bulk entry)"
+  },
+  {
+    "name": "cash",
+    "group": "Journal",
+    "title": "Cash movements: deposits and withdrawals"
+  },
+  {
     "name": "import-mapping",
     "group": "Import",
-    "title": "Import: columns and skipped rows"
+    "title": "Import: columns and skipped rows (IBKR)"
+  },
+  {
+    "name": "import-mt4",
+    "group": "Import",
+    "title": "MT4 import: server time and S/L as stops"
   },
   {
     "name": "import-running",
@@ -92,17 +127,27 @@
   {
     "name": "reconcile-total",
     "group": "Broker check",
-    "title": "Broker check: enter the broker figure"
+    "title": "Broker check: realised P&L form"
   },
   {
     "name": "reconcile-difference",
     "group": "Broker check",
-    "title": "Broker check: difference open, possible causes named"
+    "title": "Broker check: difference open, causes and an unexplained remainder"
   },
   {
     "name": "reconcile-match",
     "group": "Broker check",
     "title": "Broker check: reconciled, with the import report"
+  },
+  {
+    "name": "reconcile-balance",
+    "group": "Broker check",
+    "title": "Broker check: balance form with cash movements"
+  },
+  {
+    "name": "reconcile-quantity",
+    "group": "Broker check",
+    "title": "Broker check: crypto quantity form (Kraken)"
   },
   {
     "name": "periods",
@@ -113,6 +158,11 @@
     "name": "stats",
     "group": "Statistics",
     "title": "Statistics overview"
+  },
+  {
+    "name": "stats-buckets",
+    "group": "Statistics",
+    "title": "Statistics buckets: market, account, weekday, session, hour"
   },
   {
     "name": "calendar",
@@ -127,7 +177,17 @@
   {
     "name": "learn",
     "group": "Statistics",
-    "title": "Learn popover on a figure"
+    "title": "Learn popover: expectancy"
+  },
+  {
+    "name": "learn-r",
+    "group": "Statistics",
+    "title": "Learn popover: R, from the trade’s R chip"
+  },
+  {
+    "name": "learn-drawdown",
+    "group": "Statistics",
+    "title": "Learn popover: drawdown"
   },
   {
     "name": "compare",
@@ -155,9 +215,14 @@
     "title": "AI engine: model downloading"
   },
   {
+    "name": "settings-key",
+    "group": "Settings",
+    "title": "Own key: what is sent, before turning it on (AC-P9.2)"
+  },
+  {
     "name": "data",
     "group": "Settings",
-    "title": "Data: storage refused, export done"
+    "title": "Data: storage refused, export done, delete everything"
   },
   {
     "name": "about",
@@ -165,8 +230,8 @@
     "title": "About: the one-page explanation (approved wording)"
   },
   {
-    "name": "plan",
-    "group": "Log",
-    "title": "Plan editor: example plan, your numbers"
+    "name": "about-el",
+    "group": "Settings",
+    "title": "About in Greek"
   }
 ]

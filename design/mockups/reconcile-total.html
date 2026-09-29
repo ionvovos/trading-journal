@@ -25,16 +25,17 @@
 <div class="vstack" style="gap:4px"><h2 style="margin:0;font:700 22px/28px var(--font-display)">What does your broker say?</h2>
 <p class="sub">Type the figure from your IBKR statement. The journal compares it with its own and shows which trades may explain a difference.</p></div>
 <section class="card" style="display:grid;gap:14px">
-  <div class="set-row" style="padding:0;min-height:44px"><span class="lbl">IBKR · USD<small>1–29 Sep 2026, first to last close in the file</small></span><span class="val" style="color:var(--accent)">Change<svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></div>
+  <div class="set-row" style="padding:0;min-height:44px"><span class="lbl">IBKR · USD<small>1–29 Sep 2026, cut in New York time like the file</small></span><button class="link" style="color:var(--accent)">Change</button></div>
   <div class="seg" role="group" aria-label="Figure type"><button aria-pressed="true">Realised P&amp;L</button><button aria-pressed="false">Balance</button></div>
-  <div class="field"><label>Realised P&amp;L for the period</label><div class="input focus" style="height:60px;font-size:28px;font-weight:700;letter-spacing:-0.01em">728.10<span class="caret" style="height:30px"></span><span class="unit" style="font-size:15px">USD</span></div>
-  <span class="help">Often in the statement’s performance summary as the realised total.</span></div>
+  <div class="field"><label>Realised P&amp;L after commissions</label><div class="input focus" style="height:60px;font-size:28px;font-weight:700;letter-spacing:-0.01em">381.50<span class="caret" style="height:30px"></span><span class="unit" style="font-size:15px">USD</span></div>
+  <span class="help">Use the total after commissions for the same dates. A total before commissions differs by exactly the fees.</span></div>
 </section>
 <section class="card" style="display:grid;gap:8px">
-  <div class="spread"><span class="sub">Journal, trades closed in the period</span><b class="num">702.30</b></div>
+  <div class="spread"><span class="sub">Journal, trades closed in the period</span><b class="num">341.20</b></div>
   <div class="spread"><span class="sub">Partial exits of trades still open</span><b class="num">0.00</b></div>
-  <div class="spread"><span class="sub">Counts as a match within</span><span class="num sub" style="color:var(--text)">±0.16 <a class="link" href="#">change</a></span></div>
-  <p class="caption">0.01 for each of 16 closed trades, at most 1.00. 1 trade is held out.</p>
+  <div class="spread"><span class="sub">Counts as a match within</span><span class="num sub" style="color:var(--text)">±0.16</span></div>
+  <p class="caption">One cent for each of 16 closed trades, at most 1.00 (for a yen account, 1 JPY each). 1 trade is held out.</p>
+  <button class="btn ghost" style="justify-self:start;padding:0">Change the tolerance</button>
 </section>
 </main>
 <div class="actions"><button class="btn primary lg block">Compare</button><button class="btn ghost block">Skip for now</button></div>
