@@ -106,3 +106,17 @@ test('G3: a EUR account with no rate shown in USD is reported as needing a rate 
   assert.deepEqual(s2.needsRate, []);
   assert.ok(s2.netMinor > 0);
 });
+
+// ---- G4: chart labels
+import { thinLabels, PLOT_W } from '../../src/ui/charts/lineChart.js';
+
+test('G4: x labels that would overlap are thinned ("1 Sep" never sits on "21" when trades cluster late in the month)', () => {
+  const n = 30;
+  const labels = [{ index: 0, text: '1 Sep', anchor: 'start' }, { index: 1, text: '8', anchor: 'middle' }, { index: 2, text: '21', anchor: 'middle' }, { index: 20, text: '28', anchor: 'middle' }];
+  const kept = thinLabels(labels, n);
+  assert.deepEqual(kept.map((l) => l.text), ['1 Sep', '28']);
+  const x = (l) => (l.index / (n - 1)) * PLOT_W;
+  const w = (l) => l.text.length * 6.2;
+  for (let i = 1; i < kept.length; i += 1) assert.ok(x(kept[i]) - w(kept[i]) / 2 >= x(kept[i - 1]) + w(kept[i - 1]) + 6 - 1e-6 || kept[i - 1].anchor !== 'start');
+  assert.deepEqual(thinLabels([{ index: 0, text: 'Sep', anchor: 'start' }, { index: 29, text: 'Oct', anchor: 'middle' }], n).length, 2, 'labels far apart all stay');
+});

@@ -7,7 +7,7 @@ import { MINUS } from '../../i18n/format.js';
 
 const W = 296;
 
-export function underwaterChart({ points, fmt = defaultFmt(), height = 78, ariaLabel, troughLabel }) {
+export function underwaterChart({ points, fmt = defaultFmt(), height = 78, ariaLabel, troughLabel, showX = true }) {
   const h = height; const pw = W - 42; const ph = h - 18;
   let peak = -Infinity;
   const dd = points.map((p) => { peak = Math.max(peak, p.v); return p.v - peak; });
@@ -21,11 +21,13 @@ export function underwaterChart({ points, fmt = defaultFmt(), height = 78, ariaL
   const kids = [];
   for (let v = 0; v >= lo; v -= step) {
     kids.push(svg('line', { class: v ? 'grid' : 'zero', x1: 0, x2: pw, y1: f1(y(v)), y2: f1(y(v)) }));
-    kids.push(svg('text', { x: W, y: f1(y(v) + (v ? -4 : 12)), 'text-anchor': 'end' }, v ? `${MINUS}${fmt.num(-v, 0)}` : '0'));
+    if (v) kids.push(svg('text', { x: W, y: f1(y(v) - 4), 'text-anchor': 'end' }, `${MINUS}${fmt.num(-v, 0)}`)); // the zero line needs no label; it sat on the next tick
   }
   const ti = dd.indexOf(min);
   kids.push(svg('path', { class: 'dd', d: area }));
-  if (min < 0) kids.push(svg('text', { class: 'lbl-loss', x: f1(x(ti) + 8), y: f1(y(min) + 2) }, troughLabel ?? `${MINUS}${fmt.num(-min, 2)}`));
-  for (const l of xLabels(points, fmt)) kids.push(svg('text', { x: f1(x(l.index)), y: h - 2, 'text-anchor': l.anchor }, l.text));
+  // the trough label sits inside the plot, on the side with room, never under the tick labels at the right edge
+  const late = x(ti) > 70;
+  if (min < 0) kids.push(svg('text', { class: 'lbl-loss', x: f1(late ? x(ti) - 6 : x(ti) + 8), y: f1(y(min) - 3), 'text-anchor': late ? 'end' : 'start' }, troughLabel ?? `${MINUS}${fmt.num(-min, 2)}`));
+  if (showX) for (const l of xLabels(points, fmt)) kids.push(svg('text', { x: f1(x(l.index)), y: h - 2, 'text-anchor': l.anchor }, l.text));
   return svg('svg', { class: 'chart', viewBox: `0 0 ${W} ${h}`, role: 'img', 'aria-label': ariaLabel }, ...kids);
 }

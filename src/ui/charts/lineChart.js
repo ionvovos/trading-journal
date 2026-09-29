@@ -6,6 +6,7 @@ import { defaultFmt } from './defaultFmt.js';
 
 const W = 296;
 const NICE = [10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000];
+export const PLOT_W = W - 42;
 export const niceStep = (range) => NICE.find((s) => range / s <= 3) ?? 10000;
 const kfmt = (v, dec) => `${(v / 1000).toFixed(1).replace('.', dec)}k`;
 
@@ -36,7 +37,22 @@ export function xLabels(points, fmt) {
       if (y > last.y || (y === last.y && m >= last.m)) break;
     }
   }
-  return labels;
+  return thinLabels(labels, points.length);
+}
+
+// Drops any label that would overlap the one before it (a label is about 6 units per character; the x positions are the chart's own),
+// so "1 Sep" never sits on "21" when the trades cluster late in the month (V2 G4).
+export function thinLabels(labels, n) {
+  const x = (i) => (n < 2 ? PLOT_W : (i / (n - 1)) * PLOT_W);
+  const span = (l) => { const w = l.text.length * 6.2; const at = x(l.index); return l.anchor === 'start' ? [at, at + w] : l.anchor === 'end' ? [at - w, at] : [at - w / 2, at + w / 2]; };
+  const kept = [];
+  for (const l of labels) {
+    const [left] = span(l);
+    const prev = kept.at(-1);
+    if (prev && left < span(prev)[1] + 6) continue;
+    kept.push(l);
+  }
+  return kept;
 }
 
 export function lineChart({ points, fmt = defaultFmt(), height = 120, drawdown, ariaLabel, showX = true, animate = true }) {

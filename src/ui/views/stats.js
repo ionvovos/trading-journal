@@ -10,6 +10,15 @@ import { sectionHead } from '../../storage/viewkit.js';
 import { binR } from '../charts/histogram.js';
 import { startOfLocalDate } from '../../core/time.js';
 
+// Peak and trough positions on the equity curve for the shaded drawdown band, or undefined when there is no drawdown to mark.
+function ddMarks(s, pts) {
+  const dd = s.drawdown;
+  if (!dd || !dd.maxMinor) return undefined;
+  const peakIndex = dd.peak?.index ?? pointIndex(s.curve, dd.peak);
+  const troughIndex = dd.trough?.index ?? pointIndex(s.curve, dd.trough);
+  return peakIndex != null && troughIndex != null && troughIndex > peakIndex && troughIndex < pts.length ? { peakIndex, troughIndex } : undefined;
+}
+
 const TABS = ['overview', 'buckets'];
 const BUCKETS = ['market', 'account', 'weekday', 'session', 'hour', 'instrument'];
 const WEEKDAYS = { en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], el: ['Δευ', 'Τρί', 'Τετ', 'Πέμ', 'Παρ', 'Σάβ', 'Κυρ'] };
@@ -82,7 +91,8 @@ export async function render(root, ctx, params = {}) {
       const ddPct = (v) => (v === null || v === undefined ? null : fmt.pct(v * 100));
       const eqCard = pts.length >= 2 && pts[0].t ? el('section', { class: 'card' },
         el('div', { class: 'card-h' }, el('h3', null, t('stats.equity.title')), el('span', { class: 'caption num' }, t('stats.equity.start', { x: fmt.moneyPlain(s.curve.points[0].equityMinor, ccy) }))),
-        ui.lineChart({ points: pts, fmt, ariaLabel: t('stats.equity.title') }),
+        // one x axis, under the drawdown panel; the equity chart carries the shaded drawdown band with its peak and low markers (V2 G4)
+        ui.lineChart({ points: pts, fmt, ariaLabel: t('stats.equity.title'), showX: false, drawdown: ddMarks(s, pts) }),
         ui.underwaterChart({ points: pts, fmt, ariaLabel: t('stats.underwater') }),
         el('div', { class: 'legend' }, el('span', null, el('i', { class: 'sw eq' }), t('stats.legend.equity')), el('span', null, el('i', { class: 'sw dd' }), t('stats.legend.below'))),
         dd && dd.maxMinor ? el('div', { class: 'kv' },
