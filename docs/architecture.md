@@ -226,7 +226,9 @@ Quantity form (AC-A1.5, crypto): `impliedQty` = start + Σ base bought − Σ ba
 
 Events on `bus`: `import-progress { done, total }` every 200 rows, `import-done`, `anomaly-answered`, `reconcile-changed { id, state }`.
 
-### 5.2 Review (P5): code decides, AI may reword
+### 5.2 Review (P5): code decides, AI may order
+
+**Changed in the L4 fix round (RULING-L4-F5 R1).** The model no longer words anything. `engine.arrange(items)` receives `{ id, pattern, facts }` for each finding that does not quote the plan rule and returns `{"order":[ids]}`; only known ids are kept and every other field of a reply is dropped, so every visible sentence is a reviewed EN or EL template and `textBy` is always `'rules'`. The word list in `banned.js` still scans the templates. The steps table below describes the earlier rewording flow where it says otherwise.
 
 ```js
 // src/review/run.js
@@ -351,7 +353,7 @@ Local model (AM5, oMLX; a Claude seat reviews every output before commit): first
 | R3 | Users skip the broker figure (PICK R2). | The step is in the import flow and on the dashboard, skippable with one tap; "not reconciled" per account and period until answered. |
 | R4 | The explanation search misattributes a difference. | Only candidates with an amount known from the file or the user's answers; exact subset match within tolerance, at most 3 items; no residual is ever fitted to an empty field; shown as a possible cause with links; nothing applied. |
 | R5 | IBKR broker realised P&L uses FIFO lots while the app groups round trips; `broker_mismatch` fires on scale-in and scale-out trades. | Money rules make the broker figure the net; the question is asked once per import with one answer for all; the recomputed figure stays visible. |
-| R6 | On-device model too big or absent on phones (830 MB, 1.6 GB GPU memory, phones unverified). | Rules write every review; the model only rewords; the engine and state are always shown. |
+| R6 | On-device model too big or absent on phones (830 MB, 1.6 GB GPU memory, phones unverified). | Rules write every review; the model only orders the findings; the engine and state are always shown. |
 | R7 | A paraphrase passes the guard. | Template sentences are the default and the fallback; future tense and imperatives are rejected wholesale; the legal table is a test fixture; L4 adds any phrase found in reading to `banned.js`. |
 | R8 | 2,000-row imports block the UI. | Chunks of 200 rows with `await` and progress events; a Worker next if `timing` fails. |
 | R9 | iOS evicts site data. | `storage.persist()`, export reminder every 50 trades, About text. |

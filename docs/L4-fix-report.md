@@ -1,8 +1,8 @@
 # L4 fix round: security findings (partial)
 
-Phase `nexa-build-trading-journal-2026-09-29-L4fix`. Source: `reports/trading-journal/security-review.md` (ais-os), ruling `RULING-L4-F5.md`. Status: all twelve L4b findings are fixed; the L4a items are not started (L4a's `test-results.md` had not landed).
+Phase `nexa-build-trading-journal-2026-09-29-L4fix`. Source: `reports/trading-journal/security-review.md` (ais-os), ruling `RULING-L4-F5.md`. Status: all twelve L4b findings and the app-code L4a findings are fixed (addendum below).
 
-`npm test`: 899 tests, 896 pass, 0 fail, 3 todo. The 3 todo are L4a's `tests/l4` defects (F2, F3, F4 of that seat), not touched. Real Chrome: `node e2e/review-model-text.mjs` 15/15, `node tests/security/browser-probe.mjs` 30/30, `node e2e/delete-all.mjs` 15/15.
+`npm test` after the L4b part: 899 tests, 896 pass, 3 todo (L4a defects, fixed in the addendum). Real Chrome: `node e2e/review-model-text.mjs` 15/15, `node tests/security/browser-probe.mjs` 30/30, `node e2e/delete-all.mjs` 15/15.
 
 | ID | Fix | Where | Test |
 |---|---|---|---|
@@ -24,11 +24,9 @@ Phase `nexa-build-trading-journal-2026-09-29-L4fix`. Source: `reports/trading-jo
 
 ## Findings for the orchestrator
 
-- F1. Not done: the L4a items (`reports/trading-journal/test-results.md` was absent). The 3 todo tests in `tests/l4` remain.
-- F2. Not done: architecture section 5.2 still describes rewording.
-- F3. `screenModelText`, `numbersMatch` and related guard code are no longer called by the app; only tests use them.
-- F4. Tests that pinned the retired reword contract were rewritten, not weakened. `tests/security/local-model/analyse.mjs` reads the saved L4b outputs with an inlined legacy parser.
-- F5. Envelope not recorded (usage limit).
+- F1. `screenModelText`, `numbersMatch` and related guard code are no longer called by the app; only tests use them.
+- F2. Tests that pinned the retired reword contract were rewritten, not weakened. `tests/security/local-model/analyse.mjs` reads the saved L4b outputs with an inlined legacy parser.
+- F3. Architecture 5.2 now carries a note on the order-only contract; its step table still describes the earlier flow.
 
 ## Addendum: L4a findings (test-results.md F1-F10)
 
