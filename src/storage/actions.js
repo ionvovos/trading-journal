@@ -134,7 +134,7 @@ export function buildManualTrade(form, { account, declaredZone, now, id, existin
 }
 
 // Fields a person may change on any trade, imported ones included.
-const PATCHABLE = ['initialStop', 'stopSource', 'target', 'setup', 'notes', 'moodBefore', 'moodAfter', 'leverage', 'screenshotId', 'plan', 'excluded', 'closeDayOverride', 'stopMoves'];
+const PATCHABLE = ['initialStop', 'stopSource', 'target', 'setup', 'notes', 'moodBefore', 'moodAfter', 'leverage', 'screenshotId', 'plan', 'excluded', 'closeDayOverride', 'stopMoves', 'openAskedAt'];
 export function patchTrade(trade, patch, now) {
   const out = { ...trade, updatedAt: now };
   for (const k of Object.keys(patch)) if (PATCHABLE.includes(k)) out[k] = patch[k];
@@ -216,4 +216,16 @@ export function exportDue({ trades, lastExportAt, every = 50 }) {
   if (!every || every <= 0) return { due: false, n: 0, every };
   const n = trades.filter((t) => !lastExportAt || (t.createdAt || '') > lastExportAt).length;
   return { due: n >= every, n, every };
+}
+
+// AC-P1.7: the one open trade that has waited longer than `days` and was not asked about yet, oldest first; null when none.
+export function openTradeToAsk(trades, { days = 7, now }) {
+  if (!days || days <= 0) return null;
+  const limit = Date.parse(now) - days * 86400000;
+  const due = trades
+    .filter((t) => !t.openAskedAt && !t.excluded && !(t.holds && t.holds.length) && !isClosed(t) && t.legs.length)
+    .map((t) => ({ t, at: Math.min(...t.legs.map((l) => Date.parse(l.time))) }))
+    .filter((x) => x.at <= limit)
+    .sort((a, b) => a.at - b.at);
+  return due.length ? due[0].t : null;
 }

@@ -3,8 +3,9 @@
 import { el, mount } from '../dom.js';
 import { t } from '../../i18n/i18n.js';
 import { loadModel, statsCtxFor } from '../../storage/model.js';
-import { holdText, loadStats, sectionHead, sizeText, sideText, groupByDay, dayLabel, toDisplayMinor, pickSheet } from '../../storage/viewkit.js';
+import { holdText, nowIso, loadStats, sectionHead, sizeText, sideText, groupByDay, dayLabel, toDisplayMinor, pickSheet } from '../../storage/viewkit.js';
 import { tradeStatus } from '../../core/trade.js';
+import { openTradeToAsk, patchTrade } from '../../storage/actions.js';
 
 const RESULTS = ['win', 'loss', 'even'];
 const PLAN = ['followed', 'off', 'unmarked'];
@@ -85,6 +86,10 @@ export async function render(root, ctx) {
 
     const linkBtn = (label, href) => el('a', { class: 'link accent-link', href }, label);
     const needRows = [];
+    const ask = openTradeToAsk(mine, { days: Number(ctx.settings.get('openReminderDays') ?? 7), now: nowIso() });
+    const askBanner = ask ? ui.stateBanner({ kind: 'neutral', iconName: 'clock', title: t('journal.openAsk.title', { instrument: ask.instrument }), body: [t('journal.openAsk.body', { days: Number(ctx.settings.get('openReminderDays') ?? 7) }), ' ',
+      el('button', { type: 'button', class: 'link', onClick: () => ctx.navigate(`#/trade/${ask.id}`) }, t('journal.addExit')), ' · ',
+      el('button', { type: 'button', class: 'link', onClick: async () => { await ctx.store.trades.put(patchTrade(ask, { openAskedAt: nowIso() }, nowIso())); paint(); } }, t('journal.stillOpen'))] }) : null;
     for (const tr of need.held) {
       needRows.push(ui.listRow({ market: tr.market, title: tr.instrument, tags: [el('span', { class: 'tag warn' }, t('journal.heldOut'))], meta: `${sideText(tr)} ${sizeText(tr, fmt)} · ${holdText(tr.holds[0])}`, held: true, href: tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`, trailing: linkBtn(t('journal.answer'), tr.importId ? `#/import/${tr.importId}` : `#/trade/${tr.id}`) }));
     }
@@ -113,7 +118,7 @@ export async function render(root, ctx) {
     const bar = ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', title: t('nav.journal'), left: ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }),
       right: el('div', { class: 'top-actions' }, ui.iconButton({ iconName: 'import', label: t('journal.import'), onClick: () => ctx.navigate('#/import') })) });
     mount(root, bar, el('main', { class: 'content' },
-      chips,
+      askBanner, chips,
       needRows.length ? [sectionHead(t('journal.needsYou'), null), el('div', { class: 'list' }, ...needRows)] : null,
       dayBlocks.length ? dayBlocks : (needRows.length ? null : ui.emptyState({ iconName: 'journal', title: mine.length ? t('journal.noMatch.title') : t('journal.empty.title'), body: mine.length ? t('journal.noMatch.body') : t('journal.empty.body'),
         children: mine.length ? [] : [el('div', { class: 'action-stack' }, ui.button({ label: t('journal.empty.log'), size: 'lg', block: true, onClick: () => ctx.navigate('#/trade/new') }), ui.button({ label: t('journal.empty.import'), kind: 'plain', block: true, onClick: () => ctx.navigate('#/import') }))] })),

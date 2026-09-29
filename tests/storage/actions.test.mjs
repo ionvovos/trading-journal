@@ -182,3 +182,14 @@ test('export reminder: due after the set number of new trades since the last exp
   assert.equal(exportDue({ trades: trades.slice(0, 49), lastExportAt: null, every: 50 }).due, false);
   assert.equal(exportDue({ trades, lastExportAt: null, every: 0 }).due, false);
 });
+
+import { openTradeToAsk } from '../../src/storage/actions.js';
+
+test('open trade follow-up: one question after the set number of days, asked once (AC-P1.7)', () => {
+  const open = (id, at, extra = {}) => ({ id, holds: [], excluded: null, dustRemainder: '0', legs: [{ id: `${id}1`, kind: 'entry', time: at, size: '1', price: '10' }], ...extra });
+  const trades = [open('a', '2026-03-01T10:00:00Z'), open('b', '2026-03-05T10:00:00Z'), open('c', '2026-03-09T10:00:00Z'), open('d', '2026-02-01T10:00:00Z', { openAskedAt: '2026-02-09T00:00:00Z' }),
+    { ...open('e', '2026-02-01T10:00:00Z'), legs: [open('e', '2026-02-01T10:00:00Z').legs[0], { id: 'e2', kind: 'exit', time: '2026-02-02T10:00:00Z', size: '1', price: '11' }] }];
+  assert.equal(openTradeToAsk(trades, { days: 7, now: '2026-03-10T12:00:00Z' }).id, 'a');
+  assert.equal(openTradeToAsk(trades.slice(2), { days: 7, now: '2026-03-10T12:00:00Z' }), null, 'a trade opened yesterday, a trade already asked and a closed trade');
+  assert.equal(openTradeToAsk(trades, { days: 0, now: '2026-03-10T12:00:00Z' }), null);
+});
