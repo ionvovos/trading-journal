@@ -63,8 +63,7 @@ const ibkrPlain = strip(ibkr.parse(fx('ibkr-activity.csv'), ibkrOpts));
 for (const [name, fn] of Object.entries(IBKR)) {
   test(`ibkr-activity: ${name} reads the same as the plain statement`, () => {
     const noisy = fn();
-    // detect anchors on `Trades,Header,DataDiscriminator`, so reordered columns are read when the user picks the format, not auto-detected (L4 finding F1)
-    if (name !== 'reorderedTradesColumns') assert.ok(ibkr.detect(noisy) >= 0.6, 'still detected');
+    assert.ok(ibkr.detect(noisy) >= 0.6, 'still detected, reordered Trades columns included (L4a F8)');
     const got = strip(ibkr.parse(noisy, ibkrOpts));
     assert.equal(got.rowsInFile, ibkrPlain.rowsInFile);
     assert.deepEqual(got.fills, ibkrPlain.fills);
@@ -105,4 +104,23 @@ test('a file that is none of the four formats is not detected and not guessed', 
   for (const junk of ['', 'hello', 'a,b,c\n1,2,3\n', '<html><body>nothing</body></html>', '{"trades": []}']) {
     assert.equal(detectFormat(junk).format, null, JSON.stringify(junk));
   }
+});
+
+test('L4a F7: the same file imported again does not ask about its unreadable rows again once they were answered "continue"; "cancel_import" is not carried over', async () => {
+  const { runImport, answerAnomaly } = await import('../../src/import/run.js');
+  const { tradeMoney, initialRisk } = await import('../../src/stats/index.js');
+  const deps = { tradeMoney, initialRisk };
+  const account = { id: 'acc', name: 'IBKR', mode: 'real', baseCurrency: 'USD', startBalance: '10000', toDisplayRate: 1, fileZones: {}, dustThresholds: {}, contractValues: {} };
+  const base = readFileSync(new URL('../fixtures/import/ibkr-activity.csv', import.meta.url), 'utf8');
+  const text = `${base.trimEnd()}\nTrades,Data,Order,Stocks,USD,BADROW,not-a-date,x,x\n`;
+  const input = { text, fileName: 'a.csv', formatId: 'ibkr-activity', account, fileZone: 'America/New_York', declaredZone: 'Europe/Athens', now: '2026-09-29T10:00:00.000Z' };
+  const first = await runImport({ ...input, existing: { trades: [], cash: [], imports: [] }, importId: 'i1' }, { deps });
+  const q = first.importRecord.anomalies.find((a) => a.kind === 'unreadable_rows');
+  assert.ok(q, 'the bad row is reported as unreadable');
+  const done = await answerAnomaly(first.importRecord, first.trades, q.id, { optionId: 'continue' }, { account, existing: { trades: [], cash: [] }, deps, now: input.now });
+  const again = await runImport({ ...input, existing: { trades: [], cash: [], imports: [done.importRecord] }, importId: 'i2' }, { deps });
+  assert.equal(again.importRecord.anomalies.find((a) => a.kind === 'unreadable_rows').answer?.optionId, 'continue');
+  const cancelled = { ...done.importRecord, anomalies: done.importRecord.anomalies.map((a) => (a.kind === 'unreadable_rows' ? { ...a, answer: { optionId: 'cancel_import' } } : a)) };
+  const third = await runImport({ ...input, existing: { trades: [], cash: [], imports: [cancelled] }, importId: 'i3' }, { deps });
+  assert.equal(third.importRecord.anomalies.find((a) => a.kind === 'unreadable_rows').answer, null);
 });

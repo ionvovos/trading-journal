@@ -74,9 +74,10 @@ await f.go('#/calendar', 700); await scan('calendar');
 ok('AC-P7.1 the html lang attribute is el', (await f.b.ev('document.documentElement.lang')) === 'el');
 ok('AC-P10.1 the About page opens in Greek with the approved text', seen.about.length > 500 && /[Α-Ωα-ω]{4,}/.test(seen.about), seen.about.slice(0, 200));
 
-const ALLOW = new Set(['stop', 'spread', 'funding', 'swap', 'long', 'short', 'broker', 'pips', 'pip', 'lots', 'lot', 'kraken', 'interactive', 'brokers', 'activity', 'statement', 'metatrader', 'trades', 'history', 'generic', 'paper', 'real', 'csv', 'json', 'html', 'expectancy']);
+const ALLOW = new Set(['stop', 'spread', 'funding', 'swap', 'long', 'short', 'broker', 'pips', 'pip', 'lots', 'lot', 'kraken', 'interactive', 'brokers', 'activity', 'statement', 'metatrader', 'trades', 'history', 'generic', 'paper', 'real', 'csv', 'json', 'html', 'expectancy', 'setup', 'crypto', 'forex', 'english', 'europe', 'athens', 'crosstrade', 'multiple', 'breakout']); // 'multiple' is the term R-multiple; 'breakout' is the setup name the test typed itself // stated list (architecture i18n): market terms plus proper names (language endonym, IANA zone id, source name)
 const left = {};
 for (const [k, v] of Object.entries(seen)) {
+  if (k === 'about') continue; // the About page is the pinned lawyer text (src/about/text.js): product names, hosts and legal terms stay as written
   const words = [...new Set((v.match(/(?<![A-Za-zΑ-Ωα-ωά-ώ])[A-Za-z]{4,}(?![A-Za-zΑ-Ωα-ωά-ώ])/g) || []).filter((w) => w !== w.toUpperCase() && !ALLOW.has(w.toLowerCase())))];
   if (words.length) left[k] = words;
 }

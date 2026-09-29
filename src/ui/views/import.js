@@ -92,7 +92,7 @@ async function renderPicker(root, ctx) {
       const deps = { tradeMoney: stats.tradeMoney, initialRisk: stats.initialRisk };
       model = await loadModel(ctx.store);
       const account = model.accounts.find((a) => a.id === st.account.id);
-      const existing = { trades: model.trades.filter((x) => x.accountId === account.id), cash: model.cash.filter((c) => c.accountId === account.id) };
+      const existing = { trades: model.trades.filter((x) => x.accountId === account.id), cash: model.cash.filter((c) => c.accountId === account.id), imports: model.imports.filter((i) => i.accountId === account.id) };
       const result = await runImport({ text: st.file.text, fileName: st.file.name, formatId: st.formatId, account, fileZone: zoneFor(), declaredZone: ctx.tz, existing, now: nowIso() }, { bus: ctx.bus, deps });
       await commitImport(ctx.store, result);
       const up = result.accountUpdates;

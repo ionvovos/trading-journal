@@ -26,9 +26,9 @@
 .sw.dd { background: var(--chart-dd-fill); box-shadow: inset 0 0 0 1.2px var(--chart-dd); }
 
 /* Calendar heat map */
-.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)) minmax(0, 1.12fr); gap: 3px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)) minmax(0, .85fr); gap: 2px; }
 .cal .h { font-size: var(--fs-micro); color: var(--text-3); text-align: center; font-weight: var(--fw-semibold); padding-bottom: 2px; }
-.cal .c { aspect-ratio: 1 / 1.08; border-radius: 7px; background: var(--surface-2); padding: 3px 3px 2px; display: grid; grid-template-rows: auto 1fr; font-variant-numeric: var(--num); min-width: 0; position: relative; }
+.cal .c { aspect-ratio: 1 / 1.08; min-height: 44px; border-radius: 7px; background: var(--surface-2); padding: 3px 3px 2px; display: grid; grid-template-rows: auto 1fr; font-variant-numeric: var(--num); min-width: 0; position: relative; }
 .cal .c .dn { font-size: 11px; color: var(--text-3); font-weight: var(--fw-semibold); line-height: 1; }
 .cal .c .pv { font-size: var(--fs-micro); font-weight: var(--fw-bold); align-self: end; text-align: center; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
 .cal .c.out { background: transparent; }

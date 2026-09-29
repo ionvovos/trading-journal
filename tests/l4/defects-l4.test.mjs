@@ -16,7 +16,7 @@ const NOW = '2026-09-29T10:00:00.000Z';
 const deps = { tradeMoney, initialRisk };
 const account = { id: 'acc', name: 'IBKR', mode: 'real', baseCurrency: 'USD', startBalance: '10000', toDisplayRate: 1, fileZones: {}, dustThresholds: {}, contractValues: {} };
 
-test('F2 AC-A2.3: a trade whose broker P&L the user kept has a close time, so it reaches the journal, the period statistics and the calendar', { todo: 'src/import/group.js:349 sets closeTime before entryUnknown is known (line 405), so it stays null' }, async () => {
+test('F2 AC-A2.3: a trade whose broker P&L the user kept has a close time, so it reaches the journal, the period statistics and the calendar', async () => {
   const text = readFileSync(new URL('../fixtures/import/ibkr-activity.csv', import.meta.url), 'utf8');
   const res = await runImport({ text, fileName: 'a.csv', formatId: 'ibkr-activity', account, fileZone: 'America/New_York', declaredZone: 'Europe/Athens', existing: { trades: [], cash: [] }, now: NOW, importId: 'i1' }, { deps });
   const q = res.importRecord.anomalies.find((a) => a.kind === 'opened_before_file');
@@ -29,7 +29,7 @@ test('F2 AC-A2.3: a trade whose broker P&L the user kept has a close time, so it
   assert.equal(closeDay(nvda, ctx), '2026-03-06');
 });
 
-test('F3 P3 money rules: a journal with a EUR account shown in USD converts every figure, not only the net total', { todo: 'src/storage/statsModel.js:50-53 calls winRate, avgWinLoss, profitFactor, feeTotals, streaks and holdingTime without the statistics context' }, async () => {
+test('F3 P3 money rules: a journal with a EUR account shown in USD converts every figure, not only the net total', async () => {
   const store = createMemoryStore();
   await store.accounts.put({ id: 'eur', name: 'EUR', mode: 'real', baseCurrency: 'EUR', startBalance: '1000', toDisplayRate: 2, createdAt: NOW });
   await store.accounts.put({ id: 'usd', name: 'USD', mode: 'real', baseCurrency: 'USD', startBalance: '1000', toDisplayRate: 1, createdAt: NOW });
@@ -44,7 +44,7 @@ test('F3 P3 money rules: a journal with a EUR account shown in USD converts ever
   assert.equal(s.profitFactor.value, 200 / 50, 'profit factor on converted amounts');
 });
 
-test('F4 AC-P1.11: the bulk-stops list does not offer a trade with no entry leg (its row divides by an entry price that does not exist)', { todo: 'src/ui/views/bulkStops.js:59 calls D.toNumber(null) for a trade kept with the broker P&L; the screen shows nothing' }, async () => {
+test('F4 AC-P1.11: the bulk-stops list does not offer a trade with no entry leg (its row divides by an entry price that does not exist)', async () => {
   const { stopCandidates } = await import('../../src/ui/views/bulkStops.js');
   const opened = { ...makeTrade({ id: 'x', entry: '1', exit: '2', size: '1' }), entryUnknown: true, broker: { netMinor: 4900 } };
   opened.legs = opened.legs.filter((l) => l.kind === 'exit');

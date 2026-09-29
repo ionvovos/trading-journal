@@ -47,9 +47,9 @@ export async function computeStats(ctx, model, { period = null, sctxOverrides = 
   const drawdown = stats.drawdown(curve, { cash: cashInView, ctx: sctx });
   return {
     stats, sctx, period, set: { included, excluded }, included, excluded, wanted, money, displayNet, netMinor, currency: displayCcy, accounts, cash: cashInView,
-    winRate: stats.winRate(included), avgWinLoss: stats.avgWinLoss(included), profitFactor: stats.profitFactor(included),
+    winRate: stats.winRate(included, sctx), avgWinLoss: stats.avgWinLoss(included, sctx), profitFactor: stats.profitFactor(included, sctx),
     expectancy: stats.expectancy(included, sctx), curve, drawdown,
-    feeTotals: stats.feeTotals(included), streaks: stats.streaks(included), ruleFollowing: stats.ruleFollowing(included), holding: stats.holdingTime(included),
+    feeTotals: stats.feeTotals(included, sctx), streaks: stats.streaks(included, sctx), ruleFollowing: stats.ruleFollowing(included, sctx), holding: stats.holdingTime(included, sctx),
     pipsByPair: stats.pipsByPair(included),
     counts: { open: excluded.open.length, heldOut: excluded.heldOut.length, excluded: excluded.userExcluded.length },
     rMissing: included.filter((tr) => !tr.entryUnknown && stats.rMultiple(tr, sctx) == null).length + included.filter((tr) => tr.entryUnknown).length,

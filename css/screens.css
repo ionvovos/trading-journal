@@ -23,7 +23,7 @@
 .tile button.v::after { content: ""; position: absolute; inset: -12px -10px; } /* the value's hit area reaches 44 px */
 .list.paper-list { box-shadow: inset 0 0 0 1.5px var(--paper-line); }
 .section-note { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
-.link-row { display: flex; align-items: center; gap: var(--s3); }
+.link-row { display: flex; align-items: center; gap: var(--s3); min-height: 44px; }
 
 /* Empty state steps */
 .card.paper.empty-card { padding: 0; }

@@ -402,7 +402,7 @@ export function groupFills(input, deps = {}) {
       if (!resolveAnswer(b, kind, answerFor(answers, overrides, kind, t.id), det)) t.holds.push(kind);
     }
     if (b.meta.has('opened_before_file') && !t.holds.includes('opened_before_file')) {
-      if (answerFor(answers, overrides, 'opened_before_file', t.id)?.optionId === 'keep_broker_pnl') t.entryUnknown = true;
+      if (answerFor(answers, overrides, 'opened_before_file', t.id)?.optionId === 'keep_broker_pnl') { t.entryUnknown = true; t.closeTime = closeTimeOf(t); } // closed only once the broker P&L is kept (isClosed)
     }
   }
 

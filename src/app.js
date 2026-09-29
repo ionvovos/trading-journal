@@ -13,7 +13,7 @@ import { el, mount } from './ui/dom.js';
 // A layer that has not landed is skipped and the shell runs on what it has (empty states, settings, first run).
 const STORE_MODULES = [['./storage/idb.js', 'createIdbStore'], ['./storage/index.js', 'createIdbStore']];
 const MEMORY_MODULES = [['./storage/memory.js', 'createMemoryStore'], ['./storage/index.js', 'createMemoryStore']];
-const SUMMARY_MODULES = [['./stats/summary.js', 'getSummary'], ['./storage/summary.js', 'getSummary'], ['./import/summary.js', 'getSummary']];
+const SUMMARY_MODULES = [['./storage/summary.js', 'getSummary']];
 
 async function firstExport(candidates) {
   for (const [path, name] of candidates) {

@@ -127,7 +127,10 @@ async function buildImport(input, env, prev) {
 
   let trades = grouped.trades;
   let cash = cashRecords(parsed, account, importId, existingKeys, effectiveZone);
-  let anomalies = withUnreadable(grouped.anomalies, parsed, importId, account, prev?.anomalies);
+  // The same file imported again: the person's earlier "continue" for its unreadable rows still holds, so it is not asked again (L4a F7).
+  // A "cancel_import" is never carried over.
+  const earlier = prev ? null : (existing.imports || []).find((i) => i.accountId === account.id && i.rawText === text && i.anomalies?.some((a) => a.kind === 'unreadable_rows' && a.answer?.optionId === 'continue'));
+  let anomalies = withUnreadable(grouped.anomalies, parsed, importId, account, prev?.anomalies ?? earlier?.anomalies);
   anomalies = mergeAnomalyRecords(prev?.anomalies, anomalies);
   const cancelled = anomalies.find((a) => a.kind === 'unreadable_rows')?.answer?.optionId === 'cancel_import';
   if (cancelled) { trades = []; cash = []; }

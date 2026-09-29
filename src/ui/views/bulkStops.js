@@ -11,7 +11,7 @@ import { loadStats, detailBar, sizeText, sideText, toastMsg, nowIso } from '../.
 // Pure: the trades that need a stop, newest first.
 export function stopCandidates(trades, mode, accountFilter = 'all') {
   return trades
-    .filter((x) => x.mode === mode && (accountFilter === 'all' || x.accountId === accountFilter) && !x.excluded && tradeStatus(x) !== 'held')
+    .filter((x) => x.mode === mode && (accountFilter === 'all' || x.accountId === accountFilter) && !x.excluded && tradeStatus(x) !== 'held' && x.legs.some((l) => l.kind === 'entry'))
     .sort((a, b) => ((b.closeTime || b.legs[0].time) < (a.closeTime || a.legs[0].time) ? -1 : 1));
 }
 
