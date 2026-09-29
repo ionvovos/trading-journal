@@ -71,6 +71,18 @@ export function zonedToUtc(localIsoNoOffset, zone) {
   return new Date(utc + msPart).toISOString();
 }
 
+// Offset of a zone from UTC at an instant, in ms (Athens in summer: +3 h). ny+N counts as New York plus N hours.
+export function zoneOffsetMs(isoUtc, zone) {
+  const ms = Date.parse(isoUtc);
+  if (Number.isNaN(ms)) throw new RangeError(`bad instant: ${isoUtc}`);
+  return wallMs(ms, zone) - ms;
+}
+
+// UTC instant of local midnight at the start of a calendar date ('YYYY-MM-DD') in a zone.
+export function startOfLocalDate(date, zone) {
+  return zonedToUtc(`${date}T00:00:00`, zone);
+}
+
 const pad = (n) => String(n).padStart(2, '0');
 
 // Wall-clock parts of an instant. `date` and `weekday` (ISO 1-7, Monday = 1) belong to the trading

@@ -117,3 +117,14 @@ test('addDays', () => {
   assert.equal(addDays('2026-03-01', -1), '2026-02-28');
   assert.equal(addDays('2026-12-31', 1), '2027-01-01');
 });
+
+import { zoneOffsetMs, startOfLocalDate } from '../../src/core/time.js';
+
+test('zoneOffsetMs and startOfLocalDate', () => {
+  assert.equal(zoneOffsetMs('2026-03-31T22:30:00Z', 'Europe/Athens'), 3 * 3600000);
+  assert.equal(zoneOffsetMs('2026-03-04T22:30:00Z', 'Europe/Athens'), 2 * 3600000);
+  assert.equal(zoneOffsetMs('2026-03-31T22:30:00Z', 'UTC'), 0);
+  assert.equal(zoneOffsetMs('2026-03-05T07:00:00Z', 'ny+7'), 2 * 3600000);
+  assert.equal(zoneOffsetMs('2026-03-09T07:00:00Z', 'ny+7'), 3 * 3600000);
+  assert.equal(startOfLocalDate('2026-04-01', 'Europe/Athens'), '2026-03-31T21:00:00.000Z');
+});
