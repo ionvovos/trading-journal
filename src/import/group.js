@@ -162,7 +162,8 @@ export function groupFills(input, deps = {}) {
         if (!t.target && f.target) t.target = D.toString(f.target);
       }
       if (dupOf.has(f.key)) cur.meta.set('near_duplicate', { ...(cur.meta.get('near_duplicate') || {}), [f.key]: dupOf.get(f.key) });
-      if (f.fee === null || f.fee === undefined) {
+      // MT4 states commission and taxes on the closing row only: the opening fill has no fee field of its own
+      if ((f.fee === null || f.fee === undefined) && !/^mt4:.*:open$/.test(f.key || '')) {
         const m = cur.meta.get('missing_fee') || {};
         m[f.key] = f.row ?? null;
         cur.meta.set('missing_fee', m);
@@ -251,7 +252,8 @@ export function groupFills(input, deps = {}) {
     for (const leg of t.legs) {
       const f = leg._fill;
       delete leg._fill;
-      if (leg.fee === null || leg.fee === undefined) {
+      if ((leg.fee === null || leg.fee === undefined) && /^mt4:.*:open$/.test(f.key || '')) leg.fee = '0';
+      else if (leg.fee === null || leg.fee === undefined) {
         if (feeAns?.optionId === 'fee_zero') leg.fee = '0';
         else if (feeAns?.optionId === 'enter_fee') {
           const v = fillValueFor(feeAns.value, f);

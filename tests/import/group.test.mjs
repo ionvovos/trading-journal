@@ -410,3 +410,13 @@ test('a clean import raises no question and holds nothing (AC-A2.4)', () => {
   assert.deepEqual(r.anomalies, []);
   assert.deepEqual(r.trades.map((t) => t.holds), [[]]);
 });
+
+test('MT4 opening fills carry no fee of their own (commission is on the closing row): not a missing fee', () => {
+  const f = (k, side, price, time, fee) => ({ ...fill({ key: k, instrument: 'EUR/USD', market: 'forex', side, size: '0.2', price, time, fee }), contractSize: '100000', quoteToAccount: 1 });
+  const r = groupFills({ ...base, fills: [f('mt4:1:open', 'buy', '1.085', T(7), null), f('mt4:1:close', 'sell', '1.09', T(12), '1.4')] });
+  assert.deepEqual(r.anomalies, []);
+  assert.equal(r.trades[0].legs[0].fee, '0');
+  assert.deepEqual(r.trades[0].holds, []);
+  const generic = groupFills({ ...base, fills: [f('gen:1', 'buy', '1.085', T(7), null), f('gen:2', 'sell', '1.09', T(12), '1.4')] });
+  assert.equal(generic.anomalies[0].kind, 'missing_fee', 'other formats still ask');
+});

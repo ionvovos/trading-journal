@@ -146,7 +146,7 @@ test('MT4 statement: two fills per closed row, broker figures, ticket chain, ope
   }
   const total = r.trades.reduce((s, tr) => s + stats.tradeMoney(tr, sctxFor(account)).netMinor, 0);
   assert.equal(total, exp.closedIncludedNetMinor);
-  assert.equal(r.report.fileSummary.closedPnl, exp.fileSummary.closedPnl, 'the file summary is a cross-check');
+  assert.equal(Number(r.report.fileSummary.closedPnl), exp.fileSummary.closedPnl, 'the file summary is a cross-check');
   assert.deepEqual(r.report.rKnownShare, exp.rKnownShare);
   assert.equal(r.report.openAtEnd, 1);
   assert.equal(r.cash[0].amount, exp.cash[0].amount);
@@ -181,7 +181,7 @@ test('re-importing every file adds nothing and counts the matches (AC-P1.10)', a
   const first = await runFile({ file: 'generic.csv', formatId: 'generic-csv', account });
   const again = await runFile({ file: 'generic.csv', formatId: 'generic-csv', account, existing: { trades: first.trades, cash: first.cash }, importId: 'imp2' });
   assert.equal(again.trades.length, 0);
-  assert.equal(again.report.matched, first.report.rowsRead - first.cash.length - 0 - 0 || again.report.matched);
+  assert.equal(again.report.matched, first.report.rowsRead - first.cash.length - first.report.fundingRows, 'every fill counts as matched');
   assert.ok(again.report.matched > 0);
 });
 
