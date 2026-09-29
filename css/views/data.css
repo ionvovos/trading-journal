@@ -1,0 +1,41 @@
+/* Classes of the data views (S2) that css/components.css does not ship. Tokens only; S1 folds repeated ones into css/ after L3. */
+
+.mk.neutral { background: var(--surface-2); color: var(--text-2); }
+.card.tint { background: var(--accent-soft); box-shadow: none; display: grid; gap: 4px; padding: 12px 14px; }
+.card.result.ok { box-shadow: inset 0 0 0 1.5px var(--ok); }
+.card.result.open { box-shadow: inset 0 0 0 1.5px var(--attention-line); }
+
+.file-card { display: grid; grid-template-columns: auto 1fr; gap: var(--s3); align-items: center; }
+.file-name { font-weight: var(--fw-semibold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.period-card { display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center; width: 100%; text-align: left; border: 0; min-height: var(--tap); font: inherit; color: inherit; }
+
+.period-bar { align-items: center; }
+.cal-title { text-align: center; font-weight: var(--fw-semibold); }
+.row-r { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.chip.r-chip { min-height: 32px; }
+.chip.r-chip.gain { color: var(--gain); }
+.chip.r-chip.loss { color: var(--loss); }
+.chip.muted { color: var(--text-3); }
+.chip .count { color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+.spread.top { align-items: flex-start; padding-top: 8px; gap: var(--s3); }
+.row-no { width: 62px; flex: none; color: var(--text-2); font-weight: var(--fw-semibold); }
+.vstack.tight { gap: 4px; }
+.big-h { margin: 0; font: 700 22px/28px var(--font-display); }
+.accent-link, .link-val { color: var(--accent); font-size: var(--fs-sub); font-weight: var(--fw-semibold); background: none; border: 0; padding: 0; min-height: 44px; display: inline-flex; align-items: center; }
+.link-val { font-size: inherit; font-weight: var(--fw-regular); color: inherit; min-height: 0; text-align: right; }
+.attn { color: var(--attention); }
+.note-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.opt.off { opacity: .5; }
+.opt .radio { flex: none; }
+.set-row .check { margin-right: var(--s2); }
+.seg.tall { height: 48px; align-items: stretch; }
+.status-row .end { display: flex; align-items: center; }
+.legs .leg { padding: 10px 14px; }
+.stop-row .err-msg, .stop-row .warn-msg { grid-column: 1 / -1; min-height: 0; }
+.stop-row .err-msg:empty, .stop-row .warn-msg:empty { display: none; }
+.trade-link { display: inline-flex; align-items: center; min-height: 44px; }
+.choice-list .choice { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--s3); min-height: var(--tap); padding: 10px 14px; border: 0; background: none; text-align: left; color: inherit; font: inherit; }
+.choice-list .choice[aria-pressed="true"] { background: var(--accent-soft); }
+.kv .link-val { text-decoration: none; }
+.app-form .content { padding-bottom: calc(var(--s6, 32px) + var(--safe-bottom)); }
