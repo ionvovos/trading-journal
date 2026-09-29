@@ -33,7 +33,7 @@ export async function render(root, ctx, params = {}) {
     const dayTotal = dayTrades.reduce((sum, tr) => sum + (s.displayNet(tr) ?? 0), 0);
     const rowFor = (tr) => {
       const net = s.displayNet(tr);
-      const r = tr.entryUnknown ? null : s.stats.rMultiple(tr);
+      const r = tr.entryUnknown ? null : s.stats.rMultiple(tr, s.sctx);
       return ui.listRow({ market: tr.market, title: tr.instrument, meta: `${sideText(tr)} ${sizeText(tr, fmt)}${tr.setup ? ` · ${tr.setup}` : ''}`, money: net === null ? null : { text: fmt.money(net, ccy), value: net }, r: r == null ? null : fmt.r(r), rTone: r ? (r > 0 ? 'gain' : 'loss') : 'muted', paper: ctx.mode === 'paper', href: `#/trade/${tr.id}` });
     };
     mount(root, bar, el('main', { class: 'content' },

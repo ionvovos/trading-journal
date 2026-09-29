@@ -106,7 +106,7 @@ export async function render(root, ctx, params = {}) {
       }
       const money = stats.tradeMoney(trade, sctx);
       if (money) {
-        const r = stats.rMultiple(trade);
+        const r = stats.rMultiple(trade, sctx);
         const d = ctx.fmt.minorDigits(ccy);
         nodes.push(el('div', { class: 'card tint' },
           el('div', { class: 'spread' }, el('span', { class: 'sub' }, t('form.result.title')), el('b', { class: 'num' }, ctx.ui.delta(ctx.fmt.money(money.netMinor, ccy), money.netMinor > 0 ? 'gain' : money.netMinor < 0 ? 'loss' : 'flat'), r != null ? ` · ${ctx.fmt.r(r)}` : ` · ${t('figure.rUnknown')}`)),

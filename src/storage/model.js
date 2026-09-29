@@ -20,7 +20,7 @@ export async function loadModel(store) {
 export function statsCtxFor(ctx, model, overrides = {}) {
   const get = (k, d) => { const v = ctx.settings.get(k); return v === undefined || v === null ? d : v; };
   const accounts = {};
-  for (const a of model.accounts) accounts[a.id] = { baseCurrency: a.baseCurrency, startBalance: a.startBalance ?? null, toDisplayRate: a.toDisplayRate ?? 1 };
+  for (const a of model.accounts) accounts[a.id] = { mode: a.mode, baseCurrency: a.baseCurrency, startBalance: a.startBalance ?? null, toDisplayRate: a.toDisplayRate ?? 1 };
   return {
     mode: ctx.mode,
     accountIds: ctx.accountFilter === 'all' ? 'all' : [ctx.accountFilter],

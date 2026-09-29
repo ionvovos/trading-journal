@@ -52,7 +52,7 @@ export async function computeStats(ctx, model, { period = null, sctxOverrides = 
     feeTotals: stats.feeTotals(included), streaks: stats.streaks(included), ruleFollowing: stats.ruleFollowing(included), holding: stats.holdingTime(included),
     pipsByPair: stats.pipsByPair(included),
     counts: { open: excluded.open.length, heldOut: excluded.heldOut.length, excluded: excluded.userExcluded.length },
-    rMissing: included.filter((tr) => !tr.entryUnknown && stats.rMultiple(tr) == null).length + included.filter((tr) => tr.entryUnknown).length,
+    rMissing: included.filter((tr) => !tr.entryUnknown && stats.rMultiple(tr, sctx) == null).length + included.filter((tr) => tr.entryUnknown).length,
   };
 }
 

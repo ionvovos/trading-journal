@@ -91,7 +91,7 @@ export async function render(root, ctx, params = {}) {
           dd.currentMinor ? el('div', null, el('dt', null, t('stats.dd.now')), el('dd', null, ui.delta(fmt.money(-Math.abs(dd.currentMinor), ccy), 'loss'), dd.currentPct != null ? ` · ${ddPct(-dd.currentPct)}` : '')) : null) : null,
         el('p', { class: 'caption' }, dd?.note === 'includes_cash' ? t('stats.dd.noteCash') : t('stats.dd.note'))) : null;
 
-      const rs = s.included.filter((tr) => !tr.entryUnknown).map((tr) => s.stats.rMultiple(tr)).filter((r) => r !== null && r !== undefined);
+      const rs = s.included.filter((tr) => !tr.entryUnknown).map((tr) => s.stats.rMultiple(tr, s.sctx)).filter((r) => r !== null && r !== undefined);
       const mean = rs.length ? rs.reduce((a, b) => a + b, 0) / rs.length : 0;
       const rCard = rs.length ? el('section', { class: 'card' }, el('div', { class: 'card-h' }, el('h3', null, t('stats.r.title')), el('span', { class: 'caption' }, t('stats.r.count', { a: rs.length, b: s.rMissing }))),
         ui.histogram({ counts: binR(rs), mean, meanText: t('stats.r.mean', { x: fmt.r(mean) }), fmt, ariaLabel: t('stats.r.title') }),

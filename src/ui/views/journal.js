@@ -104,7 +104,7 @@ export async function render(root, ctx) {
     const days = groupByDay(closed, ctx);
     const rowFor = (tr) => {
       const net = netOf(tr);
-      const r = stats && !tr.entryUnknown ? stats.rMultiple(tr) : null;
+      const r = stats && !tr.entryUnknown ? stats.rMultiple(tr, sctx) : null;
       const pips = stats && tr.market === 'forex' ? stats.pips?.(tr) : null;
       const bits = [`${sideText(tr)} ${sizeText(tr, fmt)}`, pips ? t('journal.pips', { n: fmt.pips(pips.resultPips) }) : null, tr.setup, tr.stopSource === 'file_at_close' ? null : null, fmt.time(tr.closeTime)].filter(Boolean);
       const tags = [tr.plan?.followed === false ? el('span', { class: 'tag off' }, t('journal.offPlan')) : null, tr.excluded ? el('span', { class: 'tag' }, t('journal.excluded')) : null].filter(Boolean);

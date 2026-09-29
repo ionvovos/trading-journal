@@ -57,7 +57,7 @@ export async function render(root, ctx, params) {
     const includedTrades = (ex.includedIds || []).map((id) => byId.get(id)).filter(Boolean);
     const rowFor = (tr) => {
       const net = s.displayNet(tr);
-      const r = tr.entryUnknown ? null : s.stats.rMultiple(tr);
+      const r = tr.entryUnknown ? null : s.stats.rMultiple(tr, s.sctx);
       return ui.listRow({ market: tr.market, title: tr.instrument, meta: [`${sideText(tr)} ${sizeText(tr, fmt)}`, tr.setup, tr.closeTime ? fmt.date(tr.closeTime) : null].filter(Boolean).join(' · '), money: net === null || net === undefined ? null : { text: fmt.money(net, ccy), value: net }, r: r == null ? null : fmt.r(r), rTone: r ? (r > 0 ? 'gain' : 'loss') : 'muted', paper: ctx.mode === 'paper', href: `#/trade/${tr.id}` });
     };
     const shown = showAll ? includedTrades : includedTrades.slice(0, 4);

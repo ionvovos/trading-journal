@@ -47,7 +47,7 @@ export async function render(root, ctx, params) {
     if (stats) {
       try {
         money = trade.entryUnknown ? { netMinor: trade.broker?.netMinor, grossMinor: null, feesMinor: null, fundingMinor: null, source: 'broker' } : stats.tradeMoney(trade, sctx);
-        if (!trade.entryUnknown) { r = stats.rMultiple(trade); risk = stats.initialRisk(trade); breakdown = stats.rBreakdown?.(trade) ?? null; }
+        if (!trade.entryUnknown) { r = stats.rMultiple(trade, sctx); risk = stats.initialRisk(trade); breakdown = stats.rBreakdown?.(trade, sctx) ?? null; }
         if (trade.market === 'forex') pips = stats.pips?.(trade) ?? null;
       } catch (e) { console.error('trade money failed', e); }
     }

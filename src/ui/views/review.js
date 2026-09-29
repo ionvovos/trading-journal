@@ -15,6 +15,7 @@ const THRESHOLD_UNIT = { entry_after_loss: (v) => `${v} min`, size_rising: (v) =
 const reasonKey = (note) => (note && note.startsWith('failed') ? 'failed' : note);
 
 export async function render(root, ctx, params = {}) {
+  if (params.id === 'compare') return (await import('../../review/compareView.js')).renderCompare(root, ctx);
   let disposed = false;
   let review = null;
   let kind = 'last7';
@@ -169,7 +170,7 @@ export async function render(root, ctx, params = {}) {
       body.push(processCard(), questionsCard(), checkedCard(), optionalCard(), el('p', { class: 'caption pad-x' }, t('review.ui.footer')),
         ctx.ui.button({ label: t('review.ui.rerun'), kind: 'secondary', block: true, onClick: run }));
     }
-    body.push(el('a', { class: 'btn plain block', href: '#/settings/ai' }, t('review.ui.settings')), el('a', { class: 'btn plain block', href: '#/plan' }, t('review.ui.plan')));
+    body.push(el('a', { class: 'btn plain block', href: '#/review/compare' }, t('compare.link')), el('a', { class: 'btn plain block', href: '#/settings/ai' }, t('review.ui.settings')), el('a', { class: 'btn plain block', href: '#/plan' }, t('review.ui.plan')));
     queueMicrotask(() => root.querySelector('.chips [aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' }));
     mount(root, el('div', { class: 'app-s3' },
       ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', left: ctx.ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }), right: el('span', { class: 'spacer' }) }),

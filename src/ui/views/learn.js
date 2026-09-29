@@ -37,6 +37,7 @@ export async function render(root, ctx, params = {}) {
       figure.excluded.length ? [el('div', { class: 'caption strong' }, t('learnview.excluded')), el('p', { class: 'sub' }, figure.excluded.map((x) => `${x.id}: ${x.reason}`).join(', '))] : null) : null,
     related.length ? el('section', { class: 'card vstack' }, el('div', { class: 'caption strong' }, t('learnview.related')), el('div', { class: 'hstack wrap' }, ...related.map((e) => el('a', { class: 'chip sm', href: `#/learn/${e.slug}` }, e.title)))) : null,
     el('p', { class: 'caption pad-x' }, src?.tag === 'H' ? t('learnview.sourceOwn') : src?.url ? [`${t('learnview.source')}: `, el('a', { class: 'link', href: src.url, target: '_blank', rel: 'noopener noreferrer' }, new URL(src.url).host)] : ''),
+    src?.section ? el('p', { class: 'caption pad-x' }, t('learnview.sourceSection', { section: src.section })) : null,
     el('a', { class: 'btn plain block', href: '#/learn/all' }, t('learnview.all')))));
   return () => mount(root);
 }

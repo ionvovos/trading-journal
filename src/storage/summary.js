@@ -21,7 +21,7 @@ export async function getSummary(ctx) {
   const exp = s.expectancy;
   const recent = [...s.included].sort((a, b) => (a.closeTime < b.closeTime ? 1 : -1)).slice(0, 3).map((tr) => {
     const pips = tr.market === 'forex' ? s.stats.pips?.(tr) : null;
-    const r = tr.entryUnknown ? null : s.stats.rMultiple(tr);
+    const r = tr.entryUnknown ? null : s.stats.rMultiple(tr, s.sctx);
     return { id: tr.id, market: tr.market, instrument: tr.instrument, side: tr.side, sizeText: sizeText(tr, fmt), setup: tr.setup, closeTime: tr.closeTime, netMinor: s.displayNet(tr) ?? 0, r, pips: pips ? pips.resultPips : null };
   });
   const states = ctx.mode === 'real' ? byUrgency(periodsFor(model, { tz: ctx.tz })).map((p) => ({

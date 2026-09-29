@@ -34,13 +34,19 @@ export function averages(trade) {
 export function isClosedTrade(trade) {
   const entries = legsOf(trade, 'entry');
   const exits = legsOf(trade, 'exit');
+  // A position opened before the imported file whose result the person kept from the broker (import answer
+  // keep_broker_pnl): the exits and the broker's own figure close it; there is no entry to average.
+  if (!entries.length && trade.entryUnknown && exits.length && trade.broker && Number.isInteger(trade.broker.netMinor)) return true;
   if (!entries.length || !exits.length) return false;
   const rest = D.sub(D.sum(entries.map((l) => l.size)), D.sum(exits.map((l) => l.size)));
   return D.isZero(rest) || D.cmp(rest, trade.dustRemainder || '0') === 0;
 }
 
 export function firstEntry(trade) {
-  return legsOf(trade, 'entry').sort((a, b) => Date.parse(a.time) - Date.parse(b.time))[0] || null;
+  const entry = legsOf(trade, 'entry').sort((a, b) => Date.parse(a.time) - Date.parse(b.time))[0];
+  if (entry) return entry;
+  // no entry leg (opened before the file): the earliest exit stands in for the time and the rate
+  return trade.entryUnknown ? (legsOf(trade, 'exit').sort((a, b) => Date.parse(a.time) - Date.parse(b.time))[0] || null) : null;
 }
 
 // Close instant: the stored closeTime, else the last exit leg.
@@ -53,7 +59,7 @@ export function closeTimeOf(trade) {
 // S1. Σ exit legs (exit − average entry) × exit size × value per unit × exit leg rate, sign
 // reversed for a short. Null for an open trade or a missing rate.
 export function grossPnl(trade) {
-  if (!isClosedTrade(trade)) return null;
+  if (!isClosedTrade(trade) || trade.entryUnknown) return null;
   const avgEntry = averageDec(trade, 'entry');
   const unit = unitValue(trade);
   const sign = sideSign(trade);
@@ -75,6 +81,12 @@ export function baseDigits(trade, ctx) {
 
 // S2. Integer minor units in the account's base currency, one rounding point each.
 export function tradeMoney(trade, ctx) {
+  if (isClosedTrade(trade) && trade.entryUnknown) {
+    // only the broker's figure is known: gross and costs cannot be split, so the net stands for gross and costs are 0
+    const net = trade.broker.netMinor;
+    const funding = roundMinor(num(trade.funding) ?? 0, baseDigits(trade, ctx));
+    return { grossMinor: net, feesMinor: 0, fundingMinor: funding, netMinor: net, recomputedNetMinor: null, source: 'broker' };
+  }
   const gross = grossPnl(trade);
   if (gross === null) return null;
   let fees = 0;
