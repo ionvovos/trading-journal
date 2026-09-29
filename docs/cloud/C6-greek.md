@@ -8,11 +8,11 @@ Build per this file, `docs/architecture.md` §6 (i18n) and §11, `docs/requireme
 
 Not yours: any `en` file, `src/about/text.js` (the lawyer's texts, pinned by hash), `src/review/**`, tests. If an English string looks wrong, write it in `docs/cloud/C6-NOTES.md` on your branch and leave it.
 
-## Source (English, final when C6 starts)
+## Source (English, final: main 63db10c, `npm test` 744 of 744)
 - `src/i18n/en/shell.js`: navigation, Home, first run, Settings, About, shared components (S1; final in this commit).
 - `src/i18n/en/data.js`: journal, trade form, import, broker check, statistics, calendar, data settings (S2).
 - `src/i18n/en/review.js`: plan, checklist, sizing, review, compare, AI settings (S3).
-- `src/learn/entries.en.js`: learn entries T1-T25 and later (S3).
+- `src/learn/entries.en.js`: learn entries T1-T35 (S3).
 
 ## Contract
 1. Same keys, same placeholders. `{name}` and `{n, plural, one {..} other {..}}` keep their names; the Greek branches are `one` and `other`; `#` is the number. `tests/shell/i18n.test.mjs` fails on a key or placeholder present in one language only.
@@ -38,9 +38,13 @@ Not yours: any `en` file, `src/about/text.js` (the lawyer's texts, pinned by has
 | Plan | Σχέδιο | the user's own rules |
 | Position size | Μέγεθος θέσης | |
 
+## Known drafts to settle
+- `drill.name.expectancy` in `src/i18n/el/data.js` reads «Προσδοκία»; the glossary above says «Μέσο R» (the label must not look forward). Use one word everywhere the figure is named, including the learn entry for expectancy.
+- The Greek files hold first drafts from S1 (about 190 keys), S2 (`data.js`, about 660 lines) and S3 (`review.js`, about 330 lines; `entries.el.js`, 55 lines). Nothing in them has had a native review.
+
 ## Fixtures and tests
-- `tests/shell/i18n.test.mjs` (parity, plurals, Greek letters present), `tests/shell/strings-boundary.test.mjs` (boundary per scope), `tests/shell/aboutText.test.mjs` (legal texts) and `tests/shell/keys.test.mjs` (keys used exist). Do not change them.
+- `tests/shell/i18n.test.mjs` (parity, plurals, Greek letters present), `tests/shell/strings-boundary.test.mjs` (boundary per scope), `tests/shell/aboutText.test.mjs` (legal texts) and `tests/shell/keys.test.mjs` (keys used exist), `tests/review/catalogue.test.mjs` (review catalogue parity and boundary) and `tests/learn/entries.test.mjs` (T1-T35 in both languages, banned patterns, the CFD wording). Do not change them.
 - `tests/fixtures/review/legal-table.json`: the Greek `safe` and `banned` rows are S3's drafts; your Greek strings must not conflict with a `banned` row.
 
 ## Done
-`node --test tests/shell/i18n.test.mjs tests/shell/strings-boundary.test.mjs` exits 0, then `npm test` exits 0. Open `e2e/lib/shoot-s1.mjs dashboard-el settings-el about-el onboarding-welcome-el` outside the sandbox and check the four screens at 360x800 for clipped text.
+`node --test tests/shell/i18n.test.mjs tests/shell/strings-boundary.test.mjs tests/review/catalogue.test.mjs tests/learn/entries.test.mjs` exits 0, then `npm test` exits 0. Open `e2e/lib/shoot-s1.mjs dashboard-el settings-el about-el onboarding-welcome-el` outside the sandbox and check the four screens at 360x800 for clipped text.
