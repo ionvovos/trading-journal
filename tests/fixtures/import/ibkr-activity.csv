@@ -1,0 +1,22 @@
+Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers LLC
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"March 2, 2026 - March 9, 2026"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Base Currency,USD
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,AAPL,"2026-03-02, 09:40:00",30,50,50,-1500,-1,1501,0,0,O
+Trades,Data,Order,Stocks,USD,AAPL,"2026-03-02, 10:10:00",20,52,52,-1040,-1,1041,0,0,O
+Trades,Data,Order,Stocks,USD,AAPL,"2026-03-02, 15:30:00",-50,55,55,2750,-1,-2542,207,0,C
+Trades,SubTotal,,Stocks,USD,AAPL,,0,,,210,-3,0,207,0,
+Trades,Data,Order,Stocks,USD,MSFT,"2026-03-03, 09:30:00",50,50,50,-2500,0,2500,0,0,O
+Trades,Data,Order,Stocks,USD,MSFT,"2026-03-03, 10:10:00",-50,47.6,47.6,2380,0,-2500,-120,0,C
+Trades,Data,Order,Stocks,USD,NVDA,"2026-03-06, 10:00:00",-5,120,120,600,-1,-550,49,0,C
+Trades,Data,Order,Stocks,USD,TSLA,"2026-03-09, 09:00:00",-10,200,200,2000,-1,-1999,0,0,O
+Trades,Data,Order,Stocks,USD,TSLA,"2026-03-09, 13:00:00",10,190,190,-1900,-1,1999,98,0,C
+Trades,Data,Order,Stocks,USD,AMD,"2026-03-09, 14:00:00",abc,100,100,-1000,-1,1001,0,0,O
+Trades,Data,Order,Forex,USD,EUR.USD,"2026-03-05, 08:00:00",1000,1.086,1.086,-1086,-2,0,0,0,O
+Trades,Total,,Stocks,USD,,,,,,4290,-6,0,234,0,
+Deposits & Withdrawals,Header,Currency,Settle Date,Description,Amount
+Deposits & Withdrawals,Data,USD,2026-03-02,Electronic Fund Transfer,1000
+Deposits & Withdrawals,Data,Total,,,1000

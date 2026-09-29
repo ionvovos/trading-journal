@@ -1,0 +1,98 @@
+{
+ "about": "Requirement cases (requirements.md S8, S9, S11, AC-P3.6). Money in minor units.",
+ "drawdown": {
+  "ctx": {
+   "startBalanceMinor": 1000000
+  },
+  "netMinorInCloseOrder": [
+   200000,
+   -150000,
+   -90000,
+   120000,
+   130000
+  ],
+  "expected": {
+   "curve": [
+    1000000,
+    1200000,
+    1050000,
+    960000,
+    1080000,
+    1210000
+   ],
+   "maxMinor": 240000,
+   "maxPct": 0.2,
+   "recoveryGainPct": 0.25,
+   "peakIndex": 1,
+   "troughIndex": 3,
+   "recoveryIndex": 5
+  },
+  "noStartBalance": {
+   "maxPctIsNull": true
+  }
+ },
+ "expectancyByParts": {
+  "rValues": [
+   2,
+   2,
+   2,
+   2,
+   -1,
+   -1,
+   -1,
+   -1,
+   -1,
+   -1
+  ],
+  "expected": {
+   "winRate": 0.4,
+   "avgWinR": 2,
+   "avgLossR": 1,
+   "expectancyR": 0.2
+  }
+ },
+ "stopSlippage": {
+  "entry": 50,
+  "stop": 48,
+  "size": 50,
+  "exit": 47.6,
+  "fees": 0,
+  "expected": {
+   "netMinor": -12000,
+   "initialRisk": 100,
+   "r": -1.2
+  }
+ },
+ "noLosses": {
+  "netMinor": [
+   1000,
+   2500
+  ],
+  "expected": {
+   "profitFactor": null,
+   "reason": "no_losses"
+  }
+ },
+ "rounding": [
+  {
+   "x": 1.005,
+   "d": 2,
+   "minor": 101
+  },
+  {
+   "x": -2.675,
+   "d": 2,
+   "minor": -268
+  },
+  {
+   "x": 0.5,
+   "d": 0,
+   "minor": 1
+  },
+  {
+   "x": -0.5,
+   "d": 0,
+   "minor": -1
+  }
+ ]
+}

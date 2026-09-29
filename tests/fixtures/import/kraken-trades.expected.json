@@ -1,0 +1,17 @@
+{
+ "about": "Hand-computed. fileZone UTC (Kraken), accountCurrency USD, mode real, declared zone Europe/Athens, no earlier imports.",
+ "format": "kraken-trades",
+ "rowsInFile": 9,
+ "fills": 8,
+ "nonTrade": [],
+ "skipped": [{ "txid": "TE1EEE-00005-000001", "reasonKey": "import.skip.number" }],
+ "pairs": { "XXBTZUSD": "BTC/USD", "XETHZUSD": "ETH/USD", "XXBTZEUR": "BTC/EUR", "SOLUSD": "SOL/USD" },
+ "trades": [
+  { "instrument": "BTC/USD", "side": "long", "status": "closed", "legs": 3, "avgEntry": 60000, "avgExit": 62400, "size": 0.0833, "grossMinor": 19992, "feesMinor": 1020, "netMinor": 18972, "holds": [] },
+  { "instrument": "ETH/USD", "side": "long", "status": "held", "holds": ["dust"], "remainder": 0.0005, "afterAnswer": { "optionId": "close_as_zero", "closedSize": 0.9995, "grossMinor": 9995, "feesMinor": 490, "netMinor": 9505, "note": "gross (2500-2400) x 0.9995 = 99.95; fees 2.40 + 2.49875 = 4.89875; net 95.05125 -> 95.05" } },
+  { "instrument": "BTC/EUR", "side": "long", "status": "held", "holds": ["rate_missing"], "afterAnswer": { "optionId": "rate", "value": 1.10, "grossMinor": 1100, "feesMinor": 122, "netMinor": 978, "note": "gross 1000 x 0.01 = 10.00 EUR x 1.10 = 11.00; fees (0.55 + 0.56) x 1.10 = 1.221; net 9.779 -> 9.78" } },
+  { "instrument": "SOL/USD", "side": "long", "status": "open", "size": 2, "holds": [] }
+ ],
+ "anomalies": [{ "kind": "dust", "instruments": ["ETH/USD"] }, { "kind": "rate_missing", "currency": "EUR" }, { "kind": "unreadable_rows", "rows": 1 }],
+ "closedIncludedNetMinor": 18972
+}

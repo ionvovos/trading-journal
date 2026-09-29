@@ -1,0 +1,1194 @@
+{
+ "about": "Hand-computed statistics fixture (architecture.md section 3.3). Money in minor units (cents). R and ratios compare with tolerance 1e-9. T1-T7 are closed real trades; T8 open, T9 held out (holds non-empty, incomplete legs: must be excluded before any arithmetic), T10 paper. T1/T2/T6 match tests/fixtures/import/ibkr-activity.csv, T3 kraken-trades.csv, T4/T5 mt4-statement.htm, T7 generic.csv.",
+ "ctx": {
+  "accountCurrency": "USD",
+  "minorDigits": 2,
+  "tz": "Europe/Athens",
+  "dayCutoffHour": 0,
+  "smallSampleMin": 30,
+  "startBalanceMinor": 1000000,
+  "mode": "real"
+ },
+ "handChecks": [
+  "T1 average entry (30x50 + 20x52)/50 = 50.80; gross (55-50.80)x50 = 210.00; fees 3.00; net 207.00; risk 30x2 + 20x4 = 140; R 207/140 = 1.478571",
+  "T2 gross (47.60-50)x50 = -120.00; risk 2x50 = 100; R -1.2 (stop filled past its price, not clipped)",
+  "T3 gross 2400x0.0833 = 199.92; fees 3 + 1.998 + 5.19792 = 10.19592; net 189.72408 -> 189.72; feesMinor = 19992 - 18972 = 1020; risk 1200x0.0833 = 99.96; R 1.897959",
+  "T4 gross 0.005x0.2x100000 = 100.00; commission 1.40; net 98.60; risk 100; R 0.986",
+  "T5 short: gross -0.5x0.1x100000x0.006644 = -33.22; commission 0.70; swap paid 0.50 (funding -0.50); net -34.42; risk 0.3x10000x0.006644 = 19.932; R -1.726871",
+  "T6 short: gross 10x10 = 100; fees 2; net 98.00; no stop -> R null, counted in rMissing",
+  "T7 breakeven: net 0.00 is a trade, not a win and not a loss; R 0",
+  "Total 207.00 - 120.00 + 189.72 + 98.60 - 34.42 + 98.00 + 0 = 438.90",
+  "Profit factor 593.32 / 154.42 = 3.842248; expectancy R mean of 6 known = 0.239277; by parts 3/6 x 1.454177 - 2/6 x 1.463436 = same",
+  "Max drawdown from 10,207.00 (after T1) to 10,087.00 (after T2) = 120.00, 1.1757%, recovery gain 10207/10087 - 1 = 1.1897%, recovered at T3",
+  "Calendar in Athens: T3 closes 22:30Z on 4 Mar = 00:30 on 5 Mar, so 5 Mar = 189.72 + 98.60 = 288.32; in UTC it would fall on 4 Mar"
+ ],
+ "trades": [
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T1",
+   "mode": "real",
+   "market": "stock",
+   "instrument": "AAPL",
+   "side": "long",
+   "initialStop": 48,
+   "setup": "breakout",
+   "legs": [
+    {
+     "id": "T1-L1",
+     "kind": "entry",
+     "time": "2026-03-02T14:40:00Z",
+     "price": 50,
+     "size": 30,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T1-L2",
+     "kind": "entry",
+     "time": "2026-03-02T15:10:00Z",
+     "price": 52,
+     "size": 20,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T1-L3",
+     "kind": "exit",
+     "time": "2026-03-02T20:30:00Z",
+     "price": 55,
+     "size": 50,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": true,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-02T20:30:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T2",
+   "mode": "real",
+   "market": "stock",
+   "instrument": "MSFT",
+   "side": "long",
+   "initialStop": 48,
+   "setup": "breakout",
+   "legs": [
+    {
+     "id": "T2-L1",
+     "kind": "entry",
+     "time": "2026-03-03T14:30:00Z",
+     "price": 50,
+     "size": 50,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T2-L2",
+     "kind": "exit",
+     "time": "2026-03-03T15:10:00Z",
+     "price": 47.6,
+     "size": 50,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": true,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-03T15:10:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T3",
+   "mode": "real",
+   "market": "crypto",
+   "instrument": "BTC/USD",
+   "side": "long",
+   "initialStop": 58800,
+   "setup": "pullback",
+   "legs": [
+    {
+     "id": "T3-L1",
+     "kind": "entry",
+     "time": "2026-03-04T21:30:00.100Z",
+     "price": 60000,
+     "size": 0.05,
+     "fee": 3,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T3-L2",
+     "kind": "entry",
+     "time": "2026-03-04T21:30:01.200Z",
+     "price": 60000,
+     "size": 0.0333,
+     "fee": 1.998,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T3-L3",
+     "kind": "exit",
+     "time": "2026-03-04T22:30:00.000Z",
+     "price": 62400,
+     "size": 0.0833,
+     "fee": 5.19792,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": false,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-04T22:30:00.000Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 100000,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T4",
+   "mode": "real",
+   "market": "forex",
+   "instrument": "EUR/USD",
+   "side": "long",
+   "initialStop": 1.08,
+   "setup": "breakout",
+   "legs": [
+    {
+     "id": "T4-L1",
+     "kind": "entry",
+     "time": "2026-03-05T07:00:00Z",
+     "price": 1.085,
+     "size": 0.2,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T4-L2",
+     "kind": "exit",
+     "time": "2026-03-05T12:00:00Z",
+     "price": 1.09,
+     "size": 0.2,
+     "fee": 1.4,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": true,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-05T12:00:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 100000,
+   "quoteCurrency": "JPY",
+   "stopMoves": [],
+   "target": null,
+   "funding": -0.5,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T5",
+   "mode": "real",
+   "market": "forex",
+   "instrument": "USD/JPY",
+   "side": "short",
+   "initialStop": 150.3,
+   "setup": null,
+   "legs": [
+    {
+     "id": "T5-L1",
+     "kind": "entry",
+     "time": "2026-03-06T01:00:00Z",
+     "price": 150,
+     "size": 0.1,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 0.006644,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T5-L2",
+     "kind": "exit",
+     "time": "2026-03-06T03:00:00Z",
+     "price": 150.5,
+     "size": 0.1,
+     "fee": 0.7,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 0.006644,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": false,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-06T03:00:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T6",
+   "mode": "real",
+   "market": "stock",
+   "instrument": "TSLA",
+   "side": "short",
+   "initialStop": null,
+   "setup": "pullback",
+   "legs": [
+    {
+     "id": "T6-L1",
+     "kind": "entry",
+     "time": "2026-03-09T13:00:00Z",
+     "price": 200,
+     "size": 10,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T6-L2",
+     "kind": "exit",
+     "time": "2026-03-09T17:00:00Z",
+     "price": 190,
+     "size": 10,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": null,
+    "followed": null,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": false
+   },
+   "closeTime": "2026-03-09T17:00:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T7",
+   "mode": "real",
+   "market": "stock",
+   "instrument": "KO",
+   "side": "long",
+   "initialStop": 59,
+   "setup": null,
+   "legs": [
+    {
+     "id": "T7-L1",
+     "kind": "entry",
+     "time": "2026-03-10T09:00:00Z",
+     "price": 60,
+     "size": 100,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T7-L2",
+     "kind": "exit",
+     "time": "2026-03-10T10:00:00Z",
+     "price": 60,
+     "size": 100,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": true,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-10T10:00:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T8",
+   "mode": "real",
+   "market": "crypto",
+   "instrument": "SOL/USD",
+   "side": "long",
+   "initialStop": null,
+   "setup": null,
+   "legs": [
+    {
+     "id": "T8-L1",
+     "kind": "entry",
+     "time": "2026-03-07T10:00:00Z",
+     "price": 150,
+     "size": 2,
+     "fee": 0.3,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": null,
+    "followed": null,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": false
+   },
+   "closeTime": null,
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 1,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [
+    "a-opened-before-file"
+   ],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T9",
+   "mode": "real",
+   "market": "stock",
+   "instrument": "NVDA",
+   "side": "long",
+   "initialStop": null,
+   "setup": null,
+   "legs": [
+    {
+     "id": "T9-L1",
+     "kind": "exit",
+     "time": "2026-03-06T15:00:00Z",
+     "price": 120,
+     "size": 5,
+     "fee": 1,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": null,
+    "followed": null,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": false
+   },
+   "closeTime": null,
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  },
+  {
+   "contractSize": 100000,
+   "quoteCurrency": "USD",
+   "stopMoves": [],
+   "target": null,
+   "funding": 0,
+   "holds": [],
+   "excluded": null,
+   "closeDayOverride": null,
+   "id": "T10",
+   "mode": "paper",
+   "market": "forex",
+   "instrument": "EUR/USD",
+   "side": "long",
+   "initialStop": 1.085,
+   "setup": "breakout",
+   "legs": [
+    {
+     "id": "T10-L1",
+     "kind": "entry",
+     "time": "2026-03-11T08:00:00Z",
+     "price": 1.09,
+     "size": 0.1,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    },
+    {
+     "id": "T10-L2",
+     "kind": "exit",
+     "time": "2026-03-11T10:00:00Z",
+     "price": 1.095,
+     "size": 0.1,
+     "fee": 0,
+     "feeCurrency": "USD",
+     "feeToAccount": 1,
+     "quoteToAccount": 1,
+     "zone": "Europe/Athens",
+     "source": {
+      "importId": null,
+      "row": null,
+      "key": null
+     }
+    }
+   ],
+   "plan": {
+    "planId": "P1",
+    "followed": true,
+    "items": {},
+    "auto": {},
+    "confirmedByUser": true
+   },
+   "closeTime": "2026-03-11T10:00:00Z",
+   "notes": "",
+   "moodBefore": null,
+   "moodAfter": null,
+   "screenshotId": null,
+   "leverage": null,
+   "importId": null,
+   "stopAtClose": null,
+   "createdAt": "2026-03-12T00:00:00Z",
+   "updatedAt": "2026-03-12T00:00:00Z",
+   "entry": "manual"
+  }
+ ],
+ "expected": {
+  "perTrade": {
+   "T1": {
+    "avgEntry": 50.8,
+    "avgExit": 55,
+    "gross": 210.00000000000014,
+    "grossMinor": 21000,
+    "feesMinor": 300,
+    "fundingMinor": 0,
+    "netMinor": 20700,
+    "initialRisk": 140,
+    "riskReason": null,
+    "r": 1.4785714285714286
+   },
+   "T2": {
+    "avgEntry": 50,
+    "avgExit": 47.6,
+    "gross": -119.99999999999993,
+    "grossMinor": -12000,
+    "feesMinor": 0,
+    "fundingMinor": 0,
+    "netMinor": -12000,
+    "initialRisk": 100,
+    "riskReason": null,
+    "r": -1.2
+   },
+   "T3": {
+    "avgEntry": 59999.99999999999,
+    "avgExit": 62400,
+    "gross": 199.9200000000006,
+    "grossMinor": 19992,
+    "feesMinor": 1020,
+    "fundingMinor": 0,
+    "netMinor": 18972,
+    "initialRisk": 99.96000000000001,
+    "riskReason": null,
+    "r": 1.8979591836734693
+   },
+   "T4": {
+    "avgEntry": 1.085,
+    "avgExit": 1.09,
+    "gross": 100.00000000000232,
+    "grossMinor": 10000,
+    "feesMinor": 140,
+    "fundingMinor": 0,
+    "netMinor": 9860,
+    "initialRisk": 99.99999999999788,
+    "riskReason": null,
+    "r": 0.9860000000000209
+   },
+   "T5": {
+    "avgEntry": 150,
+    "avgExit": 150.5,
+    "gross": -33.22,
+    "grossMinor": -3322,
+    "feesMinor": 70,
+    "fundingMinor": -50,
+    "netMinor": -3442,
+    "initialRisk": 19.932000000000755,
+    "riskReason": null,
+    "r": -1.7268713626328867
+   },
+   "T6": {
+    "avgEntry": 200,
+    "avgExit": 190,
+    "gross": 100,
+    "grossMinor": 10000,
+    "feesMinor": 200,
+    "fundingMinor": 0,
+    "netMinor": 9800,
+    "initialRisk": null,
+    "riskReason": "no_stop",
+    "r": null
+   },
+   "T7": {
+    "avgEntry": 60,
+    "avgExit": 60,
+    "gross": 0,
+    "grossMinor": 0,
+    "feesMinor": 0,
+    "fundingMinor": 0,
+    "netMinor": 0,
+    "initialRisk": 100,
+    "riskReason": null,
+    "r": 0
+   }
+  },
+  "S3": {
+   "included": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7"
+   ],
+   "excluded": {
+    "open": [
+     "T8"
+    ],
+    "heldOut": [
+     "T9"
+    ],
+    "userExcluded": [],
+    "otherMode": [
+     "T10"
+    ]
+   }
+  },
+  "S4": {
+   "value": 0.5714285714285714,
+   "wins": 4,
+   "n": 7
+  },
+  "S5": {
+   "avgWin": 148.33,
+   "avgLoss": 77.21,
+   "nWin": 4,
+   "nLoss": 2,
+   "avgWinR": 1.4541768707483065,
+   "avgLossR": 1.4634356813164433,
+   "nWinR": 3,
+   "nLossR": 2
+  },
+  "S6": {
+   "value": 3.842248413417951,
+   "reason": null
+  },
+  "S9": {
+   "r": {
+    "value": 0.2392765416020054,
+    "n": 6,
+    "rMissing": 1,
+    "byParts": 0.2392765416020055
+   },
+   "moneyMinor": {
+    "value": 6270,
+    "n": 7
+   },
+   "smallSample": true
+  },
+  "totalNetMinor": 43890,
+  "S10": [
+   {
+    "t": null,
+    "tradeId": null,
+    "equityMinor": 1000000
+   },
+   {
+    "t": "2026-03-02T20:30:00Z",
+    "tradeId": "T1",
+    "equityMinor": 1020700
+   },
+   {
+    "t": "2026-03-03T15:10:00Z",
+    "tradeId": "T2",
+    "equityMinor": 1008700
+   },
+   {
+    "t": "2026-03-04T22:30:00.000Z",
+    "tradeId": "T3",
+    "equityMinor": 1027672
+   },
+   {
+    "t": "2026-03-05T12:00:00Z",
+    "tradeId": "T4",
+    "equityMinor": 1037532
+   },
+   {
+    "t": "2026-03-06T03:00:00Z",
+    "tradeId": "T5",
+    "equityMinor": 1034090
+   },
+   {
+    "t": "2026-03-09T17:00:00Z",
+    "tradeId": "T6",
+    "equityMinor": 1043890
+   },
+   {
+    "t": "2026-03-10T10:00:00Z",
+    "tradeId": "T7",
+    "equityMinor": 1043890
+   }
+  ],
+  "S11": {
+   "maxMinor": 12000,
+   "maxPct": 0.01175663760164593,
+   "peak": {
+    "t": "2026-03-02T20:30:00Z",
+    "tradeId": "T1",
+    "equityMinor": 1020700
+   },
+   "trough": {
+    "t": "2026-03-03T15:10:00Z",
+    "tradeId": "T2",
+    "equityMinor": 1008700
+   },
+   "recovery": {
+    "t": "2026-03-04T22:30:00.000Z",
+    "tradeId": "T3",
+    "equityMinor": 1027672
+   },
+   "currentMinor": 0,
+   "recoveryGainPct": 0.011896500446118674,
+   "currentPct": 0
+  },
+  "S12": {
+   "setup": {
+    "breakout": {
+     "n": 3,
+     "netMinor": 18560,
+     "winRate": 0.6666666666666666,
+     "expectancyR": 0.4215238095238165,
+     "rKnown": 3,
+     "tradeIds": [
+      "T1",
+      "T2",
+      "T4"
+     ]
+    },
+    "pullback": {
+     "n": 2,
+     "netMinor": 28772,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3",
+      "T6"
+     ]
+    },
+    "null": {
+     "n": 2,
+     "netMinor": -3442,
+     "winRate": 0,
+     "expectancyR": -0.8634356813164433,
+     "rKnown": 2,
+     "tradeIds": [
+      "T5",
+      "T7"
+     ]
+    }
+   },
+   "market": {
+    "stock": {
+     "n": 4,
+     "netMinor": 18500,
+     "winRate": 0.5,
+     "expectancyR": 0.0928571428571429,
+     "rKnown": 3,
+     "tradeIds": [
+      "T1",
+      "T2",
+      "T6",
+      "T7"
+     ]
+    },
+    "crypto": {
+     "n": 1,
+     "netMinor": 18972,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3"
+     ]
+    },
+    "forex": {
+     "n": 2,
+     "netMinor": 6418,
+     "winRate": 0.5,
+     "expectancyR": -0.3704356813164329,
+     "rKnown": 2,
+     "tradeIds": [
+      "T4",
+      "T5"
+     ]
+    }
+   },
+   "weekday": {
+    "1": {
+     "n": 2,
+     "netMinor": 30500,
+     "winRate": 1,
+     "expectancyR": 1.4785714285714286,
+     "rKnown": 1,
+     "tradeIds": [
+      "T1",
+      "T6"
+     ]
+    },
+    "2": {
+     "n": 2,
+     "netMinor": -12000,
+     "winRate": 0,
+     "expectancyR": -0.6,
+     "rKnown": 2,
+     "tradeIds": [
+      "T2",
+      "T7"
+     ]
+    },
+    "3": {
+     "n": 1,
+     "netMinor": 18972,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3"
+     ]
+    },
+    "4": {
+     "n": 1,
+     "netMinor": 9860,
+     "winRate": 1,
+     "expectancyR": 0.9860000000000209,
+     "rKnown": 1,
+     "tradeIds": [
+      "T4"
+     ]
+    },
+    "5": {
+     "n": 1,
+     "netMinor": -3442,
+     "winRate": 0,
+     "expectancyR": -1.7268713626328867,
+     "rKnown": 1,
+     "tradeIds": [
+      "T5"
+     ]
+    }
+   },
+   "hour": {
+    "3": {
+     "n": 1,
+     "netMinor": -3442,
+     "winRate": 0,
+     "expectancyR": -1.7268713626328867,
+     "rKnown": 1,
+     "tradeIds": [
+      "T5"
+     ]
+    },
+    "9": {
+     "n": 1,
+     "netMinor": 9860,
+     "winRate": 1,
+     "expectancyR": 0.9860000000000209,
+     "rKnown": 1,
+     "tradeIds": [
+      "T4"
+     ]
+    },
+    "11": {
+     "n": 1,
+     "netMinor": 0,
+     "winRate": 0,
+     "expectancyR": 0,
+     "rKnown": 1,
+     "tradeIds": [
+      "T7"
+     ]
+    },
+    "15": {
+     "n": 1,
+     "netMinor": 9800,
+     "winRate": 1,
+     "expectancyR": null,
+     "rKnown": 0,
+     "tradeIds": [
+      "T6"
+     ]
+    },
+    "16": {
+     "n": 2,
+     "netMinor": 8700,
+     "winRate": 0.5,
+     "expectancyR": 0.13928571428571435,
+     "rKnown": 2,
+     "tradeIds": [
+      "T1",
+      "T2"
+     ]
+    },
+    "23": {
+     "n": 1,
+     "netMinor": 18972,
+     "winRate": 1,
+     "expectancyR": 1.8979591836734693,
+     "rKnown": 1,
+     "tradeIds": [
+      "T3"
+     ]
+    }
+   }
+  },
+  "S13": {
+   "year": 2026,
+   "month": 3,
+   "days": {
+    "2026-03-02": 20700,
+    "2026-03-03": -12000,
+    "2026-03-05": 28832,
+    "2026-03-06": -3442,
+    "2026-03-09": 9800,
+    "2026-03-10": 0
+   },
+   "weeks": [
+    {
+     "start": "2026-03-02",
+     "netMinor": 34090
+    },
+    {
+     "start": "2026-03-09",
+     "netMinor": 9800
+    }
+   ],
+   "monthMinor": 43890
+  },
+  "S13_utc": {
+   "note": "same trades with ctx.tz = UTC",
+   "days": {
+    "2026-03-02": 20700,
+    "2026-03-03": -12000,
+    "2026-03-04": 18972,
+    "2026-03-05": 9860,
+    "2026-03-06": -3442,
+    "2026-03-09": 9800,
+    "2026-03-10": 0
+   }
+  },
+  "S14": {
+   "feesMinor": 1730,
+   "fundingMinor": -50,
+   "feesR": 0.17258879373543412,
+   "fundingR": 0.025085289985951286,
+   "nR": 6
+  },
+  "S15": {
+   "longestWin": 2,
+   "longestLoss": 1,
+   "current": {
+    "kind": null,
+    "length": 0
+   }
+  },
+  "S16": {
+   "followed": 4,
+   "marked": 6,
+   "unmarked": 1,
+   "value": 0.6666666666666666
+  }
+ }
+}

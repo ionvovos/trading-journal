@@ -1,0 +1,28 @@
+{
+ "about": "Reconcile and explanation cases for AC-A1.2, AC-A1.4, AC-A3.1, AC-A3.2 (architecture.md section 5.1). Declared zone Europe/Athens, account USD, mode real, tolerance 1 minor unit per included closed trade. Periods are inclusive local dates of close time.",
+ "cases": [
+  { "id": "held_out", "imports": [{ "file": "import/ibkr-activity.csv", "fileZone": "America/New_York", "answers": [] }],
+    "period": { "from": "2026-03-02", "to": "2026-03-09" }, "broker": { "kind": "net_pnl", "valueMinor": 23400 },
+    "expected": { "state": "difference_open", "oursMinor": 18500, "differenceMinor": 4900, "explanations": [{ "cause": "opened_before_file", "instruments": ["NVDA"], "amountMinor": 4900 }], "unexplainedMinor": 0 },
+    "thenAnswer": { "anomaly": "opened_before_file", "optionId": "use_basis" },
+    "expectedAfter": { "state": "reconciled", "oursMinor": 23400, "differenceMinor": 0 } },
+  { "id": "missing_fee", "imports": [{ "file": "import/generic.csv", "answers": [{ "anomaly": "unreadable_rows", "optionId": "continue" }] }],
+    "period": { "from": "2026-03-10", "to": "2026-03-11" }, "broker": { "kind": "net_pnl", "valueMinor": 4700 },
+    "expected": { "state": "difference_open", "oursMinor": 0, "differenceMinor": 4700, "explanations": [{ "cause": "missing_fee", "instruments": ["SPY"], "amountMinor": 4700, "note": "held out 49.00 with the blank fee read as 0; the remaining -2.00 fits a fee missing from the file" }], "unexplainedMinor": 0 } },
+  { "id": "duplicate", "imports": [{ "file": "import/kraken-trades.csv", "fileZone": "UTC", "answers": [] }, { "file": "import/kraken-overlap.csv", "fileZone": "UTC", "answers": [{ "anomaly": "near_duplicate", "optionId": "keep_both" }] }],
+    "period": { "from": "2026-03-05", "to": "2026-03-05" }, "broker": { "kind": "net_pnl", "valueMinor": 28477 },
+    "expected": { "state": "difference_open", "oursMinor": 37944, "differenceMinor": -9467, "explanations": [{ "cause": "duplicate", "instruments": ["BTC/USD"], "amountMinor": -18972 }, { "cause": "dust", "instruments": ["ETH/USD"], "amountMinor": 9505 }], "unexplainedMinor": 0 } },
+  { "id": "tz_edge", "imports": [{ "file": "import/kraken-month-edge.csv", "fileZone": "UTC", "answers": [{ "anomaly": "tz_edge", "optionId": "month_after" }] }],
+    "period": { "from": "2026-03-01", "to": "2026-03-31" }, "broker": { "kind": "net_pnl", "valueMinor": 879 },
+    "expected": { "state": "difference_open", "oursMinor": 0, "differenceMinor": 879, "explanations": [{ "cause": "tz_edge", "instruments": ["BTC/USD"], "amountMinor": 879, "note": "closed 22:30 UTC on 31 Mar = 01:30 on 1 Apr in Athens (EEST); gross 10.00, fees 1.21, net 8.79" }], "unexplainedMinor": 0 } },
+  { "id": "unexplained", "imports": [{ "file": "import/mt4-statement.htm", "fileZone": "ny+7", "answers": [{ "anomaly": "unreadable_rows", "optionId": "continue" }] }],
+    "period": { "from": "2026-03-05", "to": "2026-03-09" }, "broker": { "kind": "net_pnl", "valueMinor": 8000 },
+    "expected": { "state": "difference_open", "oursMinor": 7418, "differenceMinor": 582, "explanations": [], "unexplainedMinor": 582, "screenText": "unexplained difference of 5.82" } },
+  { "id": "balance_form", "note": "AC-A1.4: start 10,000, end 10,420, deposit 200, trades total 220",
+    "trades": [{ "netMinor": 22000 }], "broker": { "kind": "balance", "startMinor": 1000000, "endMinor": 1042000, "flowsMinor": 20000 },
+    "expected": { "state": "reconciled", "brokerMinor": 22000, "differenceMinor": 0 } },
+  { "id": "match_mt4", "imports": [{ "file": "import/mt4-statement.htm", "fileZone": "ny+7", "answers": [{ "anomaly": "unreadable_rows", "optionId": "continue" }] }],
+    "period": { "from": "2026-03-05", "to": "2026-03-09" }, "broker": { "kind": "net_pnl", "valueMinor": 7419 },
+    "expected": { "state": "reconciled", "differenceMinor": 1, "toleranceMinor": 3 } }
+ ]
+}

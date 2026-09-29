@@ -1,0 +1,19 @@
+{
+ "about": "Hand-computed. Import with fileZone America/New_York (EST until 8 Mar 2026, EDT after), accountCurrency USD, mode real, declared zone Europe/Athens, no earlier imports. SubTotal, Total and the Deposits & Withdrawals Total row are not counted.",
+ "format": "ibkr-activity",
+ "accountCurrency": "USD",
+ "rowsInFile": 11,
+ "fills": 8,
+ "nonTrade": [{ "kind": "deposit", "amount": 1000, "currency": "USD" }],
+ "skipped": [{ "symbol": "AMD", "reasonKey": "import.skip.number" }, { "symbol": "EUR.USD", "reasonKey": "import.skip.assetClass" }],
+ "fillTimesUtc": { "AAPL": ["2026-03-02T14:40:00Z", "2026-03-02T15:10:00Z", "2026-03-02T20:30:00Z"], "MSFT": ["2026-03-03T14:30:00Z", "2026-03-03T15:10:00Z"], "NVDA": ["2026-03-06T15:00:00Z"], "TSLA": ["2026-03-09T13:00:00Z", "2026-03-09T17:00:00Z"] },
+ "trades": [
+  { "instrument": "AAPL", "side": "long", "status": "closed", "avgEntry": 50.8, "avgExit": 55, "size": 50, "grossMinor": 21000, "feesMinor": 300, "netMinor": 20700, "brokerRealizedPnl": 207, "holds": [] },
+  { "instrument": "MSFT", "side": "long", "status": "closed", "avgEntry": 50, "avgExit": 47.6, "size": 50, "grossMinor": -12000, "feesMinor": 0, "netMinor": -12000, "brokerRealizedPnl": -120, "holds": [] },
+  { "instrument": "TSLA", "side": "short", "status": "closed", "avgEntry": 200, "avgExit": 190, "size": 10, "grossMinor": 10000, "feesMinor": 200, "netMinor": 9800, "brokerRealizedPnl": 98, "holds": [] },
+  { "instrument": "NVDA", "side": "long", "status": "held", "holds": ["opened_before_file"], "afterAnswer": { "optionId": "use_basis", "avgEntry": 110, "avgExit": 120, "size": 5, "grossMinor": 5000, "feesMinor": 100, "netMinor": 4900 } }
+ ],
+ "anomalies": [{ "kind": "opened_before_file", "instruments": ["NVDA"] }, { "kind": "unreadable_rows", "rows": 2 }],
+ "period": { "from": "2026-03-02", "to": "2026-03-09" },
+ "closedIncludedNetMinor": 18500
+}
