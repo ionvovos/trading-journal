@@ -55,7 +55,7 @@ test('form, stop and reconcile families are complete', () => {
 });
 
 test('the Greek data catalogue is Greek, except stated Latin-term strings', () => {
-  const latinOk = new Set(['accounts.name.ph', 'journal.pips', 'form.stop', 'form.setup', 'journal.f.setup', 'trade.setup', 'trade.stop', 'stops.ph', 'trade.pips', 'unit.lots', 'form.unit.lots', 'stops.in', 'stops.out', 'accounts.kind.real', 'accounts.kind.paper', 'import.report.rKnownOf']);
+  const latinOk = new Set(['accounts.name.ph', 'journal.pips', 'form.stop', 'form.setup', 'journal.f.setup', 'trade.setup', 'trade.stop', 'stops.ph', 'trade.pips', 'unit.lots', 'form.unit.lots', 'stops.in', 'stops.out', 'accounts.kind.real', 'accounts.kind.paper', 'import.report.rKnownOf', 'trade.stopPips']);
   const bad = Object.entries(dataEl).filter(([k, v]) => !/[Ͱ-Ͽ]/.test(v) && !latinOk.has(k));
   assert.deepEqual(bad.map(([k]) => k), []);
 });
