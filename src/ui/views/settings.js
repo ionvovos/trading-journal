@@ -106,7 +106,7 @@ async function mainPage(root, ctx, repaint) {
     value: a.baseCurrency, href: '#/accounts' }));
   const brokers = group(t('settings.brokers'),
     ...(accountRows.length ? accountRows : [row({ ui, color: 'real', iconName: 'file', label: t('settings.accounts.manage'), href: '#/accounts' })]),
-    row({ ui, color: 'muted', iconName: 'scale', label: t('settings.displayCurrency'), sub: t('settings.displayCurrency.sub', { real: settings.get('displayCurrency.real'), paper: settings.get('displayCurrency.paper') }), value: `${settings.get('displayCurrency.real')}, ${settings.get('displayCurrency.paper')}`, onClick: () => currencySheet(ctx, repaint) }),
+    row({ ui, color: 'muted', iconName: 'scale', label: t('settings.displayCurrency'), sub: t('settings.displayCurrency.sub', { real: ctx.displayCurrencyFor('real'), paper: ctx.displayCurrencyFor('paper') }), value: `${ctx.displayCurrencyFor('real')}, ${ctx.displayCurrencyFor('paper')}`, onClick: () => currencySheet(ctx, repaint) }),
     row({ ui, color: 'muted', iconName: 'import', label: t('settings.cash'), value: String(cash.length), href: '#/cash' }));
 
   const plan = group(t('settings.plan'),
@@ -134,8 +134,8 @@ async function mainPage(root, ctx, repaint) {
 }
 
 function currencySheet(ctx, done) {
-  const real = ctx.ui.field({ label: t('settings.displayCurrency.real'), value: ctx.settings.get('displayCurrency.real') ?? 'USD', maxlength: 5 });
-  const paper = ctx.ui.field({ label: t('settings.displayCurrency.paper'), value: ctx.settings.get('displayCurrency.paper') ?? 'USD', maxlength: 5 });
+  const real = ctx.ui.field({ label: t('settings.displayCurrency.real'), value: ctx.displayCurrencyFor('real'), maxlength: 5 });
+  const paper = ctx.ui.field({ label: t('settings.displayCurrency.paper'), value: ctx.displayCurrencyFor('paper'), maxlength: 5 });
   const s = ctx.ui.sheet({
     title: t('settings.displayCurrency'), body: el('div', { class: 'ob-stack' }, real, paper, el('p', { class: 'caption' }, t('settings.displayCurrency.help'))),
     footer: ctx.ui.button({ label: t('sheet.save'), size: 'lg', block: true, onClick: async () => {

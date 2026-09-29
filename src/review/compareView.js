@@ -20,7 +20,7 @@ export async function renderCompare(root, ctx) {
 
   const compute = () => {
     const period = periodFor(kind, { tz: ctx.tz, localDate: (iso, tz) => localParts(iso, tz).date }) ?? {};
-    const ctxFor = (mode) => statsCtxFor(ctx, model, { mode, accountIds: 'all', displayCurrency: ctx.settings.get(`displayCurrency.${mode}`) || 'USD' });
+    const ctxFor = (mode) => statsCtxFor(ctx, model, { mode, accountIds: 'all', displayCurrency: ctx.displayCurrencyFor(mode) });
     const result = stats.compareModes(model.trades, { from: period.from, to: period.to, lossWindowMin }, { real: ctxFor('real'), paper: ctxFor('paper') });
     return buildCompare(result, { t, fmt: ctx.fmt, lossWindowMin });
   };

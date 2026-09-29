@@ -152,6 +152,8 @@ export default {
   'settings.accounts.start': 'start {x}',
   'settings.accounts.pretend': 'Pretend start {x}',
   'settings.accounts.manage': 'Manage broker accounts',
+  'stats.needsRate.title': 'A rate is missing',
+  'stats.needsRate.body': '{name} is in {from}. Type its rate to {to} in Accounts; until then its figures are left out of the totals.',
   'settings.displayCurrency': 'Display currency',
   'settings.displayCurrency.sub': 'Real in {real}, paper in {paper}',
   'settings.displayCurrency.real': 'Real journal',

@@ -60,6 +60,7 @@ export async function render(root, ctx, params = {}) {
 
     const banner = el('div', { class: 'vstack tight' },
       el('div', { class: 'spread' }, ui.modeBadge(ctx.mode), el('span', { class: 'caption num' }, [t('home.counts.closed', { n: s.included.length }), s.counts.heldOut ? t('home.counts.held', { n: s.counts.heldOut }) : null, s.counts.open ? t('home.counts.open', { n: s.counts.open }) : null, s.counts.excluded ? t('stats.excluded', { n: s.counts.excluded }) : null].filter(Boolean).join(' · '))));
+    const rateBanners = s.needsRate.map((n) => ui.stateBanner({ kind: 'attention', iconName: 'alert', title: t('stats.needsRate.title'), body: t('stats.needsRate.body', n), href: '#/accounts' }));
     const smallSample = s.included.length > 0 && s.included.length < s.sctx.smallSampleMin ? ui.stateBanner({ kind: 'neutral', iconName: 'info', title: t('home.small.title', { n: s.included.length }), body: t('home.small.body', { n: s.sctx.smallSampleMin }) }) : null;
 
     let body;
@@ -127,7 +128,7 @@ export async function render(root, ctx, params = {}) {
       body = [eqCard, rCard, setupCard, figures];
     }
 
-    mount(root, bar, el('main', { class: 'content' }, tabs, periodBar, banner, smallSample, ...body));
+    mount(root, bar, el('main', { class: 'content' }, tabs, periodBar, banner, ...rateBanners, smallSample, ...body));
     void pointIndex;
   }
   await paint();

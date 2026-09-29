@@ -27,8 +27,10 @@ export const sectionHead = (title, link) => el('div', { class: 'section-h' }, el
 export function toDisplayMinor(netMinor, account, displayCcy) {
   if (netMinor === null || netMinor === undefined) return null;
   if (!account || account.baseCurrency === displayCcy) return netMinor;
+  const rate = account.toDisplayRate;
+  if (!(rate > 0)) return null; // no rate: the amount is not shown as if it were in the display currency (V2 G3)
   const major = netMinor / 10 ** minorDigits(account.baseCurrency);
-  return roundMinor(major * (account.toDisplayRate ?? 1), minorDigits(displayCcy));
+  return roundMinor(major * rate, minorDigits(displayCcy));
 }
 
 // "50 shares", "0.05 BTC", "1.00 lots" from the entry size of a trade.

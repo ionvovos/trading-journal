@@ -40,3 +40,69 @@ test('G2 invariant at the view level: the week cells of a month add up to the mo
   }
   assert.ok(checked >= 2);
 });
+
+// ---- G3: display currency
+import { createCtx, createFallbackStore, createSettings } from '../../src/ui/ctx.js';
+import { createBus } from '../../src/ui/bus.js';
+import { toDisplayMinor } from '../../src/storage/viewkit.js';
+import { createAccount, validateAccount } from '../../src/storage/actions.js';
+import { computeStats } from '../../src/storage/statsModel.js';
+import { loadModel } from '../../src/storage/model.js';
+import { makeTrade } from '../stats/helpers.mjs';
+
+async function ctxWith(accounts, set = {}) {
+  const store = createFallbackStore();
+  for (const a of accounts) await store.accounts.put(a);
+  for (const [k, v] of Object.entries(set)) await store.setSetting(k, v);
+  const settings = await createSettings(store, []);
+  const ctx = createCtx({ store, bus: createBus(), settings, router: { navigate() {} } });
+  await ctx.refreshCurrencies();
+  return { ctx, store };
+}
+const acc = (id, mode, baseCurrency, toDisplayRate = null) => ({ id, name: id, mode, baseCurrency, startBalance: '1000', toDisplayRate, createdAt: 'x' });
+
+test('G3: the display currency of a mode is the currency its accounts share, unless the person set one', async () => {
+  const eur = await ctxWith([acc('e', 'real', 'EUR')]);
+  assert.equal(eur.ctx.displayCurrencyFor('real'), 'EUR');
+  assert.equal(eur.ctx.displayCurrency(), 'EUR');
+  const mixed = await ctxWith([acc('e', 'real', 'EUR'), acc('u', 'real', 'USD')]);
+  assert.equal(mixed.ctx.displayCurrencyFor('real'), 'USD', 'mixed currencies and no setting: the fallback');
+  const set = await ctxWith([acc('e', 'real', 'EUR')], { 'displayCurrency.real': 'GBP' });
+  assert.equal(set.ctx.displayCurrencyFor('real'), 'GBP', 'an explicit setting wins');
+  const paper = await ctxWith([acc('p', 'paper', 'EUR'), acc('r', 'real', 'USD')]);
+  assert.deepEqual([paper.ctx.displayCurrencyFor('real'), paper.ctx.displayCurrencyFor('paper')], ['USD', 'EUR']);
+});
+
+test('G3: an amount is never converted with a rate that was never typed', () => {
+  assert.equal(toDisplayMinor(650, { baseCurrency: 'EUR', toDisplayRate: null }, 'USD'), null);
+  assert.equal(toDisplayMinor(650, { baseCurrency: 'EUR' }, 'USD'), null);
+  assert.equal(toDisplayMinor(650, { baseCurrency: 'EUR', toDisplayRate: 0 }, 'USD'), null);
+  assert.equal(toDisplayMinor(650, { baseCurrency: 'EUR', toDisplayRate: null }, 'EUR'), 650, 'same currency needs no rate');
+  assert.equal(toDisplayMinor(650, { baseCurrency: 'EUR', toDisplayRate: 1.1 }, 'USD'), 715);
+});
+
+test('G3: an account in another currency than its display currency must carry a rate; the same currency needs none', () => {
+  const eur = createAccount({ name: 'E', mode: 'real', baseCurrency: 'EUR', startBalance: '100', toDisplayRate: '' }, { now: 'x', id: 'e' });
+  assert.equal(eur.toDisplayRate, null);
+  assert.deepEqual(validateAccount(eur, [], { displayCcy: 'EUR' }), []);
+  assert.deepEqual(validateAccount(eur, [], { displayCcy: 'USD' }).map((e) => e.field), ['toDisplayRate']);
+  const withRate = createAccount({ name: 'E', mode: 'real', baseCurrency: 'EUR', startBalance: '100', toDisplayRate: '1,08' }, { now: 'x', id: 'e' });
+  assert.deepEqual(validateAccount(withRate, [], { displayCcy: 'USD' }), []);
+});
+
+test('G3: a EUR account with no rate shown in USD is reported as needing a rate and adds nothing to the total (the U3 case: 6.50 is never printed as USD)', async () => {
+  const { ctx, store } = await ctxWith([acc('eur', 'real', 'EUR'), acc('usd', 'real', 'USD', 1)]);
+  await store.trades.put(makeTrade({ id: 'w', accountId: 'eur', entry: '10', exit: '20', size: '1', stop: '9', close: '2026-09-02T16:00:00Z', open: '2026-09-02T15:00:00Z' }));
+  await store.trades.put(makeTrade({ id: 'l', accountId: 'usd', entry: '10', exit: '5', size: '1', stop: '9', close: '2026-09-03T16:00:00Z', open: '2026-09-03T15:00:00Z' }));
+  const model = await loadModel(store);
+  const s = await computeStats(ctx, model, { period: null });
+  assert.equal(s.currency, 'USD');
+  assert.deepEqual(s.needsRate.map((n) => [n.name, n.from, n.to]), [['eur', 'EUR', 'USD']]);
+  assert.equal(s.netMinor, -500, 'only the USD trade is in the total');
+  const same = await ctxWith([acc('eur', 'real', 'EUR')]);
+  await same.store.trades.put(makeTrade({ id: 'w', accountId: 'eur', entry: '10', exit: '20', size: '1', stop: '9', close: '2026-09-02T16:00:00Z', open: '2026-09-02T15:00:00Z' }));
+  const s2 = await computeStats(same.ctx, await loadModel(same.store), { period: null });
+  assert.equal(s2.currency, 'EUR');
+  assert.deepEqual(s2.needsRate, []);
+  assert.ok(s2.netMinor > 0);
+});

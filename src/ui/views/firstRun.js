@@ -14,7 +14,6 @@ export async function createPaperAccount(ctx) {
   if (existing) return existing;
   const account = { id: newId(), name: t('first.paperAccount'), mode: 'paper', baseCurrency: 'EUR', startBalance: '10000', toDisplayRate: 1, fileZones: {}, dustThresholds: {}, contractValues: {}, createdAt: new Date().toISOString() };
   await ctx.store.accounts.put(account);
-  await ctx.settings.set('displayCurrency.paper', 'EUR');
   return account;
 }
 

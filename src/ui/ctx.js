@@ -12,8 +12,8 @@ export const SETTING_DEFAULTS = {
   theme: 'system', // system | light | dark
   tz: null, // null = the device zone
   dayCutoffHour: 0,
-  'displayCurrency.real': 'USD',
-  'displayCurrency.paper': 'EUR',
+  'displayCurrency.real': null, // null = the currency of the accounts in that mode when they share one (V2 G3)
+  'displayCurrency.paper': null,
   smallSampleMin: 30,
   openReminderDays: 7,
   exportReminderEvery: 50,
@@ -44,6 +44,7 @@ export async function createSettings(store, extraKeys) {
 
 export function createCtx({ store, bus, router, settings, data = {}, storage = { kind: 'idb', refused: false } }) {
   let accountFilter = 'all';
+  const derived = { real: null, paper: null }; // the one currency the accounts of a mode share, when they share one
   const ctx = {
     store, bus, ui, t, settings, storage,
     // The data layer (S2) and review layer (S3) hang their functions here at boot: getSummary, stats, latestReview, etc.
@@ -71,7 +72,19 @@ export function createCtx({ store, bus, router, settings, data = {}, storage = {
       bus.emit('lang-changed', next);
     },
     navigate: (hash, state) => router.navigate(hash, state),
-    displayCurrency: () => settings.get(`displayCurrency.${ctx.mode}`) || (ctx.mode === 'paper' ? 'EUR' : 'USD'),
+    // The display currency of a mode: what the person set, else the currency all that mode's accounts share, else USD. With mixed
+    // currencies and no setting, an account in another currency needs its rate before its figures are added (V2 G3).
+    displayCurrencyFor: (mode) => settings.get(`displayCurrency.${mode}`) || derived[mode] || (mode === 'paper' ? 'EUR' : 'USD'),
+    displayCurrency: () => ctx.displayCurrencyFor(ctx.mode),
+    async refreshCurrencies() {
+      try {
+        const accounts = await store.accounts.getAll();
+        for (const m of ['real', 'paper']) {
+          const set = [...new Set(accounts.filter((a) => a.mode === m).map((a) => a.baseCurrency))];
+          derived[m] = set.length === 1 ? set[0] : null;
+        }
+      } catch { /* keep the last values */ }
+    },
   };
   return ctx;
 }

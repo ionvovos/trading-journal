@@ -32,7 +32,7 @@ export async function getSummary(ctx) {
   })) : [];
   const last = await ctx.store.getSetting('lastExportAt');
   return {
-    currency: s.currency, netMinor: s.netMinor, closed: s.included.length, periodLabel: monthName(month, fmt),
+    currency: s.currency, needsRate: s.needsRate, netMinor: s.netMinor, closed: s.included.length, periodLabel: monthName(month, fmt),
     curve: { points }, smallSampleMin: ctx.settings.get('smallSampleMin') ?? 30,
     expectancy: exp ? { r: exp.r ? { value: exp.r.value, n: exp.r.n, rMissing: exp.r.rMissing } : undefined, smallSample: exp.smallSample } : undefined,
     winRate: s.winRate ? { value: s.winRate.value, wins: s.winRate.wins, n: s.winRate.n } : undefined,

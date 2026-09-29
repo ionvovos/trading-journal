@@ -153,6 +153,8 @@ export default {
   'settings.accounts.start': 'αρχικό {x}',
   'settings.accounts.pretend': 'Φανταστικό αρχικό {x}',
   'settings.accounts.manage': 'Διαχείριση λογαριασμών broker',
+  'stats.needsRate.title': 'Λείπει μια ισοτιμία',
+  'stats.needsRate.body': 'Ο λογαριασμός {name} είναι σε {from}. Γράψτε την ισοτιμία του προς {to} στους Λογαριασμούς· μέχρι τότε τα μεγέθη του μένουν εκτός των συνόλων.',
   'settings.displayCurrency': 'Νόμισμα εμφάνισης',
   'settings.displayCurrency.sub': 'Πραγματικό σε {real}, εικονικό σε {paper}',
   'settings.displayCurrency.real': 'Πραγματικές συναλλαγές',

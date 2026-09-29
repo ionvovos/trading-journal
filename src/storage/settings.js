@@ -13,8 +13,6 @@ export const SETTING_DEFAULTS = {
   reconcileCap: '1.00',
   lossWindowMin: 30,
   firstRunDone: false,
-  'displayCurrency.real': 'USD',
-  'displayCurrency.paper': 'USD',
 };
 
 export function settingDefault(key) {

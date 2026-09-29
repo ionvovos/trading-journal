@@ -12,18 +12,24 @@ const errorText = (e) => t(`form.error.${e.code}`);
 function accountSheet(ctx, { account, model, onSaved }) {
   const isNew = !account;
   const draft = { name: account?.name ?? '', mode: account?.mode ?? ctx.mode, baseCurrency: account?.baseCurrency ?? ctx.displayCurrency(), startBalance: account?.startBalance ?? '', toDisplayRate: account?.toDisplayRate && account.toDisplayRate !== 1 ? String(account.toDisplayRate) : '' };
+  // The currency this account's figures are shown in: what the person set; else, for the first account of a mode, its own currency
+  // (the display currency then follows it); else the currency the mode's accounts share. A different currency needs a typed rate.
+  const targetCcy = () => {
+    if (ctx.settings.get(`displayCurrency.${draft.mode}`)) return ctx.displayCurrencyFor(draft.mode);
+    return model.accounts.some((a) => a.mode === draft.mode && a.id !== account?.id) ? ctx.displayCurrencyFor(draft.mode) : draft.baseCurrency.toUpperCase();
+  };
   const slot = el('div', { class: 'vstack' });
   let errors = [];
   const errFor = (f) => { const e = errors.find((x) => x.field === f); return e ? errorText(e) : undefined; };
   const draw = () => {
-    const rate = draft.baseCurrency.toUpperCase() !== ctx.displayCurrency();
+    const rate = draft.baseCurrency.toUpperCase() !== targetCcy();
     mount(slot,
       ctx.ui.field({ label: t('accounts.name'), value: draft.name, error: errFor('name'), placeholder: t('accounts.name.ph'), onInput: (v) => { draft.name = v; } }),
       isNew ? el('div', { class: 'field' }, el('span', { class: 'lbl' }, t('accounts.kind')), ctx.ui.segmented({ ariaLabel: t('accounts.kind'), value: draft.mode, options: [{ value: 'real', label: t('accounts.kind.real') }, { value: 'paper', label: t('accounts.kind.paper') }], onChange: (v) => { draft.mode = v; } })) : null,
       el('div', { class: 'grid2' },
         ctx.ui.field({ label: t('accounts.currency'), value: draft.baseCurrency, error: errFor('baseCurrency'), maxlength: 5, onInput: (v) => { draft.baseCurrency = v.toUpperCase(); }, onChange: () => draw() }),
         ctx.ui.field({ label: t('accounts.start'), value: draft.startBalance, inputmode: 'decimal', unit: draft.baseCurrency, error: errFor('startBalance'), help: t('accounts.start.help'), onInput: (v) => { draft.startBalance = v; } })),
-      rate ? ctx.ui.field({ label: t('accounts.rate', { from: draft.baseCurrency, to: ctx.displayCurrency() }), value: draft.toDisplayRate, inputmode: 'decimal', error: errFor('toDisplayRate'), help: t('accounts.rate.help'), onInput: (v) => { draft.toDisplayRate = v; } }) : null);
+      rate ? ctx.ui.field({ label: t('accounts.rate', { from: draft.baseCurrency, to: targetCcy() }), value: draft.toDisplayRate, inputmode: 'decimal', error: errFor('toDisplayRate'), help: t('accounts.rate.help'), onInput: (v) => { draft.toDisplayRate = v; } }) : null);
   };
   draw();
   const s = ctx.ui.sheet({
@@ -31,7 +37,7 @@ function accountSheet(ctx, { account, model, onSaved }) {
     footer: ctx.ui.button({ label: t('sheet.save'), size: 'lg', block: true, onClick: async () => {
       const next = createAccount(draft, { now: account?.createdAt ?? nowIso(), id: account?.id });
       const built = account ? { ...account, name: next.name, baseCurrency: next.baseCurrency, startBalance: next.startBalance, toDisplayRate: next.toDisplayRate } : next;
-      errors = validateAccount(built, model.accounts);
+      errors = validateAccount(built, model.accounts, { displayCcy: targetCcy() });
       if (errors.length) { draw(); return; }
       await ctx.store.accounts.put(built);
       s.close();

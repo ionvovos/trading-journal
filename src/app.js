@@ -99,6 +99,7 @@ export async function mountApp({ store, storage, data = {}, root = document.getE
   async function renderRoute(match) {
     const mine = ++token;
     cleanup?.(); cleanup = null;
+    await ctx.refreshCurrencies();
     const needsFirstRun = !settings.get('firstRunDone') && match.route?.view !== 'about';
     const viewName = needsFirstRun ? 'firstRun' : match.route?.view ?? 'home';
     const tab = needsFirstRun ? null : match.route?.tab;

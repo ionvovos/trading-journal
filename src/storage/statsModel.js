@@ -40,13 +40,15 @@ export async function computeStats(ctx, model, { period = null, sctxOverrides = 
   for (const tr of included) money.set(tr.id, tr.entryUnknown ? { netMinor: tr.broker?.netMinor ?? null } : stats.tradeMoney(tr, sctx));
   const accounts = new Map(model.accounts.map((a) => [a.id, a]));
   const displayCcy = sctx.displayCurrency;
+  // accounts in another currency than the display currency with no typed rate: their figures cannot be added, so the screens say so
+  const needsRate = [...new Map(included.filter((tr) => { const a = accounts.get(tr.accountId); return a && a.baseCurrency !== displayCcy && !(a.toDisplayRate > 0); }).map((tr) => [tr.accountId, accounts.get(tr.accountId)])).values()].map((a) => ({ id: a.id, name: a.name, from: a.baseCurrency, to: displayCcy }));
   const displayNet = (tr) => { const m = money.get(tr.id); return m && m.netMinor !== null && m.netMinor !== undefined ? toDisplayMinor(m.netMinor, accounts.get(tr.accountId), displayCcy) : null; };
   const netMinor = included.reduce((s, tr) => s + (displayNet(tr) ?? 0), 0);
   const curve = stats.equityCurve(included, sctx);
   const cashInView = model.cash.filter((c) => sctx.accountIds === 'all' ? accounts.get(c.accountId)?.mode === ctx.mode : sctx.accountIds.includes(c.accountId));
   const drawdown = stats.drawdown(curve, { cash: cashInView, ctx: sctx });
   return {
-    stats, sctx, period, set: { included, excluded }, included, excluded, wanted, money, displayNet, netMinor, currency: displayCcy, accounts, cash: cashInView,
+    stats, sctx, period, set: { included, excluded }, included, excluded, wanted, money, displayNet, needsRate, netMinor, currency: displayCcy, accounts, cash: cashInView,
     winRate: stats.winRate(included, sctx), avgWinLoss: stats.avgWinLoss(included, sctx), profitFactor: stats.profitFactor(included, sctx),
     expectancy: stats.expectancy(included, sctx), curve, drawdown,
     feeTotals: stats.feeTotals(included, sctx), streaks: stats.streaks(included, sctx), ruleFollowing: stats.ruleFollowing(included, sctx), holding: stats.holdingTime(included, sctx),

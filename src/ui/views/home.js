@@ -238,7 +238,7 @@ export async function render(root, ctx) {
     if (m.empty && m.mode === 'paper') {
       try { const a = (await ctx.store.accounts.getAll()).find((x) => x.mode === 'paper'); if (a) paperAccount = { startMinor: Math.round(Number(a.startBalance) * 10 ** ctx.fmt.minorDigits(a.baseCurrency)), ccy: a.baseCurrency }; } catch { /* no accounts yet */ }
     }
-    const kids = [...banners(ctx, m, { offline })];
+    const kids = [...banners(ctx, m, { offline }), ...(summary?.needsRate ?? []).map((n) => ctx.ui.stateBanner({ kind: 'attention', iconName: 'alert', title: t('stats.needsRate.title'), body: t('stats.needsRate.body', n), href: '#/accounts' }))];
     if (failed) kids.push(ctx.ui.stateBanner({ kind: 'danger', iconName: 'alert', title: t('home.error.title'), body: t('home.error.body') }));
     if (m.empty) kids.push(...emptyView(ctx, m, paperAccount));
     else {

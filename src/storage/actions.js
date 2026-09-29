@@ -25,17 +25,19 @@ export const defaultContractSize = (market, instrument) => (market === 'forex' &
 
 export const createAccount = (o, { now, id = newId('acc-') } = {}) => ({
   id, name: String(o.name || '').trim(), mode: o.mode === 'paper' ? 'paper' : 'real', baseCurrency: String(o.baseCurrency || 'USD').trim().toUpperCase(),
-  startBalance: o.startBalance ? parseUserDecimal(o.startBalance) : null, toDisplayRate: o.toDisplayRate ? Number(parseUserDecimal(o.toDisplayRate)) : 1,
+  startBalance: o.startBalance ? parseUserDecimal(o.startBalance) : null, toDisplayRate: o.toDisplayRate ? Number(parseUserDecimal(o.toDisplayRate)) : null,
   fileZones: {}, dustThresholds: {}, contractValues: {}, createdAt: now,
 });
 
-export function validateAccount(a, existing = []) {
+// displayCcy (optional): the display currency the account will be shown in; an account in another currency must carry its rate (V2 G3).
+export function validateAccount(a, existing = [], { displayCcy = null } = {}) {
   const errors = [];
   if (!a.name) errors.push({ field: 'name', code: 'required' });
   else if (existing.some((x) => x.id !== a.id && x.name.toLowerCase() === a.name.toLowerCase())) errors.push({ field: 'name', code: 'duplicate' });
   if (!/^[A-Z]{3,5}$/.test(a.baseCurrency)) errors.push({ field: 'baseCurrency', code: 'currency' });
   if (a.startBalance !== null && (a.startBalance === undefined || D.cmp(a.startBalance, '0') < 0)) errors.push({ field: 'startBalance', code: 'number' });
-  if (!(a.toDisplayRate > 0)) errors.push({ field: 'toDisplayRate', code: 'positive' });
+  const rateNeeded = displayCcy !== null && a.baseCurrency !== displayCcy;
+  if (a.toDisplayRate === null || a.toDisplayRate === undefined) { if (rateNeeded) errors.push({ field: 'toDisplayRate', code: 'positive' }); } else if (!(a.toDisplayRate > 0)) errors.push({ field: 'toDisplayRate', code: 'positive' });
   return errors;
 }
 
