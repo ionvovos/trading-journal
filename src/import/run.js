@@ -73,7 +73,7 @@ function buildReport({ parsed, format, fileName, trades, matched, cash, anomalie
   for (const a of anomalies) counts[a.kind] = a.tradeIds.length || (a.detail?.entries?.length ?? a.detail?.skipped?.length ?? 0);
   return {
     formatId: format.id, fileName: fileName || null, rowsInFile: parsed.rowsInFile,
-    rowsRead: (parsed.fills || []).length + (parsed.cash || []).length + (parsed.funding || []).length,
+    rowsRead: Math.max(0, parsed.rowsInFile - skipped.length), // source rows turned into fills, cash, funding or open positions
     tradesBuilt: trades.length, matched, skipped, cashRows: cash.length, fundingRows: (parsed.funding || []).length,
     openAtEnd: (parsed.openAtEnd || []).length, anomalyCounts: counts,
     rKnownShare: rKnownShare(trades, deps), period, periodZone: effectiveZone, fileSummary: parsed.fileSummary || null,
