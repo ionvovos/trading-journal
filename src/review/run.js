@@ -45,9 +45,10 @@ export async function runReview(input, { engine = RULES_ENGINE, bus = null, fmt 
 
   let engineId = 'rules';
   let engineNote = engine.id === 'rules' ? 'no_model' : '';
-  if (engine.id !== 'rules' && typeof engine.reword === 'function' && findings.length) {
+  if (engine.id !== 'rules' && typeof engine.reword === 'function' && findings.some((x) => !x.segments.some((s) => s.quoted))) {
     try {
-      const items = findings.map((x) => ({ id: x.id, pattern: x.pattern, facts: x.shown, ruleText: x.ruleText, lang }));
+      // a finding that quotes the user's own rule is never sent: the quote is the user's words, and the template keeps that sentence
+      const items = findings.filter((x) => !x.segments.some((s) => s.quoted)).map((x) => ({ id: x.id, pattern: x.pattern, facts: x.shown, ruleText: x.ruleText, lang }));
       const reworded = await withTimeout(engine.reword(items, lang), timeoutMs);
       let used = 0;
       let rejected = 0;

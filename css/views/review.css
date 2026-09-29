@@ -43,6 +43,7 @@ button.check { position: relative; }
 .banner.attention .btn-row { margin-top: var(--s2); }
 
 /* Learn */
+.learn-card .tag { justify-self: start; }
 .learn-card h2 { margin: 0; font: 700 20px/26px var(--font-display); }
 .learn-card .plain { margin: 0; font-size: var(--fs-body); line-height: var(--lh-body); }
 

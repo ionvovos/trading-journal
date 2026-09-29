@@ -353,6 +353,20 @@
    "text": "Το πρώτο κείμενο έχει αλλαχτεί και δεν είναι το εγκεκριμένο.",
    "class": "legal_mismatch",
    "source": "altered legal text"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Size up after a loss.",
+   "class": "instruction",
+   "source": "the same word as a sentence in review scope (A2)"
+  },
+  {
+   "lang": "en",
+   "scope": "review",
+   "text": "Trade only the first hour.",
+   "class": "instruction",
+   "source": "the same word as a sentence in review scope (A2)"
   }
  ],
  "safe": [
@@ -649,6 +663,78 @@
    "key": "legal.about",
    "text": "Τι είναι η εφαρμογή: ένα ημερολόγιο και εργαλείο ανασκόπησης. Αναλύει τις συναλλαγές που καταχωρίζετε ή εισάγετε με βάση τους κανόνες που θέτετε εσείς. Τι δεν είναι: δεν παρέχει επενδυτικές συμβουλές ούτε συστάσεις για κανένα χρηματοπιστωτικό μέσο ή κρυπτο-περιουσιακό στοιχείο, δεν προτείνει brokers, χρηματιστήρια ή πλατφόρμες και δεν προβλέπει τιμές. Δεν αποτελεί φορολογική ή νομική συμβουλή. Τα στοιχεία περιγράφουν τις παλιότερες συναλλαγές σας και δεν λένε τίποτα βέβαιο για το μέλλον. Οι συναλλαγές μπορεί να σας κοστίσουν χρήματα, και με μόχλευση περισσότερα από όσα καταθέσατε. Κάθε απόφαση είναι δική σας. Οι αριθμοί είναι τόσο σωστοί όσο τα δεδομένα που δίνετε: ελέγχετέ τους με τις καταστάσεις του broker σας. Το λογισμικό διατίθεται δωρεάν, ως έχει, με την άδεια που αναφέρεται στο αποθετήριο.",
    "source": "legal-review §4 verbatim; replaced when aios-lawyer answers G11 (c)"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Size",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Size from risk",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Size is required to save.",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Size and side",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Pause download",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Trade fills",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Short 20 shares",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Long 0.2 lot",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Close",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "en",
+   "scope": "ui",
+   "text": "Move stop",
+   "source": "V1 gate round 2, A2/G22: interface label, not an instruction"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Μέγεθος",
+   "source": "V1 gate round 2, A2/G22: interface label"
+  },
+  {
+   "lang": "el",
+   "scope": "ui",
+   "text": "Παύση λήψης",
+   "source": "V1 gate round 2, A2/G22: interface label"
   }
  ]
 }

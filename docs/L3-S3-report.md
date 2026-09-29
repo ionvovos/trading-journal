@@ -1,0 +1,47 @@
+# L3 S3 report: plan, position size, review, AI, sentence entry, learn
+
+Phase `nexa-build-trading-journal-2026-09-29-L3-S3`, seat aios-nextjs-developer (sonnet). Stage brief `seats/L3-S3-agent.md`; architecture sections 5.2-5.4 and 10; V1 carry A2.
+
+## What was built
+
+| Area | Files | What it does |
+|---|---|---|
+| Plan and checks | `src/plan/{check,derive,sizing}.js`, `src/ui/views/{plan,checklist,sizing}.js` | Plan model with no default for risk, loss limit, stop or size. `evaluatePlan` decides hours, daily cap, risk, daily loss limit, stop and setup as `pass`/`fail`/`unknown`. The checklist runs before a trade (`runChecklist`), the plan mark is confirmed after saving (`afterSave`). `positionSize` takes only typed values, returns the missing inputs by name, rounds down to the typed size step and recomputes the risk at that size. |
+| Review agent | `src/review/{rows,patterns,templates,run,guard,banned,legalTexts,sha256}.js`, `src/ui/views/review.js` | Code finds 11 patterns and the trades behind each (nine of architecture 5.2, with "busy days" split into three findings). Fixed EN and EL templates write every sentence and question; a model may only reword a sentence, and only findings that do not quote the user's own rule are sent. Each reworded sentence must pass the guard, keep every number of the template sentence, add no number and name no instrument, or the template stays. The rule fallback always works and the view says so. |
+| Boundary guard | `src/review/guard.js`, `banned.js`, `legalTexts.js` | Word-list classes and sentence-initial classes for English and Greek, quoted plan spans, `legal` scope by pinned SHA-256, `scopeForKey`. V1 carry A2 done: `instruction` in `ui` scope only checks sentences, so "Size", "Size from risk", "Size is required to save.", "Size and side", "Pause download", "Trade fills" and "Short 20 shares" pass; the same words as review sentences fail. |
+| AI | `src/ai/{http,anthropic,openai,adapter,keystore,prompts,engine,device,worker,settings,index}.js`, `src/ui/views/aiSettings.js` | Own-key adapter and WebLLM host copied from thought-catcher (E3), retargeted. Key bound to provider and host in `localStorage['trading-journal.ai-key']`. Engine ladder own key, on-device, rules with `ai-state` events. On-device rung is off for Greek (`DEVICE_GREEK_OK = false`, architecture 5.2). |
+| Sentence entry | `src/sentence/{parse,assist,crypto}.js`, `src/ui/views/sentence.js` | Code-first parser for EN and GR (side, size, instrument, market, entry, exit, stop, stop in pips as exact arithmetic, target, fee, setup). `1.085` in Greek is asked with both readings. A model may add setup and notes; a number it reads differently is shown beside the code value, never applied. |
+| Learn | `src/learn/{index,entries.en,entries.el}.js`, `src/ui/views/learn.js` | T1-T25 plus the CFD text (AC-P6.4, pinned by hash). `explain(figureId, explainResult, lang)` fills the user's numbers into a formula. |
+| Text and CSS | `src/i18n/{en,el}/review.js`, `css/views/review.css` | 290 keys per language; every string passes the guard with the scope of its key. |
+
+## Tests (`npm test`: 558 tests, 550 pass, 7 skipped, 1 fail)
+
+`tests/plan` derive (against the S1/S2 hand-computed `core.json`), sizing (three AC-P2.6 cases and the no-default rules), check, autoChecks. `tests/review` guard and legal table (56 banned and 58 safe rows, EN and EL; the V1 G22 strings), patterns (three seeded losing weeks and a calm week, with expected findings derived by hand in `tests/fixtures/review/make-weeks.mjs`), templates, noAdvice (three weeks, both languages, stub model emitting every banned class, a wrong number, an invented ticker, a dropped figure), stubModel (garbage, timeout, throw), catalogue, S2 compatibility. `tests/ai` key scoping (ported V2 G1: an Anthropic key is never sent after switching provider or address, Test connection included, a key typed for one host goes only there), adapter, engine ladder. `tests/sentence` 53 phrases (26 Greek) across the three markets. `tests/learn`. `tests/review/shoot.mjs` (not part of `npm test`, needs Chrome) checked the seven screens at 390x844 and 360x800, light and dark, English and Greek: 0 page errors, 0 horizontal overflow, 0 clipped text, 0 touch targets under 44 px, 0 external requests.
+
+The one failing test is `tests/shell/pwa.test.mjs` (F2), not an S3 test.
+
+## Local model (AM5)
+
+The orchestrator did not say oMLX was up, so it was not used. All 26 learn entries, the 53 sentence phrases and the Greek legal-table rows were written by this seat. Accepted 0, rejected 0 from the local model. The Greek learn entries, Greek templates and Greek catalogue are first drafts for C6 and the L4 lawyer pass.
+
+## Findings
+
+- F1 `ctx.data` is not wired. `src/app.js` `loadData` attaches only `getSummary`. `runChecklist`, `afterSave`, `latestReview`, `evaluatePlan`, `parseSentence`, `runReview`, `renderAiSettings`, `learn`, `guard` are exported from `src/review/index.js`; S1 must merge them into `data` at boot (`Object.assign(data, await import('./review/index.js'))`). Until then S2's trade form skips the checklist and nothing confirms the plan mark.
+- F2 `sw.js` precache lacks the S3 files (`css/views/review.css`, `src/ai/*`, `src/plan/*`, `src/review/*`, `src/sentence/*`, `src/learn/*`, the S3 views and catalogues). `tests/shell/pwa.test.mjs` fails until S1 runs `node tools/shell-list.mjs`. `sw.js` is S1's file and is being edited by S1, so it was not touched.
+- F3 `src/ui/components/topbar.js` writes the text "null" into a bar that has neither `right` nor `back` (`bar.append(null)`). Worked around in `review.js` with a spacer. S1 should fix `append`.
+- F4 `createSettings` in `src/ui/ctx.js` preloads only `SETTING_DEFAULTS` keys, so `ctx.settings.get('ai.engine')`, which `settings.js` uses for its row label, is undefined after a reload. S3 reads the store directly (`src/ai/settings.js`, `AI_KEYS`); S1 should add those keys to the preload list.
+- F5 Delete all data (AC-P8.9): S3 exports `deleteModelCaches()` (`src/ai/device.js`) for the "also delete the downloaded model" option and `browserKeyStore().clearAll()` for the key; S2/S1 must call both from `clearAll`. `e2e/delete-all.mjs` (L4) should check the WebLLM caches.
+- F6 `src/plan/derive.js` repeats the S1/S2/S7/S8 arithmetic because `src/stats` (C5) had not landed. `tests/plan/derive.test.mjs` checks it against `core.json` and `tests/plan/deriveVsStats.test.mjs` compares it with `src/stats` when that exists (skipped now). When C5 lands, switch `rows.js` to `src/stats` and delete `derive.js` money code, or keep the drift test.
+- F7 `positionSize` is implemented in `src/plan/sizing.js`. The C5 spec lists it under `src/stats` as well. C5 should re-export from `src/plan/sizing.js` so there is one implementation.
+- F8 `learn.explain` formulas for S4, S6, S7, S8, S9, S11, S18 use parameter names (`wins, n, value, profit, loss, net, risk, r, sumR, peak, trough, amount, pct, total`) that `stats.explain` must return in `params`; a missing parameter shows no formula, not a wrong one. S2 and C5 should confirm the names.
+- F9 The paper-versus-real comparison "Your paper and real figures" (AC-P4.5, P4.6) is not in the S3 list and is not built. The guard has the `comparison` scope ready and `stats.compareModes` is C5's.
+- F10 Learn T26 onward (reconcile, held-out trade, stop slippage in R, broker account, day cut-off, forex session) is not written: the domain pack has no sourced text for them yet (AC-P6.1).
+- F11 The Greek CFD sentence, the Greek legal-table rows and the Greek learn text are S3 drafts. The `cfd` hash in `legalTexts.js` pins the Greek draft, so a lawyer edit needs its new hash added.
+- F12 `strings-boundary` passes over the S3 catalogue, but the learn entries are not catalogue keys: `learnStrings(lang)` in `src/learn/index.js` lists them with scope; `tests/learn` runs them. S1's strings-boundary could import it.
+- F13 The sentence parser needs the uppercase ticker or a user instrument for a stock (`aapl` alone is not read); lower case works for the major coins and currency pairs. The confirm step always shows the market and asks for a missing instrument.
+- F14 The Learn route is a page, not the anchored popover of the mockups; the trade's R chip, the home info buttons and figure drill-downs open `#/learn/<slug>` with slugs `r`, `expectancy`, `win-rate`, `drawdown`, `paper-trading` as S1 and S2 already use them.
+- F15 The own-key screen lists what is sent: the figures and the fixed sentence of each finding, and a sentence typed in sentence entry. It never sends instrument names, checklist item wording, notes, moods, screenshots or other trades (`tests/review/noAdvice.test.mjs` asserts what a model receives).
+
+## Not done, by design
+
+Nothing was pushed to Pages, no key or purchase was involved. The visual comparison with the L2d mockups and the persona sessions belong to L4 and V2.

@@ -5,7 +5,7 @@
 import { el, mount, t, periodFor } from '../../review/viewkit.js';
 import { loadModel } from '../../storage/model.js';
 import { runReview } from '../../review/run.js';
-import { renderKey, TITLES } from '../../review/templates.js';
+import { renderKey } from '../../review/templates.js';
 import { enginesFor, loadAiSettings } from '../../ai/index.js';
 import { localParts } from '../../core/time.js';
 
@@ -120,7 +120,7 @@ export async function render(root, ctx, params = {}) {
         el('div', { class: 'art' }, ctx.ui.icon('search', 'lg')),
         el('h2', null, t('review.ui.none.title')),
         el('p', { class: 'sub' }, t('review.ui.none.body', { k: review.checked.length, n: review.counted })),
-        el('p', { class: 'sub text' }, review.checked.map((p) => TITLES[ctx.lang]?.[p] ?? t(`review.ui.title.${p}`)).join(', ')));
+        el('p', { class: 'sub text' }, review.checked.map((p) => t(`review.ui.title.${p}`)).join(', ')));
     }
     return el('section', { class: 'card' },
       el('div', { class: 'card-h' }, el('h3', null, t('review.ui.questions.h'))),
@@ -172,7 +172,7 @@ export async function render(root, ctx, params = {}) {
     body.push(el('a', { class: 'btn plain block', href: '#/settings/ai' }, t('review.ui.settings')), el('a', { class: 'btn plain block', href: '#/plan' }, t('review.ui.plan')));
     queueMicrotask(() => root.querySelector('.chips [aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' }));
     mount(root, el('div', { class: 'app-s3' },
-      ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', left: ctx.ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }) }),
+      ctx.ui.topbar({ mode: ctx.mode, paper: ctx.mode === 'paper', left: ctx.ui.modeSwitch({ mode: ctx.mode, onChange: (m) => ctx.setMode(m) }), right: el('span', { class: 'spacer' }) }),
       el('main', { class: 'content' }, el('h1', { class: 'page-h' }, t('review.ui.title')), ...body.filter(Boolean).flat())));
   }
   paint();

@@ -7,6 +7,7 @@ import en from '../../src/i18n/en/review.js';
 import el from '../../src/i18n/el/review.js';
 import { placeholders } from '../../src/i18n/i18n.js';
 import { check, scopeForKey } from '../../src/review/guard.js';
+import { TITLES } from '../../src/review/templates.js';
 
 test('English and Greek have the same keys and the same placeholders', () => {
   assert.deepEqual(Object.keys(en).sort(), Object.keys(el).sort());
@@ -50,5 +51,12 @@ test('the keys the S3 views ask for exist in both catalogues', () => {
   for (const prefix of dynamic) {
     if (/^(market|label|mode|form|settings)\./.test(prefix)) continue;
     assert.ok(Object.keys(en).some((k) => k.startsWith(prefix)), `no en key with prefix ${prefix}`);
+  }
+});
+
+test('the pattern titles of the templates equal the catalogue titles, in both languages', () => {
+  for (const [lang, cat] of [['en', en], ['el', el]]) {
+    for (const [pattern, title] of Object.entries(TITLES[lang])) assert.equal(cat[`review.ui.title.${pattern}`], title, `${lang} ${pattern}`);
+    assert.equal(Object.keys(TITLES[lang]).length, Object.keys(cat).filter((k) => k.startsWith('review.ui.title.')).length);
   }
 });

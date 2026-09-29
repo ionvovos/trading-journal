@@ -67,3 +67,14 @@ test('a model sentence that names an instrument the finding does not contain is 
 test('the legal table itself: every banned review row is rejected, so a model that copies a banned row changes nothing', () => {
   for (const r of table.banned.filter((x) => x.scope === 'review')) assert.equal(check(r.text, r.lang, { scope: 'review' }).ok, false, r.text);
 });
+
+test('what a model receives: figures and fixed sentences only, never a checklist item, an instrument name or a note (AC-P9.2)', async () => {
+  let received = null;
+  const engine = { id: 'own-key', reword: async (items) => { received = items; return []; } };
+  await runReview(inputOf(weeks.stocks), { engine });
+  const sent = JSON.stringify(received);
+  assert.ok(received.length >= 3);
+  for (const secret of ['Wait for the first 15 minutes', 'Stop set before entry', 'AAPL', 'TSLA', 'META', 'GOOG', 't1', 'acc-s']) assert.equal(sent.includes(secret), false, `sent ${secret}`);
+  assert.ok(received.every((i) => i.ruleText && i.facts && i.id && i.pattern));
+  assert.equal(received.some((i) => i.pattern === 'plan_not_followed'), false, 'the finding that quotes the plan is not sent');
+});
