@@ -80,6 +80,7 @@ Format specifics: IBKR ignores every section except `Trades`, `Deposits & Withdr
 9. When `fileZone` differs from the declared zone, trades closing within |offset difference| + 1 hour of a month boundary in the declared zone → anomaly `tz_edge` (answers `month_before`, `month_after`; the answer sets `closeDayOverride` on the trade).
 10. `skipped.length > 0` → anomaly `unreadable_rows` (answers `continue`, `cancel_import`); it holds no trade.
 11. Same instrument, side, size and price within 1 second as an earlier import's fill but a different key → anomaly `near_duplicate` (answers `merge`, `keep_both`).
+12. MT4 `stopAtClose` values: the import report offers one bulk choice, "use the stop in the file as the initial stop", labelled that the file shows the stop at close, which may have been moved. It is not an anomaly and holds nothing; without it those trades show "R unknown".
 
 Every anomaly except `unreadable_rows` lists `tradeIds` and puts its id into each trade's `holds`. A trade with a non-empty `holds` is held out (S3). Answering removes the id; `exclude` sets `trade.excluded = { by: 'import', anomalyId }`, the trade stays in the journal, flagged (AC-A2.3).
 
