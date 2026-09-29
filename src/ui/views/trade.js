@@ -69,7 +69,7 @@ export async function render(root, ctx, params) {
       el('div', { class: 'row-r' },
         r !== null && r !== undefined ? el('button', { type: 'button', class: ['chip', 'r-chip', r > 0 ? 'gain' : r < 0 ? 'loss' : ''], onClick: () => ctx.navigate(`#/learn/r`) }, fmt.r(r)) : el('span', { class: 'chip muted' }, t('figure.rUnknown')),
         risk?.value != null ? el('span', { class: 'caption num' }, t('trade.risk', { x: `${fmt.num(risk.value, fmt.minorDigits(ccy))} ${ccy}` })) : (risk?.reason ? el('span', { class: 'caption' }, t(`form.stop.${risk.reason}`)) : null)),
-      breakdown ? el('p', { class: 'caption' }, t('trade.breakdown', { base: fmt.r(breakdown.base), slip: fmt.r(breakdown.slippageR), costs: fmt.r(breakdown.costsR), other: breakdown.otherR ? fmt.r(breakdown.otherR) : '' })) : null);
+      breakdown ? el('p', { class: 'caption' }, t('trade.breakdown', { base: fmt.r(breakdown.base), slip: fmt.r(breakdown.slippageR), costs: fmt.r(breakdown.costsR), other: breakdown.otherR ? `, ${fmt.r(breakdown.otherR)}` : '' })) : null);
 
     const legs = el('div', { class: 'list' }, ...[...trade.legs].sort((a, b) => (a.time < b.time ? -1 : 1)).map((l) => {
       const buy = (trade.side === 'long') === (l.kind === 'entry');

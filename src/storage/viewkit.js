@@ -16,7 +16,7 @@ export const nowIso = () => new Date().toISOString();
 export function detailBar(ctx, { title, backHash, backLabel, right } = {}) {
   return ctx.ui.topbar({
     mode: ctx.mode, paper: ctx.mode === 'paper', title,
-    back: { label: backLabel ?? t('nav.back'), onClick: () => ctx.navigate(backHash ?? '#/home') },
+    back: { label: backLabel ?? t('data.back'), onClick: () => ctx.navigate(backHash ?? '#/home') },
     right,
   });
 }
