@@ -2,7 +2,7 @@
 // the code found, titled by the behaviour, with n, the trades behind it, and an open question (P5). The engine that wrote the text and
 // its state are shown on every review (AC-P5.7, AC-P9.3). Nothing here is advice: figures come from code, sentences from fixed
 // templates or a model whose text passed the guard (src/review/run.js).
-import { el, mount, t, periodFor } from '../../review/viewkit.js';
+import { el, mount, t, periodFor, capLinks } from '../../review/viewkit.js';
 import { loadModel } from '../../storage/model.js';
 import { runReview } from '../../review/run.js';
 import { renderKey } from '../../review/templates.js';
@@ -60,10 +60,13 @@ export async function render(root, ctx, params = {}) {
     const tr = tradeById.get(id);
     return tr?.closeTime ? ctx.fmt.date(tr.closeTime, { zone: ctx.tz }) : '';
   };
-  const links = (ids) => el('div', { class: 'hstack wrap' }, ...ids.map((id) => {
-    const tr = tradeById.get(id);
-    return el('a', { class: 'trade-link', href: `#/trade/${id}` }, t('review.ui.link', { instrument: tr?.instrument ?? id, date: dateOf(id) }));
-  }));
+  const links = (all) => {
+    const { shown, more } = capLinks(all);
+    return el('div', { class: 'hstack wrap' }, ...shown.map((id) => {
+      const tr = tradeById.get(id);
+      return el('a', { class: 'trade-link', href: `#/trade/${id}` }, t('review.ui.link', { instrument: tr?.instrument ?? id, date: dateOf(id) }));
+    }), more ? el('span', { class: 'caption' }, t('review.ui.more', { n: more })) : null);
+  };
 
   const engineChip = () => {
     if (!review) return null;

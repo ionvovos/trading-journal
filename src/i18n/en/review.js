@@ -182,6 +182,7 @@ export default {
   'review.ui.lang.en': 'English',
   'review.ui.lang.el': 'Greek',
   'review.ui.footer': 'About your past trades only. Every sentence here is fixed wording and every number is computed by code. A model, when one is on, only puts the findings in order.',
+  'review.ui.more': 'and {n} more',
   'review.ui.settings': 'AI engine settings',
   'review.ui.plan': 'My plan',
   'review.ui.first': 'Your first review is here',

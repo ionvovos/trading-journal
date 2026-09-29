@@ -21,6 +21,10 @@ export function page(root, ctx, { bar, content, actions }) {
   mount(root, el('div', { class: ['app-s3', actions && 'has-actions'] }, bar, el('main', { class: 'content' }, ...content), actions ? el('div', { class: 'actions' }, ...actions) : null));
 }
 
+// The trade links one review card shows: the first `limit`, and how many more there are (a year review has hundreds; V2 G10).
+export const MAX_LINKS = 6;
+export const capLinks = (ids, limit = MAX_LINKS) => ({ shown: ids.slice(0, limit), more: Math.max(0, ids.length - limit) });
+
 export const num = (v) => (v === null || v === undefined || v === '' ? null : Number(v));
 
 // Local calendar date 'YYYY-MM-DD' and the last N days as a { from, to } period in a zone.

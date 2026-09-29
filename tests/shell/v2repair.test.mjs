@@ -120,3 +120,27 @@ test('G4: x labels that would overlap are thinned ("1 Sep" never sits on "21" wh
   for (let i = 1; i < kept.length; i += 1) assert.ok(x(kept[i]) - w(kept[i]) / 2 >= x(kept[i - 1]) + w(kept[i - 1]) + 6 - 1e-6 || kept[i - 1].anchor !== 'start');
   assert.deepEqual(thinLabels([{ index: 0, text: 'Sep', anchor: 'start' }, { index: 29, text: 'Oct', anchor: 'middle' }], n).length, 2, 'labels far apart all stay');
 });
+
+// ---- G9: About states the AI role that R1 left
+test('G9: the About page says the model only orders findings and writes no review sentence, in both languages, and no longer says it words reviews', async () => {
+  const en = (await import('../../src/i18n/en/shell.js')).default['about.numbers.body'];
+  const el = (await import('../../src/i18n/el/shell.js')).default['about.numbers.body'];
+  assert.match(en, /only puts the findings of a review in order/);
+  assert.match(en, /writes no sentence of a review/);
+  assert.doesNotMatch(en, /words reviews/);
+  assert.match(el, /βάζει σε σειρά τα ευρήματα/);
+  assert.match(el, /Δεν γράφει καμία πρόταση/);
+  assert.doesNotMatch(el, /διατυπώνει τις ανασκοπήσεις/);
+});
+
+// ---- G10: capped trade links
+import { capLinks, MAX_LINKS } from '../../src/review/viewkit.js';
+
+test('G10: a review card shows at most MAX_LINKS trade links and says how many more there are; the review screen uses it', () => {
+  const ids = Array.from({ length: 240 }, (_, i) => `t${i}`);
+  const c = capLinks(ids);
+  assert.equal(c.shown.length, MAX_LINKS);
+  assert.equal(c.more, 240 - MAX_LINKS);
+  assert.deepEqual(capLinks(['a', 'b']), { shown: ['a', 'b'], more: 0 });
+  assert.match(readFileSync(new URL('../../src/ui/views/review.js', import.meta.url), 'utf8'), /capLinks\(all\)/);
+});

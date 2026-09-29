@@ -195,7 +195,7 @@ export default {
   'about.version': 'Version {v} · MIT licence · Ion Vovos / Nexa Systems',
   'about.oneSentence': 'In one sentence',
   'about.numbers.title': 'How the numbers are made',
-  'about.numbers.body': 'Code computes every figure from your trades and is tested against worked examples. AI only words reviews and reads typed sentences.',
+  'about.numbers.body': 'Code computes every figure from your trades and is tested against worked examples. AI, when you turn it on, only puts the findings of a review in order and reads typed sentences. It writes no sentence of a review.',
   'about.numbers.link': 'The 18 definitions',
   'about.check.title': 'The broker check',
   'about.check.body': 'After an import you can type your broker’s own figure. The journal compares, holds unclear trades out of your statistics until you answer, and names the trades that may explain a difference.',
