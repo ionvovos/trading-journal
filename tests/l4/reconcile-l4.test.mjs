@@ -149,3 +149,38 @@ test('A1.4 balance form: start 10,000, end 10,420, deposit 200, trades 220 gives
   // the balance form is refused until the user confirms no position was open
   assert.throws(() => check(res, period, { ...bal(1042000), noOpenPositionsConfirmed: false }), /confirmNoOpenPositions/);
 });
+
+// ---- V2 G6: the broker check names the causes it can compute
+import { readFileSync } from 'node:fs';
+
+test('V2 G6 (a): MT4, a broker figure typed from the Profit column (76.78) against the app total 74.18: commission -2.10 and swap -0.50 explain exactly 2.60, and both totals are shown', async () => {
+  const text = readFileSync(new URL('../fixtures/import/mt4-statement.htm', import.meta.url), 'utf8');
+  const res = await run(text, 'mt4-statement', 'UTC', 'mt4');
+  const days = res.trades.map((t) => t.closeTime).filter(Boolean).sort();
+  const period = P(days[0].slice(0, 10), days.at(-1).slice(0, 10));
+  const r = check(res, period, { form: 'net_pnl', valueMinor: 7678 });
+  assert.equal(r.oursMinor, 7418);
+  assert.equal(r.differenceMinor, 260);
+  assert.deepEqual(r.explanations.map((e) => [e.cause, e.amountMinor]), [['costs_excluded', 260]]);
+  assert.equal(r.unexplainedMinor, 0);
+  assert.equal(r.costsMinor, 260);
+  assert.equal(r.beforeCostsMinor, 7678, 'the total before commission and swap equals the Profit column');
+  const net = check(res, period, { form: 'net_pnl', valueMinor: 7418 });
+  assert.equal(net.state, 'reconciled', 'the figure that already includes them still matches');
+});
+
+test('V2 G6 (b): a trade the person chose to leave out of the statistics is named as the cause when the broker figure includes it', async () => {
+  const text = readFileSync(new URL('../fixtures/import/ibkr-activity.csv', import.meta.url), 'utf8');
+  const res = await runImport({ text, fileName: 'a.csv', formatId: 'ibkr-activity', account, fileZone: 'America/New_York', declaredZone: 'UTC', existing: { trades: [], cash: [] }, now: NOW, importId: 'ib' }, { deps });
+  const q = res.importRecord.anomalies.find((a) => a.kind === 'opened_before_file');
+  const out = await answerAnomaly(res.importRecord, res.trades, q.id, { optionId: 'exclude' }, { account, existing: { trades: [], cash: [] }, deps, now: NOW });
+  const nvda = out.trades.find((t) => t.instrument === 'NVDA');
+  assert.ok(nvda.excluded, 'left out');
+  const closes = out.trades.map((t) => t.closeTime).filter(Boolean).sort();
+  const period = P(closes[0].slice(0, 10), closes.at(-1).slice(0, 10));
+  const withoutIt = reconcile({ trades: out.trades, cash: out.cash, account, period, broker: { form: 'net_pnl', valueMinor: 0 }, ctx: moneyCtx(account, { tz: 'UTC' }), anomalies: anomaliesForReconcile([out.importRecord]) }, deps);
+  const ours = withoutIt.oursMinor;
+  const r = reconcile({ trades: out.trades, cash: out.cash, account, period, broker: { form: 'net_pnl', valueMinor: ours + 4900 }, ctx: moneyCtx(account, { tz: 'UTC' }), anomalies: anomaliesForReconcile([out.importRecord]) }, deps);
+  assert.deepEqual(r.explanations.map((e) => [e.cause, e.amountMinor]), [['excluded', 4900]]);
+  assert.equal(r.unexplainedMinor, 0);
+});

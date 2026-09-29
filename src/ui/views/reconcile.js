@@ -154,7 +154,7 @@ export async function render(root, ctx, params) {
     if (!r) return null;
     const trade = (id) => model.trades.find((x) => x.id === id);
     const lines = [
-      [t('reconcile.ours.closed'), m(r.closedMinor)], r.openLegsMinor ? [t('reconcile.ours.openLegs'), m(r.openLegsMinor)] : null, [t('reconcile.ours'), m(r.oursMinor)], [t('reconcile.broker'), m(r.brokerMinor)],
+      r.costsMinor ? [t('reconcile.ours.beforeCosts'), m(r.beforeCostsMinor)] : null, [t('reconcile.ours.closed'), m(r.closedMinor)], r.openLegsMinor ? [t('reconcile.ours.openLegs'), m(r.openLegsMinor)] : null, [t('reconcile.ours'), m(r.oursMinor)], [t('reconcile.broker'), m(r.brokerMinor)],
       [t('reconcile.difference'), m(r.differenceMinor)], [t('reconcile.tolerance'), fmt.moneyPlain(r.toleranceMinor, ccy)],
     ].filter(Boolean);
     const matched = r.state === 'reconciled';
@@ -206,7 +206,7 @@ export async function render(root, ctx, params) {
         st.error ? ui.stateBanner({ kind: 'danger', iconName: 'alert', body: t(st.error) }) : null,
         ui.button({ label: t('reconcile.compare'), size: 'lg', block: true, disabled: st.form === 'balance' && !st.confirmNoOpen, onClick: compute }),
         resultBlock(),
-        el('div', { class: 'btn-row' }, ui.button({ label: t('reconcile.skip'), kind: 'plain', onClick: skip }), fromImport ? ui.button({ label: t('reconcile.answerQuestions'), kind: 'ghost', onClick: () => ctx.navigate(`#/import/${fromImport.id}`) }) : null),
+        el('div', { class: 'btn-row' }, ui.button({ label: t('reconcile.skip'), kind: 'plain', onClick: skip }), fromImport && (fromImport.anomalies || []).some((a) => !a.answer && !a.resolved && a.kind !== 'unreadable_rows') ? ui.button({ label: t('reconcile.answerQuestions'), kind: 'ghost', onClick: () => ctx.navigate(`#/import/${fromImport.id}`) }) : null),
         account.mode === 'paper' ? ui.stateBanner({ kind: 'neutral', iconName: 'info', body: t('accounts.paperNoCheck') }) : null));
   }
   paint();

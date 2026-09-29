@@ -99,6 +99,24 @@ export function realisedTotal({ trades, accountId, period, ctx, account }, deps)
   return { closedMinor, openLegsMinor: openLegs.reduce((s, l) => s + l.amountMinor, 0), openLegs, closedTrades };
 }
 
+// Commission and swap of the closed trades counted in a period, in minor units (fees minus signed funding). A broker figure that is the
+// gross Profit column leaves exactly these out, so the sum of them is a candidate cause of a difference (V2 G6).
+export function costsOf({ trades, accountId, period, ctx, account }, deps) {
+  const mode = ctx.mode || 'real';
+  let costsMinor = 0;
+  const tradeIds = [];
+  for (const t of trades) {
+    if (!isCounted(t, accountId, mode) || t.entryUnknown || !isClosed(t)) continue;
+    const exits = t.legs.filter((l) => l.kind === 'exit');
+    if (!exits.length || !exits.every((l) => inPeriod(l.time, period))) continue;
+    const m = deps.tradeMoney(t, ctx);
+    if (!m) continue;
+    const c = (m.feesMinor || 0) - (m.fundingMinor || 0);
+    if (c) { costsMinor += c; tradeIds.push(t.id); }
+  }
+  return { costsMinor, tradeIds };
+}
+
 export function toleranceMinor({ closedTrades, digits, cap = DEFAULT_CAP }) {
   const capMinor = roundMinor(Number(cap), digits);
   return Math.min(closedTrades, capMinor);
@@ -146,7 +164,9 @@ export function reconcile({ trades, cash = [], account, period, broker, cap = DE
   const oursMinor = total.closedMinor + total.openLegsMinor;
   const differenceMinor = brokerMinor - oursMinor;
   const tol = toleranceMinor({ closedTrades: total.closedTrades, digits, cap });
+  const costs = costsOf({ trades, accountId: account.id, period, ctx: cx, account }, deps);
   const base = {
+    costsMinor: costs.costsMinor, beforeCostsMinor: oursMinor + costs.costsMinor,
     oursMinor, closedMinor: total.closedMinor, openLegsMinor: total.openLegsMinor, openLegs: total.openLegs, brokerMinor, differenceMinor,
     toleranceMinor: tol, explanations: [], needsInput: [], unexplainedMinor: 0, headerCount: 0,
   };
@@ -159,6 +179,13 @@ export function reconcile({ trades, cash = [], account, period, broker, cap = DE
   const anomalyOf = (kind, tradeId) => anomalies.find((a) => a.kind === kind && a.tradeIds.includes(tradeId));
 
   // held-out trades: what they would add if released; missing fee and missing rate carry no amount
+  // trades the person chose to leave out of the statistics still show in the broker's figure
+  for (const t of mine) {
+    if (!t.excluded || (t.holds && t.holds.length)) continue;
+    const c = tradeContribution({ ...t, excluded: null }, period, cx, deps, digits);
+    const amount = c.closedMinor + c.legs.reduce((s, l) => s + l.amountMinor, 0);
+    if (amount) candidates.push({ cause: 'excluded', tradeIds: [t.id], amountMinor: amount, anomalyId: null });
+  }
   for (const t of mine) {
     if (t.excluded || !t.holds || !t.holds.length) continue;
     const money = t.entryUnknown || !isClosed(t) ? null : deps.tradeMoney(t, cx);
@@ -212,6 +239,8 @@ export function reconcile({ trades, cash = [], account, period, broker, cap = DE
     const amount = legs.reduce((s, l) => s + l.amountMinor, 0);
     if (amount) candidates.push({ cause: 'partial_exit_open', tradeIds: [id], legIds: legs.map((l) => l.legId), amountMinor: -amount, anomalyId: null });
   }
+  // commission and swap that a gross broker figure leaves out
+  if (costs.costsMinor) candidates.push({ cause: 'costs_excluded', tradeIds: costs.tradeIds, amountMinor: costs.costsMinor, anomalyId: null });
   // balance form: cash items of kind other in the period not entered as other
   if (broker.form === 'balance') {
     for (const c of cash) {
